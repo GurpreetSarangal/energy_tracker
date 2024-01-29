@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>608917748421-onhnn1qfgv7tjnr3ig52fgl10u8eg0pj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.608917748421-onhnn1qfgv7tjnr3ig52fgl10u8eg0pj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDnWTrsLIxb5THPc74l4hw7qYISjgom1sg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>608917748421</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.energyTracker</string>
+	<key>PROJECT_ID</key>
+	<string>iot-energy-tracking-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>iot-energy-tracking-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:608917748421:ios:07de8a200ea0f35853ceac</string>
+	<key>DATABASE_URL</key>
+	<string>https://iot-energy-tracking-app-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "608917748421",
+    "firebase_url": "https://iot-energy-tracking-app-default-rtdb.firebaseio.com",
+    "project_id": "iot-energy-tracking-app",
+    "storage_bucket": "iot-energy-tracking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608917748421:android:e95920fa820a868f53ceac",
+        "android_client_info": {
+          "package_name": "com.example.energy_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608917748421-au4ncgp79od1pt0ppfnhivet8mrjlbh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9FR5T4T7u5Ch9Kv2redbYg6MyCTe_fpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608917748421-au4ncgp79od1pt0ppfnhivet8mrjlbh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
