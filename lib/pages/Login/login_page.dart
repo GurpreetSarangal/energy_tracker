@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:energy_tracker/firebase_options.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
@@ -8,13 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-// import 'package:flutter/services.dart';
 
-import 'package:lottie/lottie.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+
 
 // ignore: camel_case_types
 class LoginPage extends StatefulWidget {
@@ -28,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   bool rememberMe = true;
   late final TextEditingController _email;
   late final TextEditingController _password;
+  final _loginFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -70,415 +67,437 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           return Scaffold(
-            body: Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                        flex: flex_image,
-                        child: Container(
-                            // padding: EdgeInsets.only(left: 0, top: 0),
-                            // color: Colors.white,
-                            width: double.infinity,
-                            alignment: Alignment.topCenter,
-                            // decoration: const BoxDecoration(
-                            //   image: DecorationImage(
-                            //       image:
-                            //           AssetImage("assets/images/loginpage2copy.png"),
-                            //       fit: BoxFit.cover),
-                            // ),
-                            child: Image.asset(
-                              "assets/animations/person_waving_crop.gif",
-                              // height: size.height * 0.5,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            )
-                            // child: Padding(
-                            //   padding: const EdgeInsets.only(left: 0, top: 30),
-                            //   child: Column(
-                            //     children: [
-                            //       IconButton(
-                            //         color: Colors.white,
-                            //         icon: const Icon(
-                            //           CupertinoIcons.back,
-                            //           size: 35,
-                            //           // color: Colors.white,
-                            //         ),
-                            //         onPressed: () {
-                            //           Navigator.pop(context);
-                            //         },
-                            //       ),
-                            //       Image.asset(
-                            //         "assets/animations/persons_sitting_with_bg.gif",
-                            //         height: 400,
-                            //         width: double.infinity,
-                            //         fit: BoxFit.fitHeight,
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
-                            )),
-                    Expanded(
-                        flex: flex_content,
-                        child: Container(
-                            color: const Color.fromARGB(255, 12, 69, 58))),
-                  ],
-                ),
-                Align(
-                  alignment: const Alignment(0, 0.6),
+            body: Stack(children: [
+              Image.asset(
+                'assets/images/login_background1.jpg',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              Container(
+                
+                width: double.infinity,
+                height: double.infinity,
+                color: Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
+
+                child: SingleChildScrollView(
                   child: Container(
-                    width: size.width,
-                    height: size.height * bg_height,
-                    decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(40, 40)),
-                        color: Color.fromARGB(193, 236, 235, 235)),
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 13),
-                      alignment: Alignment.topCenter,
-                      child: const Text(
-                        'Login to your account',
-                        style: TextStyle(
-                            fontFamily: "Epilogue",
-                            fontSize: 25,
-                            fontWeight: FontWeight.w800),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: const Alignment(0, 1.3),
-                  child: Container(
-                    width: size.width,
-                    height: size.height * content_height,
-                    decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 10,
-                              color: Color.fromARGB(137, 120, 119, 119))
-                        ],
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.elliptical(40, 40),
-                            topRight: Radius.elliptical(40, 40)),
-                        color: Colors.white),
+                    height: size.height,
                     child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
+                          // decoration: BoxDecoration(border: Border.all()),
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.only(top: 40),
+                          child: IconButton(
+                            color: Colors.black,
+                            icon: const Icon(
+                              CupertinoIcons.back,
+                              size: 35,
+                              // color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        Container(
+                          // alignment: Alignment.topCenter,
+                          child: Text(
+                            "Welcome Back!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge
+                                ?.copyWith(
+                                    fontSize: 30, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
                           margin: EdgeInsets.all(5),
-                          height: 50,
-                          width: 150,
-                          child: Row(
+                          // decoration: BoxDecoration(border: Border.all()),
+                          // height: 90,
+                          width: 200,
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              IconButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateColor.resolveWith(
-                                            (states) => Colors.black12)),
-                                icon: const Icon(MyFlutterApp.apple),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 8),
+                                child: Text(
+                                  "CONTINUE WITH",
+                                  textAlign: TextAlign.justify,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                          fontFamily: "Gotham", fontSize: 15),
+                                ),
                               ),
-                              IconButton(
-                                  style: ButtonStyle(
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                      padding:
+                                          MaterialStateProperty.resolveWith(
+                                              (states) => EdgeInsets.all(12)),
+                                      alignment: Alignment.center,
+                                      iconSize:
+                                          MaterialStateProperty.resolveWith(
+                                              (states) => 30),
                                       backgroundColor:
                                           MaterialStateColor.resolveWith(
-                                              (states) => Colors.black12)),
-                                  onPressed: () {},
-                                  icon: const Icon(MyFlutterApp.google)),
-                              IconButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateColor.resolveWith(
-                                              (states) => Colors.black12)),
-                                  onPressed: () {},
-                                  icon: const Icon(MyFlutterApp.textsms)),
+                                              (states) => Colors.black12),
+                                    ),
+                                    icon: const Icon(MyFlutterApp.apple),
+                                  ),
+                                  IconButton(
+                                      style: ButtonStyle(
+                                          padding:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) =>
+                                                      EdgeInsets.all(12)),
+                                          alignment: Alignment.center,
+                                          iconSize:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) => 30),
+                                          backgroundColor:
+                                              MaterialStateColor.resolveWith(
+                                                  (states) => Colors.black12)),
+                                      onPressed: () {},
+                                      icon: const Icon(MyFlutterApp.google)),
+                                  IconButton(
+                                      style: ButtonStyle(
+                                          padding:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) =>
+                                                      EdgeInsets.all(12)),
+                                          alignment: Alignment.center,
+                                          iconSize:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) => 30),
+                                          backgroundColor:
+                                              MaterialStateColor.resolveWith(
+                                                  (states) => Colors.black12)),
+                                      onPressed: () {},
+                                      icon: const Icon(MyFlutterApp.textsms)),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        const Text("or use your email account"),
+                        // const Text("or use your email account"),
                         // Expanded(
                         //   child: Container(
                         //     decoration: BoxDecoration(color: Colors.black),
                         //   ),
                         // ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 30.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  child: TextFormField(
-                                    controller: _email,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
-                                    decoration: InputDecoration(
+                        Form(
+                          key: _loginFormKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                // height: 400,
+                                // decoration: BoxDecoration(color: Colors.black),
+                                child: Text(
+                                  "or use your email account",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(fontSize: 14),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 20, right: 20, top: 15),
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white.withOpacity(0.5),
+                                ),
+                                child: TextFormField(
+                                  controller: _email,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  decoration: InputDecoration(
                                       labelText: "Enter Email",
                                       fillColor: const Color.fromARGB(
                                           255, 161, 101, 101),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        borderSide: const BorderSide(),
-                                      ),
+                                      // col
+                                      border: InputBorder.none
+                                      // border: OutlineInputBorder(
+                                      // borderRadius: BorderRadius.circular(8.0),
+                                      // borderSide: const BorderSide(),
+                                      // ),
                                       //fillColor: Colors.green
-                                    ),
-                                    validator: (val) {
-                                      if (val!.isEmpty == false) {
-                                        return "Email cannot be empty";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    keyboardType: TextInputType.emailAddress,
-                                    style: const TextStyle(
-                                      fontFamily: "Epilogue",
-                                    ),
+                                      ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Email cannot be empty";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: const TextStyle(
+                                    fontFamily: "Epilogue",
                                   ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  child: TextFormField(
-                                    controller: _password,
-                                    obscureText: true,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
-                                    decoration: InputDecoration(
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 20, right: 20, top: 15),
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white.withOpacity(0.5),
+                                ),
+                                child: TextFormField(
+                                  controller: _password,
+                                  obscureText: true,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  decoration: InputDecoration(
                                       labelText: "Enter password",
-
-                                      fillColor: const Color.fromARGB(
-                                          255, 117, 112, 112),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        borderSide: const BorderSide(),
-                                      ),
+                                      fillColor: Colors.white,
+                                      border: InputBorder.none
+                                      // border: OutlineInputBorder(
+                                      //   borderRadius: BorderRadius.circular(8.0),
+                                      //   borderSide: const BorderSide(),
+                                      // ),
                                       //fillColor: Colors.green
-                                    ),
-                                    validator: (val) {
-                                      if (val!.isEmpty == false) {
-                                        return "passoword cannot be empty";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(
-                                      fontFamily: "Epilogue",
-                                    ),
+                                      ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "passoword cannot be empty";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  style: const TextStyle(
+                                    fontFamily: "Epilogue",
                                   ),
                                 ),
-                                // const Text("Remember me  Forgot Password?"),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20, right: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // height: 10,
-                                        margin: EdgeInsets.only(right: 10),
-                                        child: Row(
-                                          children: [
-                                            FlutterSwitch(
-                                              height: 17.0,
-                                              width: 33.0,
-                                              padding: 3.0,
-                                              toggleSize: 15.0,
-                                              borderRadius: 10.0,
-                                              activeColor: Color.fromARGB(
-                                                  255, 86, 162, 88),
-                                              value: rememberMe,
-                                              onToggle: (value) {
-                                                setState(() {
-                                                  rememberMe = value;
-                                                });
-                                              },
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  left: 8, top: 2),
-                                              child: Text('Remember me',
-                                                  style: TextStyle(
-                                                      fontFamily: "Epilogue",
-                                                      fontSize: 14)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      InkWell(
-                                          onTap: () {},
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 3),
-                                            child: Text("Forgot Password?",
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: 20, right: 20, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      // height: 10,
+                                      margin: EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          FlutterSwitch(
+                                            height: 17.0,
+                                            width: 33.0,
+                                            padding: 3.0,
+                                            toggleSize: 15.0,
+                                            borderRadius: 10.0,
+                                            activeColor: Color.fromARGB(
+                                                255, 86, 162, 88),
+                                            value: rememberMe,
+                                            onToggle: (value) {
+                                              setState(() {
+                                                rememberMe = value;
+                                              });
+                                            },
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 8, top: 2),
+                                            child: Text('Remember me',
                                                 style: TextStyle(
                                                     fontFamily: "Epilogue",
-                                                    fontSize: 14,
-                                                    color: const Color.fromARGB(
-                                                        255, 46, 82, 46))),
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    margin: EdgeInsets.all(10),
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        padding: MaterialStateProperty
-                                            .resolveWith<EdgeInsets?>(
-                                          (states) => EdgeInsets.only(
-                                              top: 15, bottom: 15),
-                                        ),
-                                        backgroundColor: MaterialStateProperty
-                                            .resolveWith<Color?>(
-                                          (Set<MaterialState> states) {
-                                            //<-- SEE HERE
-                                            return const Color.fromARGB(
-                                                255,
-                                                46,
-                                                82,
-                                                46); // Defer to the widget's default.
-                                          }, //background color of button
-                                        ),
-                                        textStyle: MaterialStateProperty
-                                            .resolveWith<TextStyle?>((states) =>
-                                                TextStyle(
-                                                    fontFamily:
-                                                        'Epilogue')), //border width and color
-                                        elevation: MaterialStateProperty
-                                            .resolveWith<double?>(
-                                          (Set<MaterialState> states) {
-                                            return 3; // Defer to the widget's default.
-                                          },
-                                        ), //elevation of button
-                                        shape:
-                                            MaterialStateProperty.resolveWith<
-                                                    RoundedRectangleBorder?>(
-                                                (Set<MaterialState> states) {
-                                          return RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(21));
-                                        }),
-                                        overlayColor: MaterialStateProperty
-                                            .resolveWith<Color?>(
-                                          (Set<MaterialState> states) {
-                                            if (states.contains(
-                                                MaterialState.pressed)) {
-                                              return const Color.fromARGB(255,
-                                                  100, 157, 100); //<-- SEE HERE
-                                            }
-                                            return null; // Defer to the widget's default.
-                                          },
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        final email = _email.text;
-                                        final password = _password.text;
-
-                                        try {
-                                          var user = FirebaseAuth.instance
-                                              .signInWithEmailAndPassword(
-                                                  email: email,
-                                                  password: password);
-                                          // Navigator.push(
-                                          //   context,
-                                          //   CupertinoPageRoute(
-                                          //       builder: (context) =>
-                                          //           Dashboard()),
-                                          // );
-                                          // Navigator.pushReplacement(context,
-                                          //     MaterialPageRoute(builder:
-                                          //         (BuildContext context) {
-                                          //   return Dashboard();
-                                          // }));
-                                        } on FirebaseAuthException catch (e) {
-                                          print(e);
-                                          return;
-                                        }
-                                        Navigator.pushAndRemoveUntil(context,
-                                            CupertinoPageRoute(builder:
-                                                (BuildContext context) {
-                                          return Dashboard();
-                                        }), (r) {
-                                          return false;
-                                        });
-                                      },
-                                      child: const Text(
-                                        "LOGIN",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 243, 243, 243),
-                                            fontFamily: "Gotham",
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w400),
+                                                    fontSize: 14)),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
+                                    InkWell(
+                                        onTap: () {},
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 3),
+                                          child: Text("Forgot Password?",
+                                              style: TextStyle(
+                                                  fontFamily: "Epilogue",
+                                                  fontSize: 14,
+                                                  color: const Color.fromARGB(
+                                                      255, 46, 82, 46))),
+                                        ))
+                                  ],
                                 ),
-                                Container(
-                                  height: 50,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Don't have an account?  ",
-                                        style:
-                                            TextStyle(fontFamily: 'Epilogue'),
-                                      ),
-                                      InkWell(
-                                        child: Text(
-                                          "Register Here",
-                                          style: TextStyle(
-                                              fontFamily: 'Epilogue',
-                                              color: const Color.fromARGB(
-                                                  255, 46, 82, 46)),
-                                        ),
-                                        onTap: () async {
-                                          Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    const RegisterPage()),
-                                          );
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          height: 85,
+                          margin:
+                              EdgeInsets.only(bottom: 78, left: 20, right: 20),
+                          // decoration: BoxDecoration(border: Border.all()),
+                          // width: double.infinity,
+                          width: 300,
+                          child: ElevatedButton(
+                              // style: ButtonStyle(
+                              //   padding: MaterialStateProperty.resolveWith<
+                              //       EdgeInsets?>(
+                              //     (states) =>
+                              //         EdgeInsets.only(top: 15, bottom: 15),
+                              //   ),
+                              //   backgroundColor:
+                              //       MaterialStateProperty.resolveWith<Color?>(
+                              //     (Set<MaterialState> states) {
+                              //       //<-- SEE HERE
+                              //       return const Color.fromARGB(255, 46, 82,
+                              //           46); // Defer to the widget's default.
+                              //     }, //background color of button
+                              //   ),
+                              //   textStyle: MaterialStateProperty.resolveWith<
+                              //           TextStyle?>(
+                              //       (states) => TextStyle(
+                              //           fontFamily:
+                              //               'Gotham')), //border width and color
+                              //   elevation:
+                              //       MaterialStateProperty.resolveWith<double?>(
+                              //     (Set<MaterialState> states) {
+                              //       return 3; // Defer to the widget's default.
+                              //     },
+                              //   ), //elevation of button
+                              //   shape: MaterialStateProperty.resolveWith<
+                              //           RoundedRectangleBorder?>(
+                              //       (Set<MaterialState> states) {
+                              //     return RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(21));
+                              //   }),
+                              //   overlayColor:
+                              //       MaterialStateProperty.resolveWith<Color?>(
+                              //     (Set<MaterialState> states) {
+                              //       if (states.contains(MaterialState.pressed)) {
+                              //         return const Color.fromARGB(
+                              //             255, 100, 157, 100); //<-- SEE HERE
+                              //       }
+                              //       return null; // Defer to the widget's default.
+                              //     },
+                              //   ),
+                              // ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                                    //<-- SEE HERE
+                                    return const Color.fromARGB(255, 46, 82,
+                                        46); // Defer to the widget's default.
+                                  }, //background color of button
+                                ),
+                                textStyle: MaterialStateProperty.resolveWith<
+                                        TextStyle?>(
+                                    (states) => TextStyle(
+                                        fontFamily:
+                                            'Gotham')), //border width and color
+                                elevation:
+                                    MaterialStateProperty.resolveWith<double?>(
+                                  (Set<MaterialState> states) {
+                                    return 3; // Defer to the widget's default.
+                                  },
+                                ), //elevation of button
+                                shape: MaterialStateProperty.resolveWith<
+                                        RoundedRectangleBorder?>(
+                                    (Set<MaterialState> states) {
+                                  return RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(28));
+                                }),
+                                overlayColor:
+                                    MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return const Color.fromARGB(
+                                          255, 100, 157, 100); //<-- SEE HERE
+                                    }
+                                    return null; // Defer to the widget's default.
+                                  },
+                                ),
+                              ),
+                              onPressed: () async {
+                                final email = _email.text;
+                                final password = _password.text;
+                                // if () {
+                                // If the form is valid, display a snackbar. In the real world,
+                                // you'd often call a server or save the information in a database.
+
+                                // }
+                                if (_loginFormKey.currentState!.validate()) {
+                                  try {
+                                    var user = await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                            email: email, password: password);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Processing Data')),
+                                    );
+                                    Navigator.pushAndRemoveUntil(context,
+                                        CupertinoPageRoute(
+                                            builder: (BuildContext context) {
+                                      return Dashboard();
+                                    }), (r) {
+                                      return false;
+                                    });
+                                  } on FirebaseAuthException catch (e) {
+                                    print(e.code);
+                                    if (e.code == 'invalid-email')
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            showCloseIcon: true,
+                                            backgroundColor: Colors.redAccent,
+                                            content: Text('Invalid Email')),
+                                      );
+
+                                    if (e.code == 'invalid-credential')
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            showCloseIcon: true,
+                                            backgroundColor: Colors.redAccent,
+                                            content:
+                                                Text('Invalid Credentials')),
+                                      );
+                                    return;
+                                  }
+                                }
+                              },
+                              child: const Text(
+                                "GET STARTED",
+                                //   style: TextStyle(
+                                //       color: Color.fromARGB(255, 243, 243, 243),
+                                //       fontFamily: "Gotham",
+                                //       fontSize: 20,
+                                //       fontWeight: FontWeight.w400),
+                                // ),
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 236, 236, 236),
+                                    fontSize: 20,
+                                    letterSpacing: 1.5,
+                                    fontWeight: FontWeight.w800),
+                              )),
                         )
                       ],
                     ),
                   ),
                 ),
-                Align(
-                  alignment: const Alignment(-1, -0.9),
-                  child: IconButton(
-                    color: Colors.white,
-                    icon: const Icon(
-                      CupertinoIcons.back,
-                      size: 35,
-                      // color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ]),
           );
         });
   }
