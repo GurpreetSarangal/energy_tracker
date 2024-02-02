@@ -1,13 +1,17 @@
+import 'package:energy_tracker/firebase_options.dart';
+import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/main.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/pages/Login/login_page.dart';
 import 'package:energy_tracker/pages/dashboard/temp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 // import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // import 'dart:async';
 // import 'dart:math';
 // import 'package:';
@@ -36,11 +40,14 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int touchedIndex = -1;
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   bool isPlaying = false;
   final Duration animDuration = const Duration(milliseconds: 50);
 
   String dropdownValueBill = "Monthly";
   String dropdownValueSteps = "Monthly";
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -48,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
     final Color mainTextColor = Color.fromARGB(199, 232, 234, 175);
     final Color supportTextColor = Color.fromARGB(164, 232, 234, 175);
     // final temp = MediaQuery.of(context).;
-    String username = "UserName";
+    String? username = auth.currentUser?.displayName ?? "";
 
     return Container(
       //
@@ -78,17 +85,9 @@ class _DashboardState extends State<Dashboard> {
               ),
               InkWell(
                 onTap: () async {
-                  // Navigator.push(
-                  //   context,
-                  //   CupertinoPageRoute(builder: (context) => BarChartSample1()),
-                  // );
-
-                  await FirebaseAuth.instance.signOut();
-
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => LoginPage()),
-                  );
+                  CustomSignOut();
+                  Navigator.pushReplacement(context,
+                      CupertinoPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Container(
                   width: 50,

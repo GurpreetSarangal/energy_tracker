@@ -1,3 +1,5 @@
+import 'package:energy_tracker/loginMethods/facebook_login.dart';
+import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +11,9 @@ import 'package:energy_tracker/firebase_options.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter/material.dart';
+
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 // ignore: camel_case_types
 class RegisterPage extends StatefulWidget {
@@ -49,16 +54,16 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
-        builder: (context, snapshot) {
-          if (FirebaseAuth.instance.currentUser != null) {
-            return Dashboard();
+    return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot2) {
+          if (snapshot2.hasError) {
+            return Text(snapshot2.error.toString());
           }
-
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
+          if (snapshot2.connectionState == ConnectionState.active ||
+              snapshot2.connectionState == ConnectionState.done ||
+              snapshot2.connectionState == ConnectionState.waiting) {
+            if (snapshot2.data == null) {
               return Scaffold(
                 body: Stack(
                   children: [
@@ -137,54 +142,95 @@ class _RegisterPageState extends State<RegisterPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty
-                                                .resolveWith((states) =>
-                                                    EdgeInsets.all(12)),
-                                            alignment: Alignment.center,
-                                            iconSize: MaterialStateProperty
-                                                .resolveWith((states) => 30),
-                                            backgroundColor:
-                                                MaterialStateColor.resolveWith(
-                                                    (states) => Colors.black12),
-                                          ),
-                                          icon: const Icon(MyFlutterApp.apple),
-                                        ),
-                                        IconButton(
-                                            style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .resolveWith((states) =>
-                                                        EdgeInsets.all(12)),
-                                                alignment: Alignment.center,
-                                                iconSize: MaterialStateProperty
-                                                    .resolveWith(
-                                                        (states) => 30),
-                                                backgroundColor:
-                                                    MaterialStateColor
-                                                        .resolveWith((states) =>
-                                                            Colors.black12)),
-                                            onPressed: () {
-                                              signInWithGoogle();
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          child: SignInButton(
+                                            Buttons.Facebook,
+                                            text: "",
+                                            mini: true,
+                                            padding: EdgeInsets.all(1),
+                                            onPressed: () async {
+                                              signInWithFacebook(context);
                                             },
-                                            icon: const Icon(MyFlutterApp.google)),
-                                        IconButton(
-                                            style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .resolveWith((states) =>
-                                                        EdgeInsets.all(12)),
-                                                alignment: Alignment.center,
-                                                iconSize: MaterialStateProperty
-                                                    .resolveWith(
-                                                        (states) => 30),
-                                                backgroundColor:
-                                                    MaterialStateColor.resolveWith(
-                                                        (states) =>
-                                                            Colors.black12)),
-                                            onPressed: () {},
-                                            icon: const Icon(
-                                                MyFlutterApp.textsms)),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 51,
+                                          height: 50,
+                                          child: SignInButton(
+                                            Buttons.Google,
+                                            text: "",
+                                            mini: false,
+                                            padding: EdgeInsets.only(left: 5),
+                                            onPressed: () async {
+                                              await CustomSignInWithGoogle();
+                                            },
+                                          ),
+                                        ),
+                                        // IconButton(
+                                        //   onPressed: () {},
+                                        //   style: ButtonStyle(
+                                        //     padding:
+                                        //         MaterialStateProperty
+                                        //             .resolveWith(
+                                        //                 (states) =>
+                                        //                     EdgeInsets
+                                        //                         .all(
+                                        //                             12)),
+                                        //     alignment:
+                                        //         Alignment.center,
+                                        //     iconSize:
+                                        //         MaterialStateProperty
+                                        //             .resolveWith(
+                                        //                 (states) =>
+                                        //                     30),
+                                        //     backgroundColor:
+                                        //         MaterialStateColor
+                                        //             .resolveWith(
+                                        //                 (states) => Colors
+                                        //                     .black12),
+                                        //   ),
+                                        //   icon: const Icon(
+                                        //       MyFlutterApp.apple),
+                                        // ),
+// https://iot-energy-tracking-app.firebaseapp.com/__/auth/handler
+                                        // IconButton(
+                                        //     style: ButtonStyle(
+                                        //         padding: MaterialStateProperty
+                                        //             .resolveWith((states) =>
+                                        //                 EdgeInsets.all(
+                                        //                     12)),
+                                        //         alignment:
+                                        //             Alignment.center,
+                                        //         iconSize: MaterialStateProperty.resolveWith(
+                                        //             (states) => 30),
+                                        //         backgroundColor:
+                                        //             MaterialStateColor.resolveWith(
+                                        //                 (states) => Colors
+                                        //                     .black12)),
+                                        //     onPressed: () async {
+                                        //       await CustomSignInWithGoogle();
+                                        //     },
+                                        //     icon: const Icon(
+                                        //         MyFlutterApp.google)),
+                                        // IconButton(
+                                        //     style: ButtonStyle(
+                                        //         padding: MaterialStateProperty
+                                        //             .resolveWith((states) =>
+                                        //                 EdgeInsets.all(
+                                        //                     12)),
+                                        //         alignment:
+                                        //             Alignment.center,
+                                        //         iconSize: MaterialStateProperty.resolveWith(
+                                        //             (states) => 30),
+                                        //         backgroundColor:
+                                        //             MaterialStateColor.resolveWith(
+                                        //                 (states) => Colors
+                                        //                     .black12)),
+                                        //     onPressed: () {},
+                                        //     icon: const Icon(
+                                        //         MyFlutterApp.textsms)),
                                       ],
                                     ),
                                   ],
@@ -474,33 +520,36 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
               );
-            default:
-              return Scaffold(
-                body: Container(
-                  color: Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
-                  child: Center(
-                      child: Text(
-                    "Loading...",
-                    style: TextStyle(fontSize: 30),
-                  )),
-                ),
-              );
+            } else {
+              return Dashboard();
+            }
+          } else {
+            return Scaffold(
+              body: Container(
+                color: Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
+                child: Center(
+                    child: Text(
+                  "Loading google login...",
+                  style: TextStyle(fontSize: 30),
+                )),
+              ),
+            );
           }
         });
   }
 
-  signInWithGoogle() async {
-    try {
-      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-      AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+  // signInWithGoogle() async {
+  //   try {
+  //     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+  //     AuthCredential credential = GoogleAuthProvider.credential(
+  //         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-      UserCredential user =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      print(user.user?.displayName);
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     UserCredential user =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+  //     print(user.user?.displayName);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

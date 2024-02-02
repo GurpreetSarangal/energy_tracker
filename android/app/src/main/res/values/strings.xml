@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"energy-tracker"</string>
+    <string name="facebook_app_id">1391608881464834</string>
+    <string name="fb_login_protocol_scheme">fb1391608881464834</string>
+    <string name="facebook_client_token">1d37afe593edf4bdef0a856d63a3a725</string>
+</resources>
