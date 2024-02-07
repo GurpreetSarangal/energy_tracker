@@ -1,24 +1,82 @@
-import 'package:energy_tracker/firebase_options.dart';
+// import 'package:energy_tracker/firebase_options.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
-import 'package:energy_tracker/main.dart';
-import 'package:energy_tracker/my_flutter_app_icons.dart';
+// import 'package:energy_tracker/main.dart';
+// import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/pages/Login/login_page.dart';
-import 'package:energy_tracker/pages/dashboard/temp.dart';
+// import 'package:energy_tracker/pages/dashboard/temp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 // import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 // import 'dart:async';
 // import 'dart:math';
 // import 'package:';
 
 // import 'package:google_fonts/google_fonts.dart';
 
+extension ColorExtension on Color {
+  /// Convert the color to a darken color based on the [percent]
+  Color darken([int percent = 40]) {
+    assert(1 <= percent && percent <= 100);
+    final value = 1 - percent / 100;
+    return Color.fromARGB(
+      alpha,
+      (red * value).round(),
+      (green * value).round(),
+      (blue * value).round(),
+    );
+  }
+
+  Color lighten([int percent = 40]) {
+    assert(1 <= percent && percent <= 100);
+    final value = percent / 100;
+    return Color.fromARGB(
+      alpha,
+      (red + ((255 - red) * value)).round(),
+      (green + ((255 - green) * value)).round(),
+      (blue + ((255 - blue) * value)).round(),
+    );
+  }
+
+  Color avg(Color other) {
+    final red = (this.red + other.red) ~/ 2;
+    final green = (this.green + other.green) ~/ 2;
+    final blue = (this.blue + other.blue) ~/ 2;
+    final alpha = (this.alpha + other.alpha) ~/ 2;
+    return Color.fromARGB(alpha, red, green, blue);
+  }
+}
+
+class AppColors {
+  static const Color primary = contentColorCyan;
+  static const Color menuBackground = Color(0xFF090912);
+  static const Color itemsBackground = Color(0xFF1B2339);
+  static const Color pageBackground = Color(0xFF282E45);
+  static const Color mainTextColor1 = Colors.white;
+  static const Color mainTextColor2 = Colors.white70;
+  static const Color mainTextColor3 = Colors.white38;
+  static const Color mainGridLineColor = Colors.white10;
+  static const Color borderColor = Colors.white54;
+  static const Color gridLinesColor = Color(0x11FFFFFF);
+
+  static const Color contentColorBlack = Colors.black;
+  static const Color contentColorWhite = Colors.white;
+  static const Color contentColorBlue = Color(0xFF2196F3);
+  static const Color contentColorYellow = Color(0xFFFFC300);
+  static const Color contentColorOrange = Color(0xFFFF683B);
+  static const Color contentColorGreen = Color(0xFF3BFF49);
+  static const Color contentColorPurple = Color(0xFF6E1BFF);
+  static const Color contentColorPink = Color(0xFFFF3AF2);
+  static const Color contentColorRed = Color(0xFFE80054);
+  static const Color contentColorCyan = Color(0xFF50E4FF);
+}
+
 class Dashboard extends StatefulWidget {
+  // late User? user;
   Dashboard({super.key});
   List<Color> get availableColors => const <Color>[
         AppColors.contentColorPurple,
@@ -39,6 +97,9 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int touchedIndex = -1;
+  // late User? user;
+
+  // _DashboardState(this.user);
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -56,6 +117,11 @@ class _DashboardState extends State<Dashboard> {
     final Color supportTextColor = Color.fromARGB(164, 232, 234, 175);
     // final temp = MediaQuery.of(context).;
     String? username = auth.currentUser?.displayName ?? "";
+    // String? username = user?.displayName ?? "";
+
+    // if (user == null) {
+    //   Navigator.pop(context);
+    // }
 
     return Container(
       //

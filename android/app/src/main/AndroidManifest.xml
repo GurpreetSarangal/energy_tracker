@@ -33,6 +33,10 @@
             android:value="2" />
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data
+      android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+      android:value="ocr" />
+  <!-- To use multiple models: android:value="ocr,model2,model3" -->
     </application>
 </manifest>
 

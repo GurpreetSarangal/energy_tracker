@@ -257,55 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    // height: 400,
-                                    // decoration: BoxDecoration(color: Colors.black),
-                                    child: Text(
-                                      "or use your email account",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayLarge
-                                          ?.copyWith(fontSize: 14),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 20, right: 20, top: 15),
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white.withOpacity(0.5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: _email,
-                                      enableSuggestions: false,
-                                      autocorrect: false,
-                                      decoration: InputDecoration(
-                                          labelText: "Enter Email",
-                                          fillColor: const Color.fromARGB(
-                                              255, 161, 101, 101),
-                                          // col
-                                          border: InputBorder.none
-                                          // border: OutlineInputBorder(
-                                          // borderRadius: BorderRadius.circular(8.0),
-                                          // borderSide: const BorderSide(),
-                                          // ),
-                                          //fillColor: Colors.green
-                                          ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Email cannot be empty";
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      keyboardType: TextInputType.emailAddress,
-                                      style: const TextStyle(
-                                        fontFamily: "Epilogue",
-                                      ),
-                                    ),
-                                  ),
+                                  
                                   Container(
                                     margin: const EdgeInsets.only(
                                         left: 20, right: 20, top: 15),
@@ -512,15 +464,17 @@ class _LoginPageState extends State<LoginPage> {
                                     if (_loginFormKey.currentState!
                                         .validate()) {
                                       try {
-                                        var user = await FirebaseAuth.instance
-                                            .signInWithEmailAndPassword(
-                                                email: email,
-                                                password: password);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                               content: Text('Processing Data')),
                                         );
+                                        UserCredential user = await FirebaseAuth
+                                            .instance
+                                            .signInWithEmailAndPassword(
+                                                email: email,
+                                                password: password);
+                                        User? u = user.user;
                                         Navigator.pushAndRemoveUntil(context,
                                             CupertinoPageRoute(builder:
                                                 (BuildContext context) {
@@ -578,7 +532,9 @@ class _LoginPageState extends State<LoginPage> {
                 ]),
               );
             } else {
+              print((snapshot2.data).runtimeType);
               return Dashboard();
+              return Text("error");
             }
           } else {
             return Scaffold(

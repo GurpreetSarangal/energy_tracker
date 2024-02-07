@@ -1,8 +1,12 @@
+// apply plugin: 'com.android.application'
+// apply plugin: 'com.google.gms.google-services'
 plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    // id 'com.google.gms.google-services'
 }
+
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -68,5 +72,10 @@ flutter {
 dependencies {
     // implementation 'androidx.multidex:multidex:2.0.1'
      implementation 'com.facebook.android:facebook-login:latest.release'
+    //  implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
 
 }
+
+// apply plugin: 'com.google.gms.google-services'
+
+// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"

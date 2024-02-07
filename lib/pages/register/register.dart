@@ -2,6 +2,8 @@ import 'package:energy_tracker/loginMethods/facebook_login.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+import 'package:energy_tracker/pages/register/date_of_birth.dart';
+import 'package:energy_tracker/pages/register/meter_no.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -103,16 +105,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               Container(
                                   // alignment: Alignment.center,
-                                  // margin: EdgeInsets.only(top: 40),
+                                  margin: EdgeInsets.all(10),
                                   child: Text(
-                                "Create Account",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge
-                                    ?.copyWith(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w600),
-                              )),
+                                    "Create Account",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge
+                                        ?.copyWith(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w600),
+                                  )),
 
                               Container(
                                 margin: EdgeInsets.all(5),
@@ -264,7 +266,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           bottom: 0),
                                       padding:
                                           EdgeInsets.only(left: 10, right: 10),
-                                      height: 50,
+                                      // height: 50,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Colors.white.withOpacity(0.5),
@@ -282,7 +284,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "Email cannot be empty";
+                                            return "Please enter a valid email";
                                           } else {
                                             return null;
                                           }
@@ -301,7 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           bottom: 0),
                                       padding:
                                           EdgeInsets.only(left: 10, right: 10),
-                                      height: 50,
+                                      // height: 50,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Colors.white.withOpacity(0.5),
@@ -317,7 +319,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "Email cannot be empty";
+                                            return "Please enter you name";
                                           } else {
                                             return null;
                                           }
@@ -336,7 +338,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           bottom: 0),
                                       padding:
                                           EdgeInsets.only(left: 10, right: 10),
-                                      height: 50,
+                                      // height: 50,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Colors.white.withOpacity(0.5),
@@ -356,7 +358,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "Email cannot be empty";
+                                            return "Set a strong password";
                                           } else {
                                             return null;
                                           }
@@ -375,7 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           bottom: 0),
                                       padding:
                                           EdgeInsets.only(left: 10, right: 10),
-                                      height: 50,
+                                      // height: 50,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Colors.white.withOpacity(0.5),
@@ -395,7 +397,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "Email cannot be empty";
+                                            return "Confirm the passowrd";
+                                          } else if (value != _password.text) {
+                                            return "The passwords don't match";
                                           } else {
                                             return null;
                                           }
@@ -470,9 +474,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     UserCredential result;
 
                                     if (password == confrmPassword &&
-                                        password != '' &&
-                                        email != '' &&
-                                        name != '') {
+                                        _registerFormKey.currentState!
+                                            .validate()) {
                                       print("runned");
 
                                       try {
@@ -480,17 +483,29 @@ class _RegisterPageState extends State<RegisterPage> {
                                             .createUserWithEmailAndPassword(
                                                 email: email,
                                                 password: password);
-                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text('Processing Data')),
+                                        );
+                                        User? user = result.user;
+                                        user?.updateDisplayName(name);
+                                        await Navigator.pushReplacement(context,
+                                            MaterialPageRoute(builder:
+                                                (BuildContext context) {
+                                          return AccountNo();
+                                        }));
+                                      } on FirebaseAuthException catch (e) {
                                         print(e);
-                                        return;
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              showCloseIcon: true,
+                                              backgroundColor: Colors.redAccent,
+                                              content:
+                                                  Text(e.message.toString())),
+                                        );
                                       }
-                                      User? user = result.user;
-                                      user?.updateDisplayName(name);
-                                      await Navigator.pushReplacement(context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                        return Dashboard();
-                                      }));
 
                                       // Navigator.push(
                                       //   context,
@@ -521,7 +536,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               );
             } else {
-              return Dashboard();
+              print(snapshot2.data.toString() +
+                  "--------------------------------------------------------------------------------------------------- in register page");
+
+              // return Dashboard();
+              // return Text("error in Register page");
+
+              // just so that we don't get the error
+              // return AccountNo(
+              //   user: snapshot2.data,
+              // );
+              return AccountNo();
             }
           } else {
             return Scaffold(

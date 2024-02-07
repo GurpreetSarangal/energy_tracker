@@ -35,16 +35,30 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  js: ^0.6.7
   flutter_svg: ^2.0.4
   lottie: ^2.6.0
   flutter_switch: ^0.3.2
   fl_chart: ^0.66.1
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
+  
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.0.4
   flutter_signin_button: ^2.0.0
   http: ^0.13.4
+  camera: ^0.10.5+9
+  path_provider: ^2.1.2
+  path: ^1.8.3
+  image_picker: ^1.0.7
+  # firebase_ml_vision: ^0.12.0+3
+  # google_ml_kit: ^0.16.3
+  google_mlkit_text_recognition: ^0.11.0
+  flutter_tesseract_ocr: ^0.4.24
+  cloud_firestore: ^4.15.3
+  googleapis: ^12.0.0
+  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  # google_mlkit_commons:
 
 dev_dependencies:
   flutter_test:
@@ -53,11 +67,6 @@ dev_dependencies:
   intl: ^0.19.0
   
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
@@ -76,9 +85,11 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - assets/
     - assets/icons/
     - assets/images/
     - assets/animations/
+    - assets/tessdata/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
