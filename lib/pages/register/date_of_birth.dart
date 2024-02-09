@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
+import 'package:energy_tracker/navigation_bar.dart';
+import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+import 'package:energy_tracker/pages/register/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -272,30 +275,70 @@ class _DateOfBirthState extends State<DateOfBirth> {
                                     "gender": _gender,
                                   };
 
-                                  FirebaseFirestore.instance
+                                  await FirebaseFirestore.instance
                                       .collection('Users')
                                       .doc(FirebaseAuth
                                           .instance.currentUser?.email)
                                       .set(data, SetOptions(merge: true));
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text("Saved"),
-                                        content: Text(
-                                            "Your date of birth and gender preference are saved. Let's move to one last step."),
-                                      );
-                                    },
-                                  );
 
-                                  // Future.delayed(Duration(seconds: 3), () {
-                                  //   Navigator.push(
-                                  //     context,
-                                  //     CupertinoPageRoute(
-                                  //       builder: (context) => DateOfBirth(),
-                                  //     ),
-                                  //   );
-                                  // });
+                                  Map<String, dynamic>? userData;
+                                  await FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser?.email)
+                                      .get()
+                                      .then((event) {
+                                    if (event.exists) {
+                                      userData = event
+                                          .data(); //if it is a single document
+                                      print(userData);
+                                    }
+                                  }).catchError((e) =>
+                                          print("error fetching data: $e"));
+
+                                  if (userData?["requestPending"] ??
+                                      false == true) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Saved"),
+                                          content: Text(
+                                              "Your date of birth and gender preference are saved. Let's move to Dashboard."),
+                                        );
+                                      },
+                                    );
+                                    Future.delayed(Duration(seconds: 3),
+                                        () async {
+                                      await Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => NavigationMenu(),
+                                        ),
+                                      );
+                                    });
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Saved"),
+                                          content: Text(
+                                              "Your date of birth and gender preference are saved. Let's move to one last step."),
+                                        );
+                                      },
+                                    );
+
+                                    Future.delayed(Duration(seconds: 3),
+                                        () async {
+                                      await Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => addressPage(),
+                                        ),
+                                      );
+                                    });
+                                  }
                                 }
                               },
                               child: const Text(

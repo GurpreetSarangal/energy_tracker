@@ -26,7 +26,6 @@ Future<bool> checkIfEmailInUse(String emailAddress) async {
 
 CustomSignInWithGoogle() async {
   try {
-    
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
@@ -36,7 +35,9 @@ CustomSignInWithGoogle() async {
         await FirebaseAuth.instance.signInWithCredential(credential);
     print(user.user?.displayName);
   } catch (e) {
+    print("<-------------------->");
     print(e);
+    print("<-------------------->");
   }
 }
 

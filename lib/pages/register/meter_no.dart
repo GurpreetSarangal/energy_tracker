@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers
 
 import 'dart:async';
+import 'dart:ffi';
 
 import 'dart:io';
 // import 'dart:js_interop';
 import 'package:camera/camera.dart';
+import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
 import 'package:energy_tracker/pages/register/date_of_birth.dart';
 
@@ -54,6 +56,8 @@ class _AccountNoState extends State<AccountNo> {
   int _num = 0;
 
   FirebaseFirestore db = FirebaseFirestore.instance;
+
+  bool _requestSent = false;
 
   @override
   void initState() {
@@ -127,10 +131,6 @@ class _AccountNoState extends State<AccountNo> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final _dbUsers = db.collection("Users");
-
-    
-
-    
 
     return Scaffold(
       body: Stack(
@@ -369,6 +369,7 @@ class _AccountNoState extends State<AccountNo> {
                                   ),
                                 ),
                                 onPressed: () async {
+                                  // await CustomSignInWithGoogle();
                                   _onSubmit(context);
                                 },
                                 child: const Text(
@@ -582,13 +583,13 @@ class _AccountNoState extends State<AccountNo> {
     return _isAlreadyRegistered;
   }
 
-  Future<void> _sendRequestToFamily(
-      BuildContext context, String accountNo) async {
+  Future<void> _saveAndSendRequestToFamily(String accountNo) async {
     // TODO : add function to send request to family
     var users = await FirebaseFirestore.instance.collection("Users");
 
     Map<String, dynamic> data = {
       "accountNo": int.parse(_accountNumber.text),
+      "requestPending": true,
       "uid": FirebaseAuth.instance.currentUser?.uid,
       "name": FirebaseAuth.instance.currentUser?.displayName,
       "email": FirebaseAuth.instance.currentUser?.email,
@@ -598,10 +599,44 @@ class _AccountNoState extends State<AccountNo> {
       "stepsCount": []
     };
     final _dbUsers = db.collection("Users");
-    _dbUsers.doc(data["email"]).set(data);
+
+    print("User Data");
+    print(data);
+    await _dbUsers.doc(data["email"]).set(data);
+
+    Map<String, dynamic>? documentData;
+
+    await FirebaseFirestore.instance
+        .collection('family')
+        .where("accountNo", isEqualTo: data["accountNo"])
+        .get()
+        .then((event) {
+      if (!event.docs.isEmpty) {
+        documentData = event.docs.first.data(); //if it is a single document
+        print(documentData);
+      }
+    }).catchError((e) => print("error fetching data: $e"));
+
+    print(documentData);
+
+    // List<int> arr = [1, 3, 4, 5, 6];
+    // arr.insert(arr.length, 70);
+    // print(arr);
+    var arr = documentData?["request"];
+    arr.insert(arr.length,
+        {"fromEmail": data["email"], "dateRequested": DateTime.now()});
+    print(arr);
+
+    var request = {"request": arr};
+    print(request);
+    await FirebaseFirestore.instance
+        .collection("family")
+        .doc(documentData?['familyName'])
+        .set(request, SetOptions(merge: true));
   }
 
-  void _showDialogForRequest(BuildContext context, String accountNo) {
+  Future<void> _showDialogForRequest(
+      BuildContext context, String accountNo) async {
     final navigatorKey = GlobalKey<NavigatorState>();
 
     showDialog(
@@ -609,34 +644,16 @@ class _AccountNoState extends State<AccountNo> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Account already registered"),
-          content: Text("Do you want to send request to cheif of family?"),
+          content: Text("Do you want to send request to cheifs of family?"),
           actions: [
             TextButton(
-              child: Text("OK"),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await _sendRequestToFamily(context, accountNo);
-                showDialog(
-                  context: navigatorKey.currentContext ?? context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Account Registered"),
-                      content: Text(
-                          "Your Accound has been registered successfully. Moving to Next Step"),
-                    );
-                  },
-                );
+                child: Text("OK"),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await _saveAndSendRequestToFamily(accountNo);
 
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => DateOfBirth(),
-                    ),
-                  );
-                });
-              },
-            ),
+                  _requestSent = true;
+                }),
             TextButton(
               child: Text("Close"),
               onPressed: () {
@@ -654,8 +671,59 @@ class _AccountNoState extends State<AccountNo> {
       print("account number is valid");
 
       if (await _alreadyRegistered(_accountNumber.text)) {
-        print("Your Account is already registered. Send Request to Family ");
-        _showDialogForRequest(context, _accountNumber.text);
+        print("Your Account is already registered. Send Request to Family?");
+        // _showDialogForRequest(context, _accountNumber.text);
+
+        // Future.delayed(Duration(seconds: 3), () {});
+
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (BuildContext context2) {
+            return AlertDialog(
+              title: Text("Account already registered"),
+              content: Text("Do you want to send request to cheifs of family?"),
+              actions: [
+                TextButton(
+                    child: Text("OK"),
+                    onPressed: () async {
+                      Navigator.of(context2).pop();
+                      await _saveAndSendRequestToFamily(_accountNumber.text);
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            title: Text("Account Registered"),
+                            content: Text(
+                                "Your Accound has been registered successfully. Moving to Next Step"),
+                          );
+                        },
+                      );
+                      // Navigator.of(context).pop();
+
+                      Future.delayed(const Duration(seconds: 3), () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const DateOfBirth(),
+                          ),
+                        );
+                      });
+                    }),
+                TextButton(
+                  child: Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+        if (_requestSent) {}
+
         // await _sendRequestToFamily(_accountNumber.text);
         // SnackBar(
         //   showCloseIcon: true,
@@ -674,19 +742,13 @@ class _AccountNoState extends State<AccountNo> {
           "stepsCount": []
         };
         final _dbUsers = db.collection("Users");
-        _dbUsers.doc(data["email"]).set(data);
+        await _dbUsers.doc(data["email"]).set(data);
 
         Map<String, dynamic> data2 = {
           "accountNo": int.parse(_accountNumber.text),
           "historicalData": [],
           "familyRank": 0,
-          "address": {
-            "locality": "",
-            "city": "",
-            "state": "",
-            "country": "",
-            "postalCode": "",
-          },
+          "address": {},
           "comminityChallenges": [],
           "familyName": data["name"] + '-' + data["accountNo"].toString(),
           "members": [
@@ -699,8 +761,8 @@ class _AccountNoState extends State<AccountNo> {
 
         print("data2 is being sent");
         final _dbFamily = db.collection("family");
-        _dbFamily
-            .doc(data["name"] + ' - ' + data["accountNo"].toString())
+        await _dbFamily
+            .doc(data["name"] + '-' + data["accountNo"].toString())
             .set(data2);
         print("data2 is sent");
 
@@ -715,8 +777,8 @@ class _AccountNoState extends State<AccountNo> {
           },
         );
 
-        Future.delayed(Duration(seconds: 3), () {
-          Navigator.push(
+        Future.delayed(Duration(seconds: 3), () async {
+          await Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
               builder: (context) => DateOfBirth(),
