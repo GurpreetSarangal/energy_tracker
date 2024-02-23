@@ -49,11 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: Lottie.asset(
-                  // 'assets/animations/colorful6.json', // Replace with the path to your Lottie JSON file
-                  'assets/animations/pot.json', // Replace with the path to your Lottie JSON file
-                  fit: BoxFit.cover,
-                  width: 300, // Adjust the width and height as needed
+                // child: Lottie.asset(
+                //   // 'assets/animations/colorful6.json', // Replace with the path to your Lottie JSON file
+                //   'assets/animations/pot.json', // Replace with the path to your Lottie JSON file
+                //   fit: BoxFit.cover,
+                //   width: 300, // Adjust the width and height as needed
+                //   height: 300,
+                //   repeat: true,
+                //   animate: true,
+                //   reverse: true,
+                // ),
+                child: Lottie.network(
+                  "https://lottie.host/c78a1db0-6f14-4aeb-979e-c03d50d28679/HRgOaKQkpC.json",
                   height: 300,
                   repeat: true,
                   animate: true,

@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers
 
 import 'dart:async';
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'dart:io';
 // import 'dart:js_interop';
 import 'package:camera/camera.dart';
-import 'package:energy_tracker/loginMethods/google_sign_in.dart';
-import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+// import 'package:energy_tracker/loginMethods/google_sign_in.dart';
+// import 'package:energy_tracker/pages/dashboard/dashboard.dart';
 import 'package:energy_tracker/pages/register/date_of_birth.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,12 +16,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:googleapis/admin/directory_v1.dart';
+import 'package:googleapis/people/v1.dart';
+// import 'package:googleapis/admin/directory_v1.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:intl/intl.dart';
+// import 'package:path_provider/path_provider.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -47,11 +48,11 @@ class _AccountNoState extends State<AccountNo> {
   final ImagePicker _imagePicker = ImagePicker();
 
   bool _isBusy = false;
-  String _text = "";
+  // String _text = "";
 
   var _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
-  CustomPaint _customPaint = CustomPaint();
+  // CustomPaint _customPaint = CustomPaint();
 
   int _num = 0;
 
@@ -63,7 +64,7 @@ class _AccountNoState extends State<AccountNo> {
   void initState() {
     super.initState();
     _accountNumber = TextEditingController();
-    final File imageFile = File(path ?? "");
+    // final File imageFile = File(path ?? "");
 
     _initializeVision();
   }
@@ -75,9 +76,9 @@ class _AccountNoState extends State<AccountNo> {
         print(cameras);
       }
 
-      String pattern =
-          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
-      RegExp regEx = RegExp(pattern);
+      // String pattern =
+      //     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
+      // RegExp regEx = RegExp(pattern);
 
       _controller = await CameraController(cameras[0], ResolutionPreset.medium);
       _controller?.initialize().then((_) {
@@ -409,8 +410,8 @@ class _AccountNoState extends State<AccountNo> {
 
       final first_stage_regex = RegExp(
           r'A[C|O|U|N|A|D|L]{3,}T [N|M|H][O|0|J| |D]{1,}:[0-9| |I|O|:]{8,}');
-      int no_of_matches = 0;
-      int iterations = 0;
+      // int no_of_matches = 0;
+      // int iterations = 0;
       RecognizedText recognizedText;
       List<String> _list = [];
 
@@ -424,7 +425,7 @@ class _AccountNoState extends State<AccountNo> {
         print("=============");
 
         if (match) {
-          ++no_of_matches;
+          // ++no_of_matches;
           _list.add(element.text);
         }
       });
@@ -449,7 +450,7 @@ class _AccountNoState extends State<AccountNo> {
         print("=============");
 
         if (match) {
-          ++no_of_matches;
+          // ++no_of_matches;
 
           _list2.add(secondStageRegex.stringMatch(element));
         } else {
@@ -461,7 +462,7 @@ class _AccountNoState extends State<AccountNo> {
           print("Performed fixes");
           match = secondStageRegex.hasMatch(element);
           if (match) {
-            ++no_of_matches;
+            // ++no_of_matches;
 
             _list2.add(secondStageRegex.stringMatch(element));
           }
@@ -471,7 +472,7 @@ class _AccountNoState extends State<AccountNo> {
       try {
         _num = int.parse(_list2[0] ?? "0");
       } on RangeError catch (e) {
-        print("Exception thrown");
+        print("Exception thrown$e");
 
         throw Exception("Recognition was unsuccessfull. Please try again.");
       }
@@ -585,7 +586,7 @@ class _AccountNoState extends State<AccountNo> {
 
   Future<void> _saveAndSendRequestToFamily(String accountNo) async {
     // TODO : add function to send request to family
-    var users = await FirebaseFirestore.instance.collection("Users");
+    // var users = await FirebaseFirestore.instance.collection("Users");
 
     Map<String, dynamic> data = {
       "accountNo": int.parse(_accountNumber.text),
@@ -596,7 +597,8 @@ class _AccountNoState extends State<AccountNo> {
       "challenges": [],
       "individualRank": 0,
       "individualScore": 0,
-      "stepsCount": []
+      "stepsCount": [],
+      "stepsGoal": "NA",
     };
     final _dbUsers = db.collection("Users");
 
@@ -637,7 +639,7 @@ class _AccountNoState extends State<AccountNo> {
 
   Future<void> _showDialogForRequest(
       BuildContext context, String accountNo) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
+    // final navigatorKey = GlobalKey<NavigatorState>();
 
     showDialog(
       context: context,

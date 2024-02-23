@@ -518,9 +518,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  await Firebase.initializeApp(
-                                      options: DefaultFirebaseOptions
-                                          .currentPlatform);
+                                  // await Firebase.initializeApp(
+                                  //     options: DefaultFirebaseOptions
+                                  //         .currentPlatform);
                                   final email = _email.text;
                                   final name = _name.text;
                                   final password = _password.text;

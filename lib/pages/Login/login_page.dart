@@ -1,17 +1,17 @@
 // import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:energy_tracker/firebase_options.dart';
+// import 'package:energy_tracker/firebase_options.dart';
 import 'package:energy_tracker/loginMethods/facebook_login.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/main.dart';
-import 'package:energy_tracker/my_flutter_app_icons.dart';
+// import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/navigation_bar.dart';
 import 'package:energy_tracker/pages/Login/forgot_password.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
-import 'package:energy_tracker/pages/register/register.dart';
+// import 'package:energy_tracker/pages/register/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -52,20 +52,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    int flex_image = (size.width).round(),
-        flex_content = (size.height - size.width).round();
-    double content_height = 0.70;
-    double bg_height = 0.65;
+    // int flex_image = (size.width).round(),
+    //     flex_content = (size.height - size.width).round();
+    // double content_height = 0.70;
+    // double bg_height = 0.65;
 
     // print(size.height);
     // print(size.width);
     // print(size.height / size.width);
     // print(16 / 9);
-    if ((size.height / size.width).roundToDouble() ==
-        (16 / 9).roundToDouble()) {
-      content_height = 0.55;
-      bg_height = 0.44;
-    }
+    // if ((size.height / size.width).roundToDouble() ==
+    //     (16 / 9).roundToDouble()) {
+    //   content_height = 0.55;
+    //   bg_height = 0.44;
+    // }
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot2) {
@@ -331,7 +331,7 @@ class _LoginPageState extends State<LoginPage> {
                                     enableSuggestions: false,
                                     autocorrect: false,
                                     decoration: InputDecoration(
-                                        labelText: "Enter password",
+                                        labelText: "Enter email",
                                         fillColor: Colors.white,
                                         border: InputBorder.none
                                         // border: OutlineInputBorder(
@@ -570,11 +570,11 @@ class _LoginPageState extends State<LoginPage> {
                                                   .signInWithEmailAndPassword(
                                                       email: email,
                                                       password: password);
-                                          User? u = user.user;
+                                          // User? u = user.user;
                                           Navigator.pushAndRemoveUntil(context,
                                               CupertinoPageRoute(builder:
                                                   (BuildContext context) {
-                                            return Dashboard();
+                                            return NavigationMenu();
                                           }), (r) {
                                             return false;
                                           });
@@ -582,7 +582,7 @@ class _LoginPageState extends State<LoginPage> {
                                       });
                                     } on FirebaseAuthException catch (e) {
                                       print(e.code);
-                                      if (e.code == 'invalid-email')
+                                      if (e.code == 'invalid-email') {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -590,8 +590,9 @@ class _LoginPageState extends State<LoginPage> {
                                               backgroundColor: Colors.redAccent,
                                               content: Text('Invalid Email')),
                                         );
+                                      }
 
-                                      if (e.code == 'invalid-credential')
+                                      if (e.code == 'invalid-credential') {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -600,6 +601,7 @@ class _LoginPageState extends State<LoginPage> {
                                               content:
                                                   Text('Invalid Credentials')),
                                         );
+                                      }
                                       return;
                                     } catch (e) {
                                       print("some error $e");
