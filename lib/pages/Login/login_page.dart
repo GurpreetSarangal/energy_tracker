@@ -85,11 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: double.infinity,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  color: Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
-                  child: SingleChildScrollView(
+                SingleChildScrollView(
+                  child: Container(
+                    width: double.infinity,
+                    height: size.height,
+                    color: Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
                     child: Container(
                       height: size.height,
                       child: Column(

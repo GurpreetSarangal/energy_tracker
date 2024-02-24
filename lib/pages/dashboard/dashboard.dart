@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
 
+import 'package:energy_tracker/pages/challenges/all_challenges.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -1260,7 +1261,14 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
                         ),
                         InkWell(
-                            onTap: () => {},
+                            onTap: () => {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            const allChallenges()),
+                                  )
+                                },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1286,33 +1294,54 @@ class _DashboardState extends State<Dashboard> {
                           children: [
                             Flexible(
                                 flex: 1,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  margin: EdgeInsets.all(12),
+                                child: InkWell(
+                                  onTap: () {
+                                    const snackBar = SnackBar(
+                                      content: Center(
+                                        child: Text(
+                                          'Yay! A SnackBar!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      // margin: EdgeInsetsGeometry.infinity,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.black54,
+                                    );
 
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.black,
-                                      backgroundBlendMode: BlendMode.colorBurn,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          opacity: 0.9,
-                                          filterQuality: FilterQuality.none,
-                                          image: AssetImage(
-                                              "assets/images/dashboard_bg5_landscape.jpg"))),
-                                  child: Center(
-                                    child: Text(
-                                      "Activities",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: "Gotham",
-                                          fontSize: 26,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal),
+// Find the ScaffoldMessenger in the widget tree
+// and use it to show a SnackBar.
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    margin: EdgeInsets.all(12),
+
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.black,
+                                        backgroundBlendMode:
+                                            BlendMode.colorBurn,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            opacity: 0.9,
+                                            filterQuality: FilterQuality.none,
+                                            image: AssetImage(
+                                                "assets/images/dashboard_bg5_landscape.jpg"))),
+                                    child: Center(
+                                      child: Text(
+                                        "Activities",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: "Gotham",
+                                            fontSize: 26,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal),
+                                      ),
                                     ),
+                                    // height: 110,
                                   ),
-                                  // height: 110,
                                 )),
                             Flexible(
                                 flex: 1,

@@ -60,6 +60,7 @@ dependencies:
   get: ^4.6.6
   firebase_database: ^10.4.5
   firebase_storage: ^11.6.5
+  pedometer: ^4.0.1
 
 
 dev_dependencies:

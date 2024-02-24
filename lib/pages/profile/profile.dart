@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
+import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -93,7 +94,13 @@ class _ProfilePageState extends State<ProfilePage> {
         toolbarHeight: 80,
         actions: [
           IconButton(
-              onPressed: () => {}, icon: Icon(CupertinoIcons.graph_square)),
+              onPressed: () => {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => StepsPage()),
+                    )
+                  },
+              icon: Icon(CupertinoIcons.graph_square)),
           IconButton(
               onPressed: () async {
                 await CustomSignOut();
@@ -957,7 +964,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         auth.currentUser!.displayName
                                             .toString(),
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 17.5,
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   FutureBuilder(
