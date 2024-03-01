@@ -4,6 +4,9 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
+import 'package:energy_tracker/pages/challenges/all_challenges.dart';
+import 'package:energy_tracker/pages/profile/detailed_report.dart';
+import 'package:energy_tracker/pages/profile/edit_profile.dart';
 import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,7 +17,9 @@ import 'package:flutter/services.dart';
 import 'package:energy_tracker/main.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:googleapis/compute/v1.dart';
+
+// import 'package:googleapis/compute/v1.dart';
+int MinCntStPrFromD2D = 700;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -23,10 +28,27 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+Future<String> _setTempOnFirebase() async {
+  // await Firebase.initializeApp();
+  // // fire.
+  // await FirebaseFirestore.instance
+  //     .collection("Users")
+  //     .doc("gurpreetsarangal7@gmail.com")
+  //     .set(
+  //   {
+  //     "updated": false,
+  //   },
+  //   SetOptions(merge: true),
+  // );
+
+  final completionMessage = "This is a temporary String";
+  return completionMessage;
+}
+
 class _ProfilePageState extends State<ProfilePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   bool _isCheif = false;
-  DocumentSnapshot<Map<String, dynamic>>? _user;
+  // DocumentSnapshot<Map<String, dynamic>>? _user;
   var userData;
 
   @override
@@ -36,10 +58,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void getUser() async {
-    _user = await FirebaseFirestore.instance
+    userData = await FirebaseFirestore.instance
         .collection("Users")
         .doc(FirebaseAuth.instance.currentUser!.email.toString())
-        .get();
+        .get()
+        .then((value) => value.data());
   }
 
   // void addChallenges() {
@@ -84,6 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    // getUser();
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -94,22 +118,52 @@ class _ProfilePageState extends State<ProfilePage> {
         toolbarHeight: 80,
         actions: [
           IconButton(
-              onPressed: () => {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(builder: (context) => StepsPage()),
-                    )
-                  },
+              onPressed: () async {
+                // String uniqueId = DateTime.now().second.toString();
+
+                // var complitionMessage =
+                //     await computeIsolate(_setTempOnFirebase);
+
+                // print(complitionMessage);
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => const detailedReports()),
+                );
+              },
               icon: Icon(CupertinoIcons.graph_square)),
           IconButton(
               onPressed: () async {
-                await CustomSignOut();
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => const LandingPage()),
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context2) {
+                    return AlertDialog(
+                      title: Text("Do you really want to logout?"),
+                      content: Text("After this you will have to login again!"),
+                      actions: [
+                        TextButton(
+                            child: Text("OK"),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+                              await CustomSignOut();
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => const LandingPage()),
+                              );
+                            }),
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
-              icon: Icon(CupertinoIcons.gear_alt))
+              icon: Icon(CupertinoIcons.tray_arrow_up))
         ],
         title: Text(
           "Profile",
@@ -519,6 +573,71 @@ class _ProfilePageState extends State<ProfilePage> {
           .get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!["accountNo"] == -1) {
+            List<Widget> list = [
+              Container(
+                margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+                height: 40,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Family",
+                        style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
+                      ),
+                      // InkWell(
+                      //     onTap: () => {},
+                      //     child: Row(
+                      //       mainAxisAlignment:
+                      //           MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "Details ",
+                      //           style: TextStyle(
+                      //               decoration: TextDecoration.underline),
+                      //         ),
+                      //         Icon(CupertinoIcons.arrow_right)
+                      //       ],
+                      //     ))
+                    ]),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15, left: 15, right: 15),
+                decoration: BoxDecoration(
+                    color: Colors.red.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.red.shade200, width: 1.5)),
+                child: Row(children: [
+                  Expanded(
+                      flex: 3,
+                      child: InkWell(
+                        onTap: () {
+                          // ? navigate to challenges page
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Your request has been rejected",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              // Text("${ch[]}"),
+                            ],
+                          ),
+                        ),
+                      ))
+                ]),
+              )
+            ];
+
+            return Column(
+              children: list,
+            );
+          }
+
           print(snapshot.data!.data());
 
           bool isPending = false;
@@ -814,6 +933,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: InkWell(
                       onTap: () {
                         // ? navigate to challenges page
+                        // Navigator.push(
+                        //   context,
+                        //   CupertinoPageRoute(
+                        //     builder: (context) =>
+                        //   ),
+                        // );
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
@@ -825,7 +950,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(fontSize: 20),
                             ),
                             // Text("${ch[]}"),
-                            Text("Click Here"),
+                            // Text("Click Here"),
                           ],
                         ),
                       ),
@@ -870,8 +995,11 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, snapshot) {
           String steps;
           String stepsGoal;
+          num accountNo;
           String completed = "NA";
           bool isPending = false;
+          bool isRejected = false;
+          bool _stepGoalNotSet = false;
           String unitsToday = "NA";
           String unitsCurrMonth = "NA";
           String unitsLastMonth = "NA";
@@ -884,7 +1012,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black26, width: 1.5)),
-                    height: 100,
+                    height: 50,
                     child: Center(child: CircularProgressIndicator.adaptive()),
                   ),
                   Expanded(
@@ -905,11 +1033,18 @@ class _ProfilePageState extends State<ProfilePage> {
           } on TypeError catch (_) {
             stepsGoal = "NA";
             completed = "NA";
+            _stepGoalNotSet = true;
           }
 
           if (stepsGoal != "NA") {
             completed =
                 "${((int.parse(steps) / int.parse(stepsGoal)) * 100).toPrecision(3).toString()}%";
+          }
+
+          accountNo = snapshot.data!["accountNo"];
+
+          if (accountNo == -1) {
+            isRejected = true;
           }
 
           try {
@@ -964,7 +1099,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         auth.currentUser!.displayName
                                             .toString(),
                                     style: TextStyle(
-                                        fontSize: 17.5,
+                                        fontSize: 16,
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   FutureBuilder(
@@ -980,6 +1115,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                         print("------------");
                                         print(userAccountNo);
                                         print("------------");
+                                        if (userAccountNo == -1) {
+                                          return SizedBox();
+                                        }
                                         return FutureBuilder(
                                           future: FirebaseFirestore.instance
                                               .collection("family")
@@ -1065,13 +1203,43 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           child: Text("Edit Profile"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => editProfile()),
+                            );
+                          },
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
+              (isRejected)
+                  ? Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.red.shade300,
+                          borderRadius: BorderRadius.circular(12)),
+                      margin: EdgeInsets.only(left: 15, right: 15),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Your request for account number has been rejected",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                            Text(
+                              "Try changing it in profile settings.",
+                              style:
+                                  TextStyle(fontSize: 13, color: Colors.white),
+                            )
+                          ]),
+                    )
+                  : SizedBox(),
 
               Container(
                 // height: 200,

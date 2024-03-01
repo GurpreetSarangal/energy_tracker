@@ -6,6 +6,9 @@ import 'dart:async';
 import 'dart:io';
 // import 'dart:js_interop';
 import 'package:camera/camera.dart';
+import 'package:energy_tracker/main.dart';
+import 'package:energy_tracker/pages/profile/steps.dart';
+import 'package:energy_tracker/pages/register/address.dart';
 // import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 // import 'package:energy_tracker/pages/dashboard/dashboard.dart';
 import 'package:energy_tracker/pages/register/date_of_birth.dart';
@@ -803,4 +806,24 @@ class _AccountNoState extends State<AccountNo> {
       );
     }
   }
+}
+
+Future<int> getRecordedStepsCount() async {
+  // int st = 0;
+  // try {
+  //   print("Callback dispacher is called");
+  //   List<Map<String, Map<String, dynamic>>> s = await callbackDispatcher();
+  //   print("Callback dispacher completed");
+
+  //   st = await s.last["duration"]!["initialize"] ?? registerOneOffTask;
+  //   print("Callback dispacher register one off task");
+  // } catch (e) {
+  //   print("Alternate method is being called");
+  //   st = await alternateMethod();
+  //   print("Alternate method has been called");
+  // }
+  //   print("st returned");
+  // return st;
+
+  return registerOneOffTask();
 }

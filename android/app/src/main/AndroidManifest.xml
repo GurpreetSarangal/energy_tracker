@@ -2,6 +2,7 @@
     package="com.example.energy_tracker">    
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
    <application
         android:label="energy_tracker"
         android:name="${applicationName}"

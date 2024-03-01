@@ -1,6 +1,12 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
 
+import 'dart:async';
+import 'dart:io';
+import 'dart:isolate';
+
 import 'package:energy_tracker/pages/challenges/all_challenges.dart';
+import 'package:energy_tracker/pages/profile/steps.dart';
+import 'package:energy_tracker/pages/register/meter_no.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,11 +18,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
+import 'package:googleapis/storage/v1.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pedometer/pedometer.dart';
 import "dart:math";
 
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-GlobalKey globalKey = GlobalKey();
+// GlobalKey globalKey = GlobalKey();
 
 class AppColors {
   static const Color mainGridLineColor = Colors.white10;
@@ -48,6 +58,10 @@ class _DashboardState extends State<Dashboard> {
   late final TextEditingController rank;
   late final TextEditingController score;
 
+  StreamSubscription<StepCount>? _subscription;
+  late String _timeString;
+  int initSteps = 0;
+
   String dropdownValueBill = "Monthly";
   String dropdownValueSteps = "Monthly";
   List<Color> gradientColors = [
@@ -57,25 +71,70 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     units = TextEditingController();
     steps = TextEditingController();
     rank = TextEditingController();
     score = TextEditingController();
+    init_sensor();
+    // _listenToSteps();
 
+    // _timeString = _formatDateTime(DateTime.now());
+    // Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     // event = await ref.once();
     super.initState();
   }
+
+  void init_sensor() async {
+    await Permission.activityRecognition.request();
+  }
+
+  // String _formatDateTime(DateTime dateTime) {
+  //   return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  // }
+
+  // void _getTime() {
+  //   final DateTime now = DateTime.now();
+  //   final String formattedDateTime = _formatDateTime(now);
+  //   // setState(() {
+  //   _timeString = formattedDateTime;
+  //   // });
+  // }
+
+  // void _listenToSteps() {
+  //   _subscription = Pedometer.stepCountStream.listen(
+  //     _onStepCount,
+  //     onError: _onError,
+  //     onDone: _onDone,
+  //     cancelOnError: false,
+  //   );
+  //   _subscription!.resume();
+  //   print(_subscription.toString());
+  // }
+
+  // void _onStepCount(StepCount event) {
+  //   // setState(() {
+  //   initSteps = event.steps;
+
+  //   print("Step Count: ${event.steps}");
+  //   // });
+  // }
+
+  // void _onDone() {} // Handle when stream is done if needed
+
+  // void _onError(error) {
+  //   print("An error occurred while fetching step count: $error");
+  // }
 
   @override
   void dispose() {
     // TODO: implement dispose
     units?.dispose();
-    steps!.dispose();
+    steps.dispose();
+    _subscription?.cancel();
     super.dispose();
   }
 
-  updateRankAndScore(Map<String, dynamic> userData) async {
+  updateRankAndScoreTesting(Map<String, dynamic> userData) async {
     //! implement Update
     int rand = Random().nextInt(2000);
     int rand2 = Random().nextInt(2000);
@@ -90,39 +149,64 @@ class _DashboardState extends State<Dashboard> {
     }, SetOptions(merge: true));
   }
 
-  updateStepCount(Map<String, dynamic> userData, var lastupdated) async {
-    //! implement Update
-    int rand = Random().nextInt(200);
-    int rand2 = Random().nextInt(200);
+  Future<void> checkAndUpdateSteps(
+      dynamic user_data, dynamic last_updated) async {
+    // print(registerOneOffTask());
 
-    // List<dynamic> steps = userData["stepsCount"];
-    List<Object> list = [
-      {
-        "date": Timestamp.now(),
-        "steps": rand,
-      }
-    ];
+    // var user_data =
+    //     await users.doc(FirebaseAuth.instance.currentUser!.email).get();
 
-    var collection = FirebaseFirestore.instance.collection('Users');
-    collection
-        .doc(auth.currentUser!.email) // <-- Document ID
-        .set({
-          'stepsCount': FieldValue.arrayUnion(list),
-          "stepCountLastUpdated": Timestamp.now(),
-        }, SetOptions(merge: true)) // <-- Add data
-        .then((_) => print('Steps Count Recorded'))
-        .catchError((error) => print('Add failed: $error'));
+    List<dynamic> stepsList = [];
+    Timestamp lastUpdate = Timestamp(0, 0);
+    try {
+      stepsList = user_data["stepsCount"];
+      lastUpdate = stepsList.last["date"];
+    } catch (_) {}
 
-    // users.doc(auth.currentUser!.email).set({
-    //   "individualScore": rand,
-    //   "individualRank": rand2,
-    //   "rankScoreLastUpdated": Timestamp.now(),
-    //   // "stepCountLastUpdated": Timestamp(10, 12),
-    // }, SetOptions(merge: true));
-    print("Step count updated");
+    DateTime now = DateTime.now();
+
+    DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
+
+    DateTime lastUpdateDatetime =
+        DateTime.fromMillisecondsSinceEpoch(lastUpdate.millisecondsSinceEpoch);
+
+    print(now);
+    print(yesterday);
+    print(lastUpdateDatetime);
+
+    if (lastUpdateDatetime.isBefore(yesterday)) {
+      print("lastupdated before yesterday");
+      int stepsCount = await getRecordedStepsCount();
+      DateTime uploadTime = DateTime(now.year, now.month, now.day - 1);
+
+      Map item = {
+        "steps": stepsCount,
+        "date": uploadTime,
+      };
+
+      print("{[[[[[[[[[[[[[]]]]]]]]]]]]]}");
+      print(item.toString());
+      print("{[[[[[[[[[[[[[]]]]]]]]]]]]]}");
+
+      stepsList.add(item);
+
+      users.doc(FirebaseAuth.instance.currentUser!.email).set(
+        {
+          "stepsCount": stepsList,
+        },
+        SetOptions(merge: true),
+      );
+
+      // return true;
+
+      // await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.email).set(payload, SetOptions())
+    } else {
+      print("lastUpdated after yesterday");
+      // return false;
+    }
   }
 
-  Future<void> checkAndUpdateScores() async {
+  Future<void> updateScoreAndSteps() async {
     print(auth.currentUser?.uid);
     var userQuerySnapshot = await FirebaseFirestore.instance
         .collection("Users")
@@ -166,7 +250,8 @@ class _DashboardState extends State<Dashboard> {
         print(
             "neverUpdeted $neverUpdated and updatedThisHour $updatedThisHour");
         print("this is called");
-        updateStepCount(userData, lastupdated); //! to be implemented
+        // updateStepCountTesting(userData, lastupdated); //! to be implemented
+        checkAndUpdateSteps(userData, lastupdated);
       }
       // -------------------------------------------
 
@@ -195,7 +280,7 @@ class _DashboardState extends State<Dashboard> {
       }
 
       if (neverUpdated || !updatedToday) {
-        updateRankAndScore(userData); //! to be implemented
+        updateRankAndScoreTesting(userData); //! to be implemented
       }
     });
 
@@ -224,7 +309,10 @@ class _DashboardState extends State<Dashboard> {
     // update();
 
     // print("update has been called");
-    checkAndUpdateScores();
+    // checkAndUpdateScoresTesting();
+    updateScoreAndSteps();
+    // checkAndUpdateSteps();
+
     final size = MediaQuery.of(context).size;
 
     final Color backgroundColor = Color.fromARGB(255, 239, 240, 243);
@@ -234,7 +322,7 @@ class _DashboardState extends State<Dashboard> {
     String? username = auth.currentUser?.displayName ?? "";
 
     return Scaffold(
-      key: globalKey,
+      // key: globalKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         // flexibleSpace: Container(
@@ -251,7 +339,7 @@ class _DashboardState extends State<Dashboard> {
         toolbarHeight: 80,
         // backgroundColor: backgroundColor,
         actions: [
-          IconButton(onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
+          IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search)),
           IconButton(
               onPressed: () async {
                 // await CustomSignOut();
@@ -1266,7 +1354,7 @@ class _DashboardState extends State<Dashboard> {
                                     context,
                                     CupertinoPageRoute(
                                         builder: (context) =>
-                                            const allChallenges()),
+                                            const AllChallenges()),
                                   )
                                 },
                             child: Row(
@@ -1452,7 +1540,8 @@ class _DashboardState extends State<Dashboard> {
             .doc(FirebaseAuth.instance.currentUser!.email)
             .get(),
         builder: ((context, snapshot) {
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData ||
+              snapshot.connectionState != ConnectionState.done) {
             return Container(
               height: 339,
               child: Center(child: CircularProgressIndicator.adaptive()),
@@ -1705,9 +1794,10 @@ class _DashboardState extends State<Dashboard> {
                                                                         .roundToDouble())
                                                                     .toString());
                                                                 return Text(
-                                                                  ((snapshot.data!["historicalData"])
-                                                                              .last[
-                                                                          "units"])
+                                                                  (((snapshot.data!["historicalData"]).last[
+                                                                              "units"])
+                                                                          .toStringAsPrecision(
+                                                                              3))
                                                                       .toString(),
                                                                   textAlign:
                                                                       TextAlign
@@ -1827,13 +1917,7 @@ class _DashboardState extends State<Dashboard> {
                                           width: double.infinity,
                                           padding: EdgeInsets.only(left: 10),
                                           child: Text(
-                                            (snapshot.data!["stepsCount"])
-                                                    .last["steps"]
-                                                    .toString() +
-                                                " / " +
-                                                (snapshot.data!["stepsGoal"]
-                                                        .toString() ??
-                                                    "NA"),
+                                            "${(snapshot.data!["stepsCount"]).last["steps"]} / ${snapshot.data!["stepsGoal"].toString() ?? "NA"}",
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: "Gotham",
@@ -2368,7 +2452,8 @@ class _DashboardState extends State<Dashboard> {
           .doc(FirebaseAuth.instance.currentUser!.email)
           .get(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData ||
+            snapshot.connectionState != ConnectionState.done) {
           return Center(
             child: CircularProgressIndicator.adaptive(),
           );

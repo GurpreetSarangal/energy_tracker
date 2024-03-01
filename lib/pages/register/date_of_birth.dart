@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/navigation_bar.dart';
-import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+import 'package:energy_tracker/pages/profile/steps.dart';
+import 'package:energy_tracker/pages/register/meter_no.dart';
 import 'package:energy_tracker/pages/register/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +21,8 @@ class DateOfBirth extends StatefulWidget {
   State<DateOfBirth> createState() => _DateOfBirthState();
 }
 
+String documentSnapshot = "";
+
 class _DateOfBirthState extends State<DateOfBirth> {
   bool _gotCorrectDate = false;
   final _DateOfBirthForm = GlobalKey<FormState>();
@@ -30,8 +35,6 @@ class _DateOfBirthState extends State<DateOfBirth> {
     PeopleServiceApi.userGenderReadScope,
   ]);
   DateTime today = DateTime.now();
-
-  
 
   @override
   void initState() {
@@ -89,7 +92,7 @@ class _DateOfBirthState extends State<DateOfBirth> {
                             child: Column(
                               children: [
                                 Text(
-                                  "Enter your electricity account number",
+                                  "Select your date of birth and gender",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayLarge
@@ -306,7 +309,7 @@ class _DateOfBirthState extends State<DateOfBirth> {
                                         return AlertDialog(
                                           title: Text("Saved"),
                                           content: Text(
-                                              "Your date of birth and gender preference are saved. Let's move to Dashboard."),
+                                              "Your date of birth and gender records are saved. Let's move to Dashboard."),
                                         );
                                       },
                                     );
@@ -315,7 +318,8 @@ class _DateOfBirthState extends State<DateOfBirth> {
                                       await Navigator.pushReplacement(
                                         context,
                                         CupertinoPageRoute(
-                                          builder: (context) => NavigationMenu(),
+                                          builder: (context) =>
+                                              NavigationMenu(),
                                         ),
                                       );
                                     });
@@ -447,4 +451,80 @@ class _DateOfBirthState extends State<DateOfBirth> {
     //   );
     // });
   }
+}
+
+Future<num> maxStepsADay() async {
+  print("inside maxStepsADay");
+  num st = await FirebaseFirestore.instance
+      .collection("Users")
+      .doc(FirebaseAuth.instance.currentUser!.email)
+      .get()
+      .then((value) {
+    switch (value["gender"]) {
+      case "Male":
+        print("inside maxStepsADay Male");
+        return 15000;
+      case "Female":
+        print("inside maxStepsADay Female");
+        return 13000;
+      case "Others":
+        print("inside maxStepsADay Others");
+        return 10000;
+      default:
+        print("inside maxStepsADay Default");
+        return 20000;
+    }
+  });
+  return st;
+}
+
+Future<List<Map<String, Map<String, Function>>>> callbackDispatcher() async {
+  print("inside callback Dispatcher before accno");
+  var accno = await FirebaseFirestore.instance
+      .collection("Users")
+      .doc(FirebaseAuth.instance.currentUser!.email.toString())
+      .get()
+      .then((value) {
+    return value.data()!["accountNo"];
+  });
+  print("inside callback Dispatcher before dId");
+  var dId = await FirebaseFirestore.instance
+      .collection("family")
+      .where("accountNo", isEqualTo: accno)
+      .get()
+      .then((value) => value.docs.first.data()["deviceId"]);
+
+  print("inside callback Dispatcher before data1");
+  var data1 = FirebaseFirestore.instance.collection("Data").doc(dId);
+
+  print("inside callback Dispatcher before data");
+  List<Map<String, Map<String, Function>>> data = [
+    {
+      "documentSnapshot": {
+        "Glide": () {
+          var render = FirebaseFirestore;
+          String info =
+              " Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)";
+        }
+      },
+      "duration": {"initialize": () => registerOneOffTask()},
+    },
+    {
+      "documentSnapshot": {
+        "Glide": () {
+          String info =
+              " Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)";
+          String TrafficStats =
+              " tagSocket(204) with statsTag=0xffffffff, statsUid=-1; (unsupported, reflection, allowed)";
+        }
+      },
+      "duration": {"initialize": () => registerOneOffTask()},
+    },
+    {
+      "documentSnapshot": {"Glide": () {}},
+      "duration": {"initialize": () => registerOneOffTask()},
+    },
+  ];
+  print("inside callback Dispatcher before return");
+  return data;
 }

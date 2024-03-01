@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+String challengeId = "";
+
 class ChallengeDetails extends StatefulWidget {
   const ChallengeDetails({super.key});
 
@@ -16,10 +18,41 @@ class ChallengeDetails extends StatefulWidget {
 }
 
 class _ChallengeDetailsState extends State<ChallengeDetails> {
+  Future<void> removeChallenge(String challengeId) async {
+    DocumentSnapshot<Map<String, dynamic>> user = await FirebaseFirestore
+        .instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .get()
+        .then((value) {
+      return value;
+    });
+    var chalengesList = user.data()!["challenges"];
+
+    var newList = [];
+
+    for (var chlng in chalengesList) {
+      if (chlng["challengeId"] == challengeId) {
+        continue;
+      }
+
+      newList.add(chlng);
+    }
+
+    // print(newList);
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .set(
+      {"challenges": newList},
+      SetOptions(merge: true),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String challengeId =
-        ModalRoute.of(context)!.settings.arguments as String;
+    challengeId = ModalRoute.of(context)!.settings.arguments as String;
     return FutureBuilder(
         future: FirebaseFirestore.instance
             .collection("challenges")
@@ -27,7 +60,7 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
             .get(),
         builder: ((context, snapshot) {
           if (!snapshot.hasData) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator.adaptive()),
             );
           }
@@ -243,10 +276,11 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                                                 children: [
                                                   Text(
                                                     "Accepted ",
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors
                                                             .blueGrey.shade300,
-                                                        fontSize: 20,
+                                                        fontSize: 18,
                                                         letterSpacing: 1.5,
                                                         fontWeight:
                                                             FontWeight.w800),
@@ -315,7 +349,9 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                                                 ),
                                               ),
                                               onPressed: () async {
-                                                navigator!.pop();
+                                                await removeChallenge(
+                                                    challengeId);
+                                                Navigator.of(context).pop();
                                               },
                                               child: Row(
                                                 mainAxisAlignment:
@@ -323,10 +359,11 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                                                 children: [
                                                   Text(
                                                     "Remove ",
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors
                                                             .pink.shade500,
-                                                        fontSize: 20,
+                                                        fontSize: 18,
                                                         letterSpacing: 1.5,
                                                         fontWeight:
                                                             FontWeight.w800),
@@ -405,6 +442,9 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                                               ),
                                               onPressed: () async {
                                                 // TODO: Add this challenge to user's challenges list
+
+                                                await addChallenge(challengeId);
+                                                setState(() {});
                                               },
                                               child: Row(
                                                 children: [
@@ -512,5 +552,34 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                 ],
               ));
         }));
+  }
+
+  Future<void> addChallenge(String challengeId) async {
+    Map<String, dynamic> newChallenge = {
+      "challengeId": challengeId,
+    };
+
+    var challengeDetails = await FirebaseFirestore.instance
+        .collection("challenges")
+        .doc(challengeId)
+        .get()
+        .then((value) => value.data());
+
+    newChallenge["heading"] = challengeDetails!["heading"];
+    newChallenge["score"] = 0;
+
+    var allChallenges = await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .get()
+        .then((value) => value["challenges"]);
+
+    allChallenges.add(newChallenge);
+    // print(allChallenges);
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .set({"challenges": allChallenges}, SetOptions(merge: true));
   }
 }

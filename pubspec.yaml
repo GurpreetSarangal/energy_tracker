@@ -61,6 +61,9 @@ dependencies:
   firebase_database: ^10.4.5
   firebase_storage: ^11.6.5
   pedometer: ^4.0.1
+  permission_handler: ^11.3.0
+  workmanager: ^0.5.2
+  choice: ^2.3.1
 
 
 dev_dependencies:

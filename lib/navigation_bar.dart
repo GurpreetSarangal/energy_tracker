@@ -2,6 +2,7 @@ import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/main.dart';
 import 'package:energy_tracker/my_flutter_app_icons.dart';
 import 'package:energy_tracker/pages/challenges/all_challenges.dart';
+import 'package:energy_tracker/pages/community/leaderboard.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
 import 'package:energy_tracker/pages/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,7 +76,7 @@ class NavigationMenu extends StatelessWidget {
             // fixedColor: Colors.black,
             selectedItemColor: Colors.black,
             // unselectedItemColor: Colors.black.withOpacity(0.5),
-            unselectedItemColor: Color(0xff4c4430),
+            unselectedItemColor: Color.fromARGB(211, 76, 68, 48),
             backgroundColor:
                 // Color.fromARGB(255, 205, 192, 172).withOpacity(0.5),
                 Colors.white,
@@ -202,10 +203,8 @@ class NavigationController extends GetxController {
 
   final screens = [
     Dashboard(),
-    allChallenges(),
-    Container(
-      color: Colors.blue,
-    ),
+    AllChallenges(),
+    Leaderboard(),
     ProfilePage(),
   ];
 }

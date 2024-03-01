@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/navigation_bar.dart';
 import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
 
 class addressPage extends StatefulWidget {
   const addressPage({super.key});
 
   @override
   State<addressPage> createState() => _addressPageState();
+}
+
+Future<int> alternateMethod() async {
+  return await registerOneOffTask();
 }
 
 class _addressPageState extends State<addressPage> {

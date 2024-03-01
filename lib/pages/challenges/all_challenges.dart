@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class allChallenges extends StatefulWidget {
-  const allChallenges({super.key});
+class AllChallenges extends StatefulWidget {
+  const AllChallenges({super.key});
 
   @override
-  State<allChallenges> createState() => _allChallengesState();
+  State<AllChallenges> createState() => _AllChallengesState();
 }
 
-class _allChallengesState extends State<allChallenges> {
+class _AllChallengesState extends State<AllChallenges> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +102,8 @@ class _allChallengesState extends State<allChallenges> {
               ),
             );
             list.add(item);
-            list.add(item);
-            list.add(item);
+            // list.add(item);
+            // list.add(item);
           }
           return SingleChildScrollView(
             child: Column(children: list),

@@ -1,19 +1,61 @@
+import 'dart:isolate';
+import 'dart:ui';
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/firebase_options.dart';
 import 'package:energy_tracker/navigation_bar.dart';
 import 'package:energy_tracker/pages/Login/login_page.dart';
-import 'package:energy_tracker/pages/dashboard/dashboard.dart';
-import 'package:energy_tracker/pages/register/address.dart';
-import 'package:energy_tracker/pages/register/date_of_birth.dart';
+// import 'package:energy_tracker/pages/dashboard/dashboard.dart';
+// import 'package:energy_tracker/pages/register/address.dart';
+// import 'package:energy_tracker/pages/register/date_of_birth.dart';
 import 'package:energy_tracker/pages/register/register.dart';
 import 'package:energy_tracker/pages/splash/splash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'pages/Login/login_page.dart';
+import 'package:flutter/services.dart';
+
+const fetchBackground = "fetchBackground";
+
+Future<dynamic> computeIsolate(Future Function() function) async {
+  // final receivePort = ReceivePort();
+  var rootToken = RootIsolateToken.instance!;
+  await Isolate.spawn<_IsolateData>(
+      _isolateEntry,
+      _IsolateData(
+        token: rootToken,
+        function: function,
+        // answerPort: receivePort.sendPort,
+      ),
+      errorsAreFatal: false);
+  // return await receivePort.first;
+  return;
+}
+
+void _isolateEntry(_IsolateData isolateData) async {
+  BackgroundIsolateBinaryMessenger.ensureInitialized(isolateData.token);
+  final answer = await isolateData.function();
+  // isolateData.answerPort.send(answer);
+}
+
+class _IsolateData {
+  final RootIsolateToken token;
+  final Function function;
+  // final SendPort answerPort;
+
+  _IsolateData({
+    required this.token,
+    required this.function,
+    // required this.answerPort,
+  });
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  String uniqueId = DateTime.now().second.toString();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
