@@ -227,7 +227,7 @@ class _LeaderboardState extends State<Leaderboard> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.black26, width: 1.5),
             ),
-            height: 200,
+            height: 80,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -236,7 +236,7 @@ class _LeaderboardState extends State<Leaderboard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: 18,
                     fontFamily: "Epilogue",
                   ),
                 ),
@@ -244,7 +244,7 @@ class _LeaderboardState extends State<Leaderboard> {
                   "Stay tuned !!",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 25,
+                      fontSize: 15,
                       fontFamily: "Epilogue"),
                 ),
               ],
@@ -274,7 +274,7 @@ class _LeaderboardState extends State<Leaderboard> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.black26, width: 1.5),
             ),
-            height: 120,
+            height: 80,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -283,7 +283,7 @@ class _LeaderboardState extends State<Leaderboard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: 18,
                     fontFamily: "Epilogue",
                   ),
                 ),

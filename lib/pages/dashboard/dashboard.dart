@@ -82,10 +82,13 @@ class _DashboardState extends State<Dashboard> {
     // Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     // event = await ref.once();
     super.initState();
+
+    // updateScoreAndSteps();
   }
 
   void init_sensor() async {
     await Permission.activityRecognition.request();
+    // _listenToSteps();
   }
 
   // String _formatDateTime(DateTime dateTime) {
@@ -113,9 +116,9 @@ class _DashboardState extends State<Dashboard> {
 
   // void _onStepCount(StepCount event) {
   //   // setState(() {
-  //   initSteps = event.steps;
+  //     initSteps = event.steps;
 
-  //   print("Step Count: ${event.steps}");
+  //     print("Step Count: ${event.steps}");
   //   // });
   // }
 
@@ -176,7 +179,9 @@ class _DashboardState extends State<Dashboard> {
 
     if (lastUpdateDatetime.isBefore(yesterday)) {
       print("lastupdated before yesterday");
-      int stepsCount = await getRecordedStepsCount();
+      int stepsCount = getRecordedStepsCount();
+
+      // int stepsCount = await getRecordedStepsCount();
       DateTime uploadTime = DateTime(now.year, now.month, now.day - 1);
 
       Map item = {
@@ -306,13 +311,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // update();
-
-    // print("update has been called");
-    // checkAndUpdateScoresTesting();
-    updateScoreAndSteps();
-    // checkAndUpdateSteps();
-
     final size = MediaQuery.of(context).size;
 
     final Color backgroundColor = Color.fromARGB(255, 239, 240, 243);

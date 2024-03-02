@@ -808,7 +808,7 @@ class _AccountNoState extends State<AccountNo> {
   }
 }
 
-Future<int> getRecordedStepsCount() async {
+int getRecordedStepsCount() {
   // int st = 0;
   // try {
   //   print("Callback dispacher is called");
