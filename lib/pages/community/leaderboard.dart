@@ -21,18 +21,18 @@ class _LeaderboardState extends State<Leaderboard> {
         forceMaterialTransparency: true,
         elevation: 40,
         leading: IconButton(
-          icon: Icon(CupertinoIcons.back),
+          icon: Icon(CupertinoIcons.question_circle),
           onPressed: () {
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
           },
         ),
         // systemOverlayStyle: SystemUiOverlayStyle.dark,
         toolbarHeight: 80,
-        actions: [
-          // IconButton(onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
-          // IconButton(
-          //     onPressed: () async {}, icon: Icon(CupertinoIcons.gear_alt))
-        ],
+        // actions: [
+        //   // IconButton(onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
+        //   // IconButton(
+        //   //     onPressed: () async {}, icon: Icon(CupertinoIcons.gear_alt))
+        // ],
         title: Text(
           "Community Page",
           style: TextStyle(fontFamily: "Epilogue", fontWeight: FontWeight.w600),

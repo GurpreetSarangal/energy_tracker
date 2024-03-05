@@ -602,6 +602,7 @@ class _AccountNoState extends State<AccountNo> {
       "individualScore": 0,
       "stepsCount": [],
       "stepsGoal": "NA",
+      "unitsGoal": "NA",
     };
     final _dbUsers = db.collection("Users");
 
@@ -744,7 +745,8 @@ class _AccountNoState extends State<AccountNo> {
           "challenges": [],
           "individualRank": 0,
           "individualScore": 0,
-          "stepsCount": []
+          "stepsCount": [],
+          "unitsGoal": "NA",
         };
         final _dbUsers = db.collection("Users");
         await _dbUsers.doc(data["email"]).set(data);

@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 // import 'package:googleapis/analytics/v3.dart';
 
+    final controller = Get.put(NavigationController());
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
@@ -18,7 +19,6 @@ class NavigationMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     int _selectedIndex = 3;
 
-    final controller = Get.put(NavigationController());
     return Scaffold(
       backgroundColor: Colors.white,
       

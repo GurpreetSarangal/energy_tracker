@@ -1,8 +1,10 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
 
 import 'dart:async';
+import 'package:energy_tracker/navigation_bar.dart';
 import 'package:energy_tracker/pages/challenges/all_challenges.dart';
 import 'package:energy_tracker/pages/dashboard/read_blog.dart';
+import 'package:energy_tracker/pages/profile/detailed_report.dart';
 import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:energy_tracker/pages/register/meter_no.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -377,7 +379,6 @@ class _DashboardState extends State<Dashboard> {
                 // ),
                 // isDeviceConnected(),
                 Container(
-                  
                   margin:
                       EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 4),
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -418,64 +419,64 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Container(
                         // decoration: BoxDecoration(border: Border.all()),
-                        margin: EdgeInsets.only(left: 30, right: 30),
+                        // margin: EdgeInsets.only(left: 30, right: 30),
                         // width: 250,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
-                                      //<-- SEE HERE
-                                      return Colors.white;
-                                    },
-                                  ),
-                                  surfaceTintColor:
-                                      MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
-                                      //<-- SEE HERE
-                                      return Colors
-                                          .white; // Defer to the widget's default.
-                                    }, //background color of button
-                                  ),
-                                  textStyle: MaterialStateProperty.resolveWith<
-                                          TextStyle?>(
-                                      (states) => TextStyle(
-                                          fontFamily: 'Gotham',
-                                          color: Colors.black,
-                                          fontSize:
-                                              13)), //border width and color
-                                  elevation: MaterialStateProperty.resolveWith<
-                                      double?>(
-                                    (Set<MaterialState> states) {
-                                      return 3; // Defer to the widget's default.
-                                    },
-                                  ), //elevation of button
-                                  shape: MaterialStateProperty.resolveWith<
-                                          RoundedRectangleBorder?>(
-                                      (Set<MaterialState> states) {
-                                    return RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(28));
-                                  }),
-                                  overlayColor:
-                                      MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.pressed)) {
-                                        return Colors.black12; //<-- SEE HERE
-                                      }
-                                      return null; // Defer to the widget's default.
-                                    },
-                                  ),
-                                ),
-                                onPressed: () => {isDeviceConnected()},
-                                child: Text(
-                                  "Steps Count",
-                                  style: TextStyle(color: Colors.black),
-                                )),
+                            // ElevatedButton(
+                            //     style: ButtonStyle(
+                            //       backgroundColor:
+                            //           MaterialStateProperty.resolveWith<Color?>(
+                            //         (Set<MaterialState> states) {
+                            //           //<-- SEE HERE
+                            //           return Colors.white;
+                            //         },
+                            //       ),
+                            //       surfaceTintColor:
+                            //           MaterialStateProperty.resolveWith<Color?>(
+                            //         (Set<MaterialState> states) {
+                            //           //<-- SEE HERE
+                            //           return Colors
+                            //               .white; // Defer to the widget's default.
+                            //         }, //background color of button
+                            //       ),
+                            //       textStyle: MaterialStateProperty.resolveWith<
+                            //               TextStyle?>(
+                            //           (states) => TextStyle(
+                            //               fontFamily: 'Gotham',
+                            //               color: Colors.black,
+                            //               fontSize:
+                            //                   13)), //border width and color
+                            //       elevation: MaterialStateProperty.resolveWith<
+                            //           double?>(
+                            //         (Set<MaterialState> states) {
+                            //           return 3; // Defer to the widget's default.
+                            //         },
+                            //       ), //elevation of button
+                            //       shape: MaterialStateProperty.resolveWith<
+                            //               RoundedRectangleBorder?>(
+                            //           (Set<MaterialState> states) {
+                            //         return RoundedRectangleBorder(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(28));
+                            //       }),
+                            //       overlayColor:
+                            //           MaterialStateProperty.resolveWith<Color?>(
+                            //         (Set<MaterialState> states) {
+                            //           if (states
+                            //               .contains(MaterialState.pressed)) {
+                            //             return Colors.black12; //<-- SEE HERE
+                            //           }
+                            //           return null; // Defer to the widget's default.
+                            //         },
+                            //       ),
+                            //     ),
+                            //     onPressed: () => {isDeviceConnected()},
+                            //     child: Text(
+                            //       "Steps Count",
+                            //       style: TextStyle(color: Colors.black),
+                            //     )),
                             ElevatedButton(
                                 style: ButtonStyle(
                                   fixedSize:
@@ -490,8 +491,8 @@ class _DashboardState extends State<Dashboard> {
                                       MaterialStateProperty.resolveWith<Color?>(
                                     (Set<MaterialState> states) {
                                       //<-- SEE HERE
-                                      return Colors
-                                          .white; // Defer to the widget's default.
+                                      return const Color.fromARGB(206, 255, 255,
+                                          255); // Defer to the widget's default.
                                     }, //background color of button
                                   ),
                                   surfaceTintColor:
@@ -533,7 +534,14 @@ class _DashboardState extends State<Dashboard> {
                                     },
                                   ),
                                 ),
-                                onPressed: () => {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            const detailedReports()),
+                                  );
+                                },
                                 child: Text(
                                   "Units Used",
                                   style: TextStyle(color: Colors.black),
@@ -561,7 +569,10 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
                         ),
                         InkWell(
-                            onTap: () => {},
+                            onTap: () {
+                              controller.seletectedIndex.value = 3;
+                              setState(() {});
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -592,7 +603,14 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
                         ),
                         InkWell(
-                            onTap: () => {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        const detailedReports()),
+                              );
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -626,278 +644,278 @@ class _DashboardState extends State<Dashboard> {
                         ]),
                     child: consumptionGraph()),
 
-                Container(
-                  // ? Section 3 -- Consumption -- Starting
-                  // color: Colors.amber,
-                  margin: EdgeInsets.only(left: 15, right: 15),
-                  height: 40,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Trending Posts",
-                          style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
-                        ),
-                        InkWell(
-                            onTap: () => {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "All Posts ",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline),
-                                ),
-                                Icon(CupertinoIcons.arrow_right)
-                              ],
-                            ))
-                      ]),
-                ),
-                Container(
-                    // ? Section 3 -- Consumption -- Starting
-                    color: Colors.transparent,
-                    height: 350,
-                    child: FutureBuilder(
-                      future:
-                          FirebaseFirestore.instance.collection("blogs").get(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          );
-                        }
+                // Container(
+                //   // ? Section 3 -- Consumption -- Starting
+                //   // color: Colors.amber,
+                //   margin: EdgeInsets.only(left: 15, right: 15),
+                //   height: 40,
+                //   child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Text(
+                //           "Trending Posts",
+                //           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
+                //         ),
+                //         InkWell(
+                //             onTap: () => {},
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Text(
+                //                   "All Posts ",
+                //                   style: TextStyle(
+                //                       decoration: TextDecoration.underline),
+                //                 ),
+                //                 Icon(CupertinoIcons.arrow_right)
+                //               ],
+                //             ))
+                //       ]),
+                // ),
+                // Container(
+                //     // ? Section 3 -- Consumption -- Starting
+                //     color: Colors.transparent,
+                //     height: 350,
+                //     child: FutureBuilder(
+                //       future:
+                //           FirebaseFirestore.instance.collection("blogs").get(),
+                //       builder: (context, snapshot) {
+                //         if (!snapshot.hasData) {
+                //           return Center(
+                //             child: CircularProgressIndicator.adaptive(),
+                //           );
+                //         }
 
-                        List<Widget> cardsRow = [];
+                //         List<Widget> cardsRow = [];
 
-                        for (var doc in snapshot.data!.docs.toList()) {
-                          print(doc.data());
-                          var blogData = doc.data();
-                          var blogItem = FutureBuilder(
-                              future: FirebaseStorage.instance
-                                  .ref()
-                                  .child(doc.data()["image"])
-                                  .getDownloadURL(),
-                              builder: (context, snapshot2) {
-                                String url = "didn't got";
-                                if (snapshot2.hasData) {
-                                  url = snapshot2.data!;
+                //         for (var doc in snapshot.data!.docs.toList()) {
+                //           print(doc.data());
+                //           var blogData = doc.data();
+                //           var blogItem = FutureBuilder(
+                //               future: FirebaseStorage.instance
+                //                   .ref()
+                //                   .child(doc.data()["image"])
+                //                   .getDownloadURL(),
+                //               builder: (context, snapshot2) {
+                //                 String url = "didn't got";
+                //                 if (snapshot2.hasData) {
+                //                   url = snapshot2.data!;
 
-                                  return Card(
-                                    margin: EdgeInsets.only(left: 15, right: 5),
-                                    elevation: 20,
-                                    child: Container(
-                                      width: 200,
-                                      height: 300,
-                                      decoration: BoxDecoration(
-                                          // color: Color(0xff214D56),
-                                          // color: Colors.amberAccent,
-                                          image: DecorationImage(
-                                              image: NetworkImage(url),
-                                              fit: BoxFit.cover,
-                                              colorFilter: ColorFilter.mode(
-                                                  Colors.black38,
-                                                  BlendMode.darken)),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              flex: 3,
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  bottom: 8,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                    // color: Colors.blue,
-                                                    color: Colors.blue.shade50,
-                                                    backgroundBlendMode:
-                                                        BlendMode.softLight),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Container(
-                                                        width: double.infinity,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10,
-                                                                right: 10),
-                                                        child: Text(
-                                                          blogData["heading"],
-                                                          style: TextStyle(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              fontSize: 20,
-                                                              fontFamily:
-                                                                  "Gotham",
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: 35,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10,
-                                                                right: 10),
-                                                        child: Text(
-                                                          blogData[
-                                                              "description"],
-                                                          style: TextStyle(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .fade,
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  "Gotham",
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 8,
-                                                            right: 7),
-                                                        width: 140,
-                                                        child: ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .resolveWith<
-                                                                          Color?>(
-                                                                (Set<MaterialState>
-                                                                    states) {
-                                                                  //<-- SEE HERE
-                                                                  return Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          0.67); // Defer to the widget's default.
-                                                                }, //background color of button
-                                                              ),
-                                                              surfaceTintColor:
-                                                                  MaterialStateProperty
-                                                                      .resolveWith<
-                                                                          Color?>(
-                                                                (Set<MaterialState>
-                                                                    states) {
-                                                                  //<-- SEE HERE
-                                                                  return Colors
-                                                                      .transparent; // Defer to the widget's default.
-                                                                }, //background color of button
-                                                              ),
-                                                              textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-                                                                  (states) => TextStyle(
-                                                                      fontFamily:
-                                                                          'Gotham',
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          13)), //border width and color
-                                                              elevation:
-                                                                  MaterialStateProperty
-                                                                      .resolveWith<
-                                                                          double?>(
-                                                                (Set<MaterialState>
-                                                                    states) {
-                                                                  return 3; // Defer to the widget's default.
-                                                                },
-                                                              ), //elevation of button
-                                                              shape: MaterialStateProperty
-                                                                  .resolveWith<
-                                                                      RoundedRectangleBorder?>((Set<
-                                                                          MaterialState>
-                                                                      states) {
-                                                                return RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            28));
-                                                              }),
-                                                              overlayColor:
-                                                                  MaterialStateProperty
-                                                                      .resolveWith<
-                                                                          Color?>(
-                                                                (Set<MaterialState>
-                                                                    states) {
-                                                                  if (states.contains(
-                                                                      MaterialState
-                                                                          .pressed)) {
-                                                                    return Colors
-                                                                        .black12; //<-- SEE HERE
-                                                                  }
-                                                                  return null; // Defer to the widget's default.
-                                                                },
-                                                              ),
-                                                            ),
-                                                            onPressed: () => {
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    CupertinoPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              readBlog(),
-                                                                      settings:
-                                                                          RouteSettings(
-                                                                        arguments:
-                                                                            blogData["blogId"],
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                },
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  "Read Full",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                                Icon(CupertinoIcons
-                                                                    .arrow_up_right_square)
-                                                              ],
-                                                            )),
-                                                      ),
-                                                    ]),
-                                              ),
-                                            )
-                                          ]),
-                                    ),
-                                  );
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  );
-                                }
-                              });
+                //                   return Card(
+                //                     margin: EdgeInsets.only(left: 15, right: 5),
+                //                     elevation: 20,
+                //                     child: Container(
+                //                       width: 200,
+                //                       height: 300,
+                //                       decoration: BoxDecoration(
+                //                           // color: Color(0xff214D56),
+                //                           // color: Colors.amberAccent,
+                //                           image: DecorationImage(
+                //                               image: NetworkImage(url),
+                //                               fit: BoxFit.cover,
+                //                               colorFilter: ColorFilter.mode(
+                //                                   Colors.black38,
+                //                                   BlendMode.darken)),
+                //                           borderRadius:
+                //                               BorderRadius.circular(8)),
+                //                       child: Column(
+                //                           mainAxisAlignment:
+                //                               MainAxisAlignment.spaceBetween,
+                //                           children: [
+                //                             Expanded(
+                //                               flex: 3,
+                //                               child: Container(
+                //                                 margin: EdgeInsets.only(
+                //                                   bottom: 8,
+                //                                 ),
+                //                                 decoration: BoxDecoration(
+                //                                     // color: Colors.blue,
+                //                                     color: Colors.blue.shade50,
+                //                                     backgroundBlendMode:
+                //                                         BlendMode.softLight),
+                //                               ),
+                //                             ),
+                //                             Expanded(
+                //                               flex: 2,
+                //                               child: Container(
+                //                                 width: double.infinity,
+                //                                 height: double.infinity,
+                //                                 child: Column(
+                //                                     mainAxisAlignment:
+                //                                         MainAxisAlignment
+                //                                             .spaceBetween,
+                //                                     crossAxisAlignment:
+                //                                         CrossAxisAlignment.end,
+                //                                     children: [
+                //                                       Container(
+                //                                         width: double.infinity,
+                //                                         padding:
+                //                                             EdgeInsets.only(
+                //                                                 left: 10,
+                //                                                 right: 10),
+                //                                         child: Text(
+                //                                           blogData["heading"],
+                //                                           style: TextStyle(
+                //                                               overflow:
+                //                                                   TextOverflow
+                //                                                       .ellipsis,
+                //                                               fontSize: 20,
+                //                                               fontFamily:
+                //                                                   "Gotham",
+                //                                               color:
+                //                                                   Colors.white),
+                //                                         ),
+                //                                       ),
+                //                                       Container(
+                //                                         width: double.infinity,
+                //                                         height: 35,
+                //                                         padding:
+                //                                             EdgeInsets.only(
+                //                                                 left: 10,
+                //                                                 right: 10),
+                //                                         child: Text(
+                //                                           blogData[
+                //                                               "description"],
+                //                                           style: TextStyle(
+                //                                               overflow:
+                //                                                   TextOverflow
+                //                                                       .fade,
+                //                                               fontSize: 14,
+                //                                               fontFamily:
+                //                                                   "Gotham",
+                //                                               color:
+                //                                                   Colors.white),
+                //                                         ),
+                //                                       ),
+                //                                       Container(
+                //                                         margin: EdgeInsets.only(
+                //                                             bottom: 8,
+                //                                             right: 7),
+                //                                         width: 140,
+                //                                         child: ElevatedButton(
+                //                                             style: ButtonStyle(
+                //                                               backgroundColor:
+                //                                                   MaterialStateProperty
+                //                                                       .resolveWith<
+                //                                                           Color?>(
+                //                                                 (Set<MaterialState>
+                //                                                     states) {
+                //                                                   //<-- SEE HERE
+                //                                                   return Colors
+                //                                                       .white
+                //                                                       .withOpacity(
+                //                                                           0.67); // Defer to the widget's default.
+                //                                                 }, //background color of button
+                //                                               ),
+                //                                               surfaceTintColor:
+                //                                                   MaterialStateProperty
+                //                                                       .resolveWith<
+                //                                                           Color?>(
+                //                                                 (Set<MaterialState>
+                //                                                     states) {
+                //                                                   //<-- SEE HERE
+                //                                                   return Colors
+                //                                                       .transparent; // Defer to the widget's default.
+                //                                                 }, //background color of button
+                //                                               ),
+                //                                               textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                //                                                   (states) => TextStyle(
+                //                                                       fontFamily:
+                //                                                           'Gotham',
+                //                                                       color: Colors
+                //                                                           .black,
+                //                                                       fontSize:
+                //                                                           13)), //border width and color
+                //                                               elevation:
+                //                                                   MaterialStateProperty
+                //                                                       .resolveWith<
+                //                                                           double?>(
+                //                                                 (Set<MaterialState>
+                //                                                     states) {
+                //                                                   return 3; // Defer to the widget's default.
+                //                                                 },
+                //                                               ), //elevation of button
+                //                                               shape: MaterialStateProperty
+                //                                                   .resolveWith<
+                //                                                       RoundedRectangleBorder?>((Set<
+                //                                                           MaterialState>
+                //                                                       states) {
+                //                                                 return RoundedRectangleBorder(
+                //                                                     borderRadius:
+                //                                                         BorderRadius.circular(
+                //                                                             28));
+                //                                               }),
+                //                                               overlayColor:
+                //                                                   MaterialStateProperty
+                //                                                       .resolveWith<
+                //                                                           Color?>(
+                //                                                 (Set<MaterialState>
+                //                                                     states) {
+                //                                                   if (states.contains(
+                //                                                       MaterialState
+                //                                                           .pressed)) {
+                //                                                     return Colors
+                //                                                         .black12; //<-- SEE HERE
+                //                                                   }
+                //                                                   return null; // Defer to the widget's default.
+                //                                                 },
+                //                                               ),
+                //                                             ),
+                //                                             onPressed: () => {
+                //                                                   Navigator
+                //                                                       .push(
+                //                                                     context,
+                //                                                     CupertinoPageRoute(
+                //                                                       builder:
+                //                                                           (context) =>
+                //                                                               readBlog(),
+                //                                                       settings:
+                //                                                           RouteSettings(
+                //                                                         arguments:
+                //                                                             blogData["blogId"],
+                //                                                       ),
+                //                                                     ),
+                //                                                   )
+                //                                                 },
+                //                                             child: Row(
+                //                                               mainAxisAlignment:
+                //                                                   MainAxisAlignment
+                //                                                       .spaceBetween,
+                //                                               children: [
+                //                                                 Text(
+                //                                                   "Read Full",
+                //                                                   style: TextStyle(
+                //                                                       color: Colors
+                //                                                           .black),
+                //                                                 ),
+                //                                                 Icon(CupertinoIcons
+                //                                                     .arrow_up_right_square)
+                //                                               ],
+                //                                             )),
+                //                                       ),
+                //                                     ]),
+                //                               ),
+                //                             )
+                //                           ]),
+                //                     ),
+                //                   );
+                //                 } else {
+                //                   return Center(
+                //                     child: CircularProgressIndicator.adaptive(),
+                //                   );
+                //                 }
+                //               });
 
-                          cardsRow.add(blogItem);
-                        }
+                //           cardsRow.add(blogItem);
+                //         }
 
-                        return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: cardsRow,
-                            ));
-                      },
-                    )),
+                //         return SingleChildScrollView(
+                //             scrollDirection: Axis.horizontal,
+                //             child: Row(
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: cardsRow,
+                //             ));
+                //       },
+                //     )),
                 Container(
                   // ? Section 4 -- New Challenges -- Starting
                   color: Colors.transparent,
@@ -911,14 +929,16 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
                         ),
                         InkWell(
-                            onTap: () => {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            const AllChallenges()),
-                                  )
-                                },
+                            onTap: () {
+                              // Navigator.push(
+                              //   context,
+                              //   CupertinoPageRoute(
+                              //       builder: (context) =>
+                              //           const AllChallenges()),
+                              // )
+
+                              controller.seletectedIndex.value = 1;
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -936,52 +956,85 @@ class _DashboardState extends State<Dashboard> {
                   // ? Section 4 -- New Challenges -- Starting
                   color: Colors.transparent,
                   height: 300,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          children: [
-                            Flexible(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {
-                                    const snackBar = SnackBar(
-                                      content: Center(
+                  child: InkWell(
+                    onTap: () {
+                      controller.seletectedIndex.value = 1;
+                      const snackBar = SnackBar(
+                        content: Center(
+                          child: Text(
+                            'this feature is coming soon',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        // margin: EdgeInsetsGeometry.infinity,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.black54,
+                        duration: Duration(milliseconds: 700),
+                      );
+
+                      // Find the ScaffoldMessenger in the widget tree
+                      // and use it to show a SnackBar.
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    child: Column(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                  flex: 1,
+                                  child: InkWell(
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      margin: EdgeInsets.all(12),
+
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: Colors.black,
+                                          backgroundBlendMode:
+                                              BlendMode.colorBurn,
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              opacity: 0.9,
+                                              filterQuality: FilterQuality.none,
+                                              image: AssetImage(
+                                                  "assets/images/dashboard_bg5_landscape.jpg"))),
+                                      child: Center(
                                         child: Text(
-                                          'Yay! A SnackBar!',
+                                          "Activities",
                                           textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily: "Gotham",
+                                              fontSize: 26,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.normal),
                                         ),
                                       ),
-                                      // margin: EdgeInsetsGeometry.infinity,
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.black54,
-                                    );
-
-// Find the ScaffoldMessenger in the widget tree
-// and use it to show a SnackBar.
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  },
+                                      // height: 110,
+                                    ),
+                                  )),
+                              Flexible(
+                                  flex: 1,
                                   child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
                                     margin: EdgeInsets.all(12),
-
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
-                                        color: Colors.black,
+                                        color: Colors.blue.shade50,
                                         backgroundBlendMode:
-                                            BlendMode.colorBurn,
+                                            BlendMode.softLight,
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             opacity: 0.9,
                                             filterQuality: FilterQuality.none,
                                             image: AssetImage(
-                                                "assets/images/dashboard_bg5_landscape.jpg"))),
+                                                "assets/images/dashboard_bg8_landscape.jpg"))),
+                                    // height: 110,
                                     child: Center(
                                       child: Text(
-                                        "Activities",
+                                        "Quiz",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: "Gotham",
@@ -990,101 +1043,73 @@ class _DashboardState extends State<Dashboard> {
                                             fontWeight: FontWeight.normal),
                                       ),
                                     ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.black,
+                                        backgroundBlendMode: BlendMode.darken,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            opacity: 0.7,
+                                            filterQuality: FilterQuality.none,
+                                            image: AssetImage(
+                                                "assets/images/dashboard_bg10_landscape.jpg"))),
                                     // height: 110,
-                                  ),
-                                )),
-                            Flexible(
-                                flex: 1,
-                                child: Container(
-                                  margin: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.blue.shade50,
-                                      backgroundBlendMode: BlendMode.softLight,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          opacity: 0.9,
-                                          filterQuality: FilterQuality.none,
-                                          image: AssetImage(
-                                              "assets/images/dashboard_bg8_landscape.jpg"))),
-                                  // height: 110,
-                                  child: Center(
-                                    child: Text(
-                                      "Quiz",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: "Gotham",
-                                          fontSize: 26,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal),
+                                    child: Center(
+                                      child: Text(
+                                        "Family Bonding",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: "Gotham",
+                                            fontSize: 26,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal),
+                                      ),
                                     ),
-                                  ),
-                                )),
-                          ],
+                                  )),
+                              Flexible(
+                                  flex: 1,
+                                  child: Container(
+                                    margin: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.black,
+                                        backgroundBlendMode: BlendMode.darken,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            opacity: 0.7,
+                                            filterQuality: FilterQuality.none,
+                                            image: AssetImage(
+                                                "assets/images/dashboard_bg9_landscape.jpg"))),
+                                    // height: 110,
+                                    child: Center(
+                                      child: Text(
+                                        "Sustainability",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: "Gotham",
+                                            fontSize: 26,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          children: [
-                            Flexible(
-                                flex: 1,
-                                child: Container(
-                                  margin: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.black,
-                                      backgroundBlendMode: BlendMode.darken,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          opacity: 0.7,
-                                          filterQuality: FilterQuality.none,
-                                          image: AssetImage(
-                                              "assets/images/dashboard_bg10_landscape.jpg"))),
-                                  // height: 110,
-                                  child: Center(
-                                    child: Text(
-                                      "Family Bonding",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: "Gotham",
-                                          fontSize: 26,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                  ),
-                                )),
-                            Flexible(
-                                flex: 1,
-                                child: Container(
-                                  margin: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.black,
-                                      backgroundBlendMode: BlendMode.darken,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          opacity: 0.7,
-                                          filterQuality: FilterQuality.none,
-                                          image: AssetImage(
-                                              "assets/images/dashboard_bg9_landscape.jpg"))),
-                                  // height: 110,
-                                  child: Center(
-                                    child: Text(
-                                      "Sustainability",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: "Gotham",
-                                          fontSize: 26,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -1123,886 +1148,1150 @@ class _DashboardState extends State<Dashboard> {
           return Container(
             //? Section 1 -- At Glance -- Contents
             // color: Colors.lime.shade300,
-            height: 339,
-            child: SingleChildScrollView(
-                // physics: ScrollPhysi,
 
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Card(
-                      margin: EdgeInsets.only(left: 15, right: 5),
-                      elevation: 20,
-                      child: Container(
-                        width: 200,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            // color: Color(0xff214D56),
-                            // color: Colors.amberAccent,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/dashboard_bg14_portait.jpg"),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Stack(children: [
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.only(
-                                      bottom: 8,
+            margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
+            height: 225,
+            child: Card(
+              elevation: 20,
+              child: Container(
+                width: double.infinity,
+                // height: 300,
+                decoration: BoxDecoration(
+                    // color: Color(0xff214D56),
+                    // color: Colors.amberAccent,
+                    image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/dashboard_bg14_portait.jpg"),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Stack(children: [
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.only(
+                              bottom: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              // color: Colors.blue,
+                              color: Colors.blue.shade50,
+                              backgroundBlendMode: BlendMode.softLight,
+                            ),
+                            child: Container(
+                              alignment: Alignment.topRight,
+                              margin: EdgeInsets.only(bottom: 0, right: 4),
+                              // width: 50,
+                              // height: 50,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    maximumSize: MaterialStateProperty
+                                        .resolveWith<Size?>(
+                                      (Set<MaterialState> states) {
+                                        //<-- SEE HERE
+                                        return Size(175,
+                                            50); // Defer to the widget's default.
+                                      }, //background color of button
                                     ),
-                                    decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      color: Colors.blue.shade50,
-                                      backgroundBlendMode: BlendMode.softLight,
+                                    backgroundColor: MaterialStateProperty
+                                        .resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                        //<-- SEE HERE
+                                        return Colors.white.withOpacity(
+                                            0.67); // Defer to the widget's default.
+                                      }, //background color of button
                                     ),
-                                    child: Container(
-                                      alignment: Alignment.topRight,
-                                      margin:
-                                          EdgeInsets.only(bottom: 0, right: 4),
-                                      // width: 50,
-                                      // height: 50,
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            maximumSize: MaterialStateProperty
-                                                .resolveWith<Size?>(
-                                              (Set<MaterialState> states) {
-                                                //<-- SEE HERE
-                                                return Size(175,
-                                                    50); // Defer to the widget's default.
-                                              }, //background color of button
-                                            ),
-                                            backgroundColor:
-                                                MaterialStateProperty
-                                                    .resolveWith<Color?>(
-                                              (Set<MaterialState> states) {
-                                                //<-- SEE HERE
-                                                return Colors.white.withOpacity(
-                                                    0.67); // Defer to the widget's default.
-                                              }, //background color of button
-                                            ),
-                                            surfaceTintColor:
-                                                MaterialStateProperty
-                                                    .resolveWith<Color?>(
-                                              (Set<MaterialState> states) {
-                                                //<-- SEE HERE
-                                                return Colors
-                                                    .transparent; // Defer to the widget's default.
-                                              }, //background color of button
-                                            ),
-                                            textStyle: MaterialStateProperty
-                                                .resolveWith<TextStyle?>(
-                                                    (states) => TextStyle(
-                                                        fontFamily: 'Gotham',
-                                                        color: Colors.black,
-                                                        fontSize:
-                                                            13)), //border width and color
-                                            elevation: MaterialStateProperty
-                                                .resolveWith<double?>(
-                                              (Set<MaterialState> states) {
-                                                return 3; // Defer to the widget's default.
-                                              },
-                                            ), //elevation of button
-                                            shape: MaterialStateProperty
-                                                .resolveWith<
-                                                        RoundedRectangleBorder?>(
-                                                    (Set<MaterialState>
-                                                        states) {
-                                              return RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          28));
-                                            }),
-                                            overlayColor: MaterialStateProperty
-                                                .resolveWith<Color?>(
-                                              (Set<MaterialState> states) {
-                                                if (states.contains(
-                                                    MaterialState.pressed)) {
-                                                  return Colors
-                                                      .black12; //<-- SEE HERE
-                                                }
-                                                return null; // Defer to the widget's default.
-                                              },
-                                            ),
-                                          ),
-                                          onPressed: () => {},
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Detailed Report",
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              Icon(CupertinoIcons
-                                                  .arrow_up_right_square)
-                                            ],
-                                          )),
+                                    surfaceTintColor: MaterialStateProperty
+                                        .resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                        //<-- SEE HERE
+                                        return Colors
+                                            .transparent; // Defer to the widget's default.
+                                      }, //background color of button
+                                    ),
+                                    textStyle: MaterialStateProperty.resolveWith<
+                                            TextStyle?>(
+                                        (states) => TextStyle(
+                                            fontFamily: 'Gotham',
+                                            color: Colors.black,
+                                            fontSize:
+                                                13)), //border width and color
+                                    elevation: MaterialStateProperty
+                                        .resolveWith<double?>(
+                                      (Set<MaterialState> states) {
+                                        return 3; // Defer to the widget's default.
+                                      },
+                                    ), //elevation of button
+                                    shape: MaterialStateProperty.resolveWith<
+                                            RoundedRectangleBorder?>(
+                                        (Set<MaterialState> states) {
+                                      return RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(28));
+                                    }),
+                                    overlayColor: MaterialStateProperty
+                                        .resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.pressed)) {
+                                          return Colors.black12; //<-- SEE HERE
+                                        }
+                                        return null; // Defer to the widget's default.
+                                      },
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    // color: Colors.black26,
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Text(
-                                              "Power Consumption",
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: "Gotham",
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 150,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                                color: Colors.lightBlue
-                                                    .withOpacity(0.67),
-                                                borderRadius:
-                                                    BorderRadius.circular(12)),
-                                            padding: EdgeInsets.all(10),
-                                            margin: EdgeInsets.only(
-                                              bottom: 20,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Icon(
-                                                  Icons.show_chart_rounded,
-                                                  color: Colors.white,
-                                                ),
-                                                (!isPending)
-                                                    ? FutureBuilder(
-                                                        future: FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "family")
-                                                            .where("accountNo",
-                                                                isEqualTo: snapshot
-                                                                        .data![
-                                                                    "accountNo"])
-                                                            .get(),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return CircularProgressIndicator
-                                                                .adaptive();
-                                                          }
-
-                                                          return FutureBuilder(
-                                                              future: FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      "Data")
-                                                                  .doc(snapshot
-                                                                          .data!
-                                                                          .docs
-                                                                          .first[
-                                                                      "deviceId"])
-                                                                  .get(),
-                                                              builder: ((context,
-                                                                  snapshot) {
-                                                                if (!snapshot
-                                                                    .hasData) {
-                                                                  return Text(
-                                                                    "...",
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontFamily:
-                                                                          "Gotham",
-                                                                      color: Colors
-                                                                          .white,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .clip,
-                                                                    ),
-                                                                  );
-                                                                }
-
-                                                                print(((snapshot
-                                                                            .data!["historicalData"])
-                                                                        .last["units"])
-                                                                    .toString());
-                                                                print(((snapshot.data![
-                                                                            "historicalData"])
-                                                                        .last[
-                                                                            "units"]
-                                                                        .roundToDouble())
-                                                                    .toString());
-                                                                return Text(
-                                                                  (((snapshot.data!["historicalData"]).last[
-                                                                              "units"])
-                                                                          .toStringAsPrecision(
-                                                                              3))
-                                                                      .toString(),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontFamily:
-                                                                        "Gotham",
-                                                                    color: Colors
-                                                                        .white,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .clip,
-                                                                  ),
-                                                                );
-                                                              }));
-                                                        })
-                                                    : Text(
-                                                        "NA",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontFamily: "Gotham",
-                                                          color: Colors.white,
-                                                          overflow:
-                                                              TextOverflow.clip,
-                                                        ),
-                                                      ),
-                                                Icon(
-                                                  CupertinoIcons.arrow_up,
-                                                  color: Colors.white,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                )
-                              ]),
-                          (isPending)
-                              ? Container(
-                                  height: double.infinity,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      backgroundBlendMode: BlendMode.darken,
-                                      color: Colors.black38),
-                                  child: Center(
-                                    child: Text(
-                                      "Your request is still pending",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const detailedReports()),
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Detailed Report",
+                                        style: TextStyle(color: Colors.black),
                                       ),
+                                      Icon(CupertinoIcons.arrow_up_right_square)
+                                    ],
+                                  )),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            // color: Colors.black26,
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    child: Text(
+                                      "Power Consumption",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Gotham",
+                                          color: Colors.white),
                                     ),
-                                  ))
-                              : SizedBox(),
-                        ]),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.only(left: 20, right: 5),
-                      elevation: 20,
-                      child: Container(
-                        width: 200,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            // color: Color(0xff214D56),
-                            color: Colors.black12,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/dashboard_bg5_portait_compressed.jpg"),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    bottom: 8,
                                   ),
-                                  decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      color: Colors.blue.shade50,
-                                      backgroundBlendMode: BlendMode.softLight),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  child: Column(
+                                  Container(
+                                    width: 150,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            Colors.lightBlue.withOpacity(0.67),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.only(
+                                      bottom: 20,
+                                    ),
+                                    child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Daily Steps Goal",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: "Gotham",
-                                                color: Colors.white),
-                                          ),
+                                        Icon(
+                                          Icons.show_chart_rounded,
+                                          color: Colors.white,
                                         ),
-                                        Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "${(snapshot.data!["stepsCount"]).last["steps"]} / ${snapshot.data!["stepsGoal"].toString() ?? "NA"}",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: "Gotham",
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 8, right: 7),
-                                          width: 120,
-                                          child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty
-                                                        .resolveWith<Color?>(
-                                                  (Set<MaterialState> states) {
-                                                    //<-- SEE HERE
-                                                    return Colors.white.withOpacity(
-                                                        0.67); // Defer to the widget's default.
-                                                  }, //background color of button
-                                                ),
-                                                surfaceTintColor:
-                                                    MaterialStateProperty
-                                                        .resolveWith<Color?>(
-                                                  (Set<MaterialState> states) {
-                                                    //<-- SEE HERE
-                                                    return Colors
-                                                        .transparent; // Defer to the widget's default.
-                                                  }, //background color of button
-                                                ),
-                                                textStyle: MaterialStateProperty
-                                                    .resolveWith<TextStyle?>(
-                                                        (states) => TextStyle(
+                                        (!isPending)
+                                            ? FutureBuilder(
+                                                future: FirebaseFirestore
+                                                    .instance
+                                                    .collection("family")
+                                                    .where("accountNo",
+                                                        isEqualTo: snapshot
+                                                            .data!["accountNo"])
+                                                    .get(),
+                                                builder: (context, snapshot) {
+                                                  if (!snapshot.hasData) {
+                                                    return CircularProgressIndicator
+                                                        .adaptive();
+                                                  }
+
+                                                  return FutureBuilder(
+                                                      future: FirebaseFirestore
+                                                          .instance
+                                                          .collection("Data")
+                                                          .doc(snapshot.data!
+                                                                  .docs.first[
+                                                              "deviceId"])
+                                                          .get(),
+                                                      builder:
+                                                          ((context, snapshot) {
+                                                        if (!snapshot.hasData) {
+                                                          return Text(
+                                                            "...",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  "Gotham",
+                                                              color:
+                                                                  Colors.white,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .clip,
+                                                            ),
+                                                          );
+                                                        }
+
+                                                        print(((snapshot.data![
+                                                                    "historicalData"])
+                                                                .last["units"])
+                                                            .toString());
+                                                        print(((snapshot.data![
+                                                                    "historicalData"])
+                                                                .last["units"]
+                                                                .roundToDouble())
+                                                            .toString());
+                                                        return Text(
+                                                          (((snapshot.data!["historicalData"])
+                                                                          .last[
+                                                                      "units"])
+                                                                  .toStringAsPrecision(
+                                                                      3))
+                                                              .toString(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
                                                             fontFamily:
-                                                                'Gotham',
-                                                            color: Colors.black,
-                                                            fontSize:
-                                                                13)), //border width and color
-                                                elevation: MaterialStateProperty
-                                                    .resolveWith<double?>(
-                                                  (Set<MaterialState> states) {
-                                                    return 3; // Defer to the widget's default.
-                                                  },
-                                                ), //elevation of button
-                                                shape: MaterialStateProperty
-                                                    .resolveWith<
-                                                            RoundedRectangleBorder?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                  return RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              28));
-                                                }),
-                                                overlayColor:
-                                                    MaterialStateProperty
-                                                        .resolveWith<Color?>(
-                                                  (Set<MaterialState> states) {
-                                                    if (states.contains(
-                                                        MaterialState
-                                                            .pressed)) {
-                                                      return Colors
-                                                          .black12; //<-- SEE HERE
-                                                    }
-                                                    return null; // Defer to the widget's default.
-                                                  },
-                                                ),
-                                              ),
-                                              onPressed: () => {},
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Details",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                  Icon(CupertinoIcons
-                                                      .arrow_up_right_square)
-                                                ],
-                                              )),
-                                        ),
-                                      ]),
-                                ),
-                              )
-                            ]),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.only(left: 15, right: 5),
-                      elevation: 20,
-                      child: Container(
-                        width: 200,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            // color: Color(0xff214D56),
-                            // color: Colors.amberAccent,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/dashboard_bg9_portait.jpg"),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.only(
-                                    bottom: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      color: Colors.blue.shade50,
-                                      backgroundBlendMode: BlendMode.softLight),
-                                  child: Container(
-                                    alignment: Alignment.topRight,
-                                    margin:
-                                        EdgeInsets.only(bottom: 0, right: 4),
-                                    width: 50,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          maximumSize: MaterialStateProperty
-                                              .resolveWith<Size?>(
-                                            (Set<MaterialState> states) {
-                                              //<-- SEE HERE
-                                              return Size(160,
-                                                  50); // Defer to the widget's default.
-                                            }, //background color of button
-                                          ),
-                                          backgroundColor: MaterialStateProperty
-                                              .resolveWith<Color?>(
-                                            (Set<MaterialState> states) {
-                                              //<-- SEE HERE
-                                              return Colors.white.withOpacity(
-                                                  0.67); // Defer to the widget's default.
-                                            }, //background color of button
-                                          ),
-                                          surfaceTintColor:
-                                              MaterialStateProperty.resolveWith<
-                                                  Color?>(
-                                            (Set<MaterialState> states) {
-                                              //<-- SEE HERE
-                                              return Colors
-                                                  .transparent; // Defer to the widget's default.
-                                            }, //background color of button
-                                          ),
-                                          textStyle: MaterialStateProperty
-                                              .resolveWith<TextStyle?>(
-                                                  (states) => TextStyle(
-                                                      fontFamily: 'Gotham',
-                                                      color: Colors.black,
-                                                      fontSize:
-                                                          13)), //border width and color
-                                          elevation: MaterialStateProperty
-                                              .resolveWith<double?>(
-                                            (Set<MaterialState> states) {
-                                              return 3; // Defer to the widget's default.
-                                            },
-                                          ), //elevation of button
-                                          shape:
-                                              MaterialStateProperty.resolveWith<
-                                                      RoundedRectangleBorder?>(
-                                                  (Set<MaterialState> states) {
-                                            return RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(28));
-                                          }),
-                                          overlayColor: MaterialStateProperty
-                                              .resolveWith<Color?>(
-                                            (Set<MaterialState> states) {
-                                              if (states.contains(
-                                                  MaterialState.pressed)) {
-                                                return Colors
-                                                    .black12; //<-- SEE HERE
-                                              }
-                                              return null; // Defer to the widget's default.
-                                            },
-                                          ),
-                                        ),
-                                        onPressed: () => {},
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Leaderboard",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            Icon(CupertinoIcons
-                                                .arrow_up_right_square)
-                                          ],
-                                        )),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Text(
-                                            "Individual Rank",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: "Gotham",
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 130,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              color: Colors.lightGreen
-                                                  .withOpacity(0.67),
-                                              borderRadius:
-                                                  BorderRadius.circular(12)),
-                                          padding: EdgeInsets.all(10),
-                                          margin: EdgeInsets.only(
-                                            bottom: 20,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Icon(
-                                                CupertinoIcons
-                                                    .chart_bar_alt_fill,
-                                                color: Colors.white,
-                                              ),
-                                              Text(
-                                                snapshot.data!["individualRank"]
-                                                    .toString(),
+                                                                "Gotham",
+                                                            color: Colors.white,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .clip,
+                                                          ),
+                                                        );
+                                                      }));
+                                                })
+                                            : Text(
+                                                "NA",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontFamily: "Gotham",
-                                                    color: Colors.white),
+                                                  fontSize: 15,
+                                                  fontFamily: "Gotham",
+                                                  color: Colors.white,
+                                                  overflow: TextOverflow.clip,
+                                                ),
                                               ),
-                                              Icon(
-                                                CupertinoIcons.arrow_up,
-                                                color: Colors.white,
-                                              ),
-                                            ],
-                                          ),
+                                        Icon(
+                                          CupertinoIcons.arrow_up,
+                                          color: Colors.white,
                                         ),
-                                      ]),
-                                ),
-                              )
-                            ]),
-                      ),
-                    ),
-                    // Card(
-                    //   margin: EdgeInsets.only(left: 15, right: 5),
-                    //   elevation: 20,
-                    //   child: Container(
-                    //     width: 200,
-                    //     height: 300,
-                    //     decoration: BoxDecoration(
-                    //         // color: Color(0xff214D56),
-                    //         // color: Colors.amberAccent,
-                    //         image: DecorationImage(
-                    //             image: AssetImage(
-                    //                 "assets/images/dashboard_bg10_portait.jpg"),
-                    //             fit: BoxFit.cover),
-                    //         borderRadius: BorderRadius.circular(8)),
-                    //     child: Stack(
-                    //       children: [
-                    //         Column(
-                    //             mainAxisAlignment:
-                    //                 MainAxisAlignment.spaceBetween,
-                    //             children: [
-                    //               Expanded(
-                    //                 flex: 3,
-                    //                 child: Container(
-                    //                   width: double.infinity,
-                    //                   margin: EdgeInsets.only(
-                    //                     bottom: 8,
-                    //                   ),
-                    //                   decoration: BoxDecoration(
-                    //                       // color: Colors.blue,
-                    //                       color: Colors.blue.shade50,
-                    //                       backgroundBlendMode:
-                    //                           BlendMode.softLight),
-                    //                   child: Container(
-                    //                     alignment: Alignment.topRight,
-                    //                     margin: EdgeInsets.only(
-                    //                         bottom: 0, right: 4),
-                    //                     width: 50,
-                    //                     height: 50,
-                    //                     child: ElevatedButton(
-                    //                         style: ButtonStyle(
-                    //                           maximumSize: MaterialStateProperty
-                    //                               .resolveWith<Size?>(
-                    //                             (Set<MaterialState> states) {
-                    //                               //<-- SEE HERE
-                    //                               return Size(160,
-                    //                                   50); // Defer to the widget's default.
-                    //                             }, //background color of button
-                    //                           ),
-                    //                           backgroundColor:
-                    //                               MaterialStateProperty
-                    //                                   .resolveWith<Color?>(
-                    //                             (Set<MaterialState> states) {
-                    //                               //<-- SEE HERE
-                    //                               return Colors.white.withOpacity(
-                    //                                   0.67); // Defer to the widget's default.
-                    //                             }, //background color of button
-                    //                           ),
-                    //                           surfaceTintColor:
-                    //                               MaterialStateProperty
-                    //                                   .resolveWith<Color?>(
-                    //                             (Set<MaterialState> states) {
-                    //                               //<-- SEE HERE
-                    //                               return Colors
-                    //                                   .transparent; // Defer to the widget's default.
-                    //                             }, //background color of button
-                    //                           ),
-                    //                           textStyle: MaterialStateProperty
-                    //                               .resolveWith<TextStyle?>(
-                    //                                   (states) => TextStyle(
-                    //                                       fontFamily: 'Gotham',
-                    //                                       color: Colors.black,
-                    //                                       fontSize:
-                    //                                           13)), //border width and color
-                    //                           elevation: MaterialStateProperty
-                    //                               .resolveWith<double?>(
-                    //                             (Set<MaterialState> states) {
-                    //                               return 3; // Defer to the widget's default.
-                    //                             },
-                    //                           ), //elevation of button
-                    //                           shape: MaterialStateProperty
-                    //                               .resolveWith<
-                    //                                       RoundedRectangleBorder?>(
-                    //                                   (Set<MaterialState>
-                    //                                       states) {
-                    //                             return RoundedRectangleBorder(
-                    //                                 borderRadius:
-                    //                                     BorderRadius.circular(
-                    //                                         28));
-                    //                           }),
-                    //                           overlayColor:
-                    //                               MaterialStateProperty
-                    //                                   .resolveWith<Color?>(
-                    //                             (Set<MaterialState> states) {
-                    //                               if (states.contains(
-                    //                                   MaterialState.pressed)) {
-                    //                                 return Colors
-                    //                                     .black12; //<-- SEE HERE
-                    //                               }
-                    //                               return null; // Defer to the widget's default.
-                    //                             },
-                    //                           ),
-                    //                         ),
-                    //                         onPressed: () => {},
-                    //                         child: Row(
-                    //                           mainAxisAlignment:
-                    //                               MainAxisAlignment
-                    //                                   .spaceBetween,
-                    //                           children: [
-                    //                             Text(
-                    //                               "Leaderboard",
-                    //                               style: TextStyle(
-                    //                                   color: Colors.black),
-                    //                             ),
-                    //                             Icon(CupertinoIcons
-                    //                                 .arrow_up_right_square)
-                    //                           ],
-                    //                         )),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               // Expanded(
-                    //               //   flex: 2,
-                    //               //   child: Container(
-                    //               //     width: double.infinity,
-                    //               //     height: double.infinity,
-                    //               //     child: Column(
-                    //               //         mainAxisAlignment:
-                    //               //             MainAxisAlignment.spaceBetween,
-                    //               //         crossAxisAlignment:
-                    //               //             CrossAxisAlignment.center,
-                    //               //         children: [
-                    //               //           Container(
-                    //               //             width: double.infinity,
-                    //               //             padding: EdgeInsets.only(
-                    //               //                 left: 10, right: 10),
-                    //               //             child: Text(
-                    //               //               "Family Rank",
-                    //               //               style: TextStyle(
-                    //               //                   fontSize: 20,
-                    //               //                   fontFamily: "Gotham",
-                    //               //                   color: Colors.white),
-                    //               //             ),
-                    //               //           ),
-                    //               //           Container(
-                    //               //             width: 130,
-                    //               //             height: 40,
-                    //               //             decoration: BoxDecoration(
-                    //               //                 color: Colors.lightGreen
-                    //               //                     .withOpacity(0.67),
-                    //               //                 borderRadius:
-                    //               //                     BorderRadius.circular(
-                    //               //                         12)),
-                    //               //             padding: EdgeInsets.all(10),
-                    //               //             margin: EdgeInsets.only(
-                    //               //               bottom: 20,
-                    //               //             ),
-                    //               //             child: Row(
-                    //               //               mainAxisAlignment:
-                    //               //                   MainAxisAlignment
-                    //               //                       .spaceAround,
-                    //               //               children: [
-                    //               //                 Icon(
-                    //               //                   CupertinoIcons
-                    //               //                       .chart_bar_alt_fill,
-                    //               //                   color: Colors.white,
-                    //               //                 ),
-                    //               //                 (!isPending)
-                    //               //                     ? FutureBuilder(
-                    //               //                         future: FirebaseFirestore
-                    //               //                             .instance
-                    //               //                             .collection(
-                    //               //                                 "family")
-                    //               //                             .where("accountNo",
-                    //               //                                 isEqualTo: snapshot
-                    //               //                                         .data![
-                    //               //                                     "accountNo"])
-                    //               //                             .get(),
-                    //               //                         builder: (context,
-                    //               //                             snapshot) {
-                    //               //                           if (!snapshot
-                    //               //                               .hasData) {
-                    //               //                             return CircularProgressIndicator
-                    //               //                                 .adaptive();
-                    //               //                           }
+                                      ],
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        )
+                      ]),
+                  (isPending)
+                      ? Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              backgroundBlendMode: BlendMode.darken,
+                              color: Colors.black38),
+                          child: Center(
+                            child: Text(
+                              "Your request is still pending",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                      : SizedBox(),
+                ]),
+              ),
+            ),
+            // child: SingleChildScrollView(
+            //   // physics: ScrollPhysi,
 
-                    //               //                           return Text(
-                    //               //                             snapshot
-                    //               //                                 .data!
-                    //               //                                 .docs
-                    //               //                                 .first[
-                    //               //                                     "familyRank"]
-                    //               //                                 .toString(),
-                    //               //                             textAlign:
-                    //               //                                 TextAlign
-                    //               //                                     .center,
-                    //               //                             style: TextStyle(
-                    //               //                                 fontSize: 15,
-                    //               //                                 fontFamily:
-                    //               //                                     "Gotham",
-                    //               //                                 color: Colors
-                    //               //                                     .white),
-                    //               //                           );
-                    //               //                         })
-                    //               //                     : Text(
-                    //               //                         "NA",
-                    //               //                         textAlign:
-                    //               //                             TextAlign.center,
-                    //               //                         style: TextStyle(
-                    //               //                           fontSize: 15,
-                    //               //                           fontFamily:
-                    //               //                               "Gotham",
-                    //               //                           color: Colors.white,
-                    //               //                           overflow:
-                    //               //                               TextOverflow
-                    //               //                                   .clip,
-                    //               //                         ),
-                    //               //                       )
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Card(
+            //         margin: EdgeInsets.only(left: 15, right: 5),
+            //         elevation: 20,
+            //         child: Container(
+            //           width: 200,
+            //           height: 300,
+            //           decoration: BoxDecoration(
+            //               // color: Color(0xff214D56),
+            //               // color: Colors.amberAccent,
+            //               image: DecorationImage(
+            //                   image: AssetImage(
+            //                       "assets/images/dashboard_bg14_portait.jpg"),
+            //                   fit: BoxFit.cover),
+            //               borderRadius: BorderRadius.circular(8)),
+            //           child: Stack(children: [
+            //             Column(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   Expanded(
+            //                     flex: 3,
+            //                     child: Container(
+            //                       width: double.infinity,
+            //                       margin: EdgeInsets.only(
+            //                         bottom: 8,
+            //                       ),
+            //                       decoration: BoxDecoration(
+            //                         // color: Colors.blue,
+            //                         color: Colors.blue.shade50,
+            //                         backgroundBlendMode: BlendMode.softLight,
+            //                       ),
+            //                       child: Container(
+            //                         alignment: Alignment.topRight,
+            //                         margin:
+            //                             EdgeInsets.only(bottom: 0, right: 4),
+            //                         // width: 50,
+            //                         // height: 50,
+            //                         child: ElevatedButton(
+            //                             style: ButtonStyle(
+            //                               maximumSize: MaterialStateProperty
+            //                                   .resolveWith<Size?>(
+            //                                 (Set<MaterialState> states) {
+            //                                   //<-- SEE HERE
+            //                                   return Size(175,
+            //                                       50); // Defer to the widget's default.
+            //                                 }, //background color of button
+            //                               ),
+            //                               backgroundColor: MaterialStateProperty
+            //                                   .resolveWith<Color?>(
+            //                                 (Set<MaterialState> states) {
+            //                                   //<-- SEE HERE
+            //                                   return Colors.white.withOpacity(
+            //                                       0.67); // Defer to the widget's default.
+            //                                 }, //background color of button
+            //                               ),
+            //                               surfaceTintColor:
+            //                                   MaterialStateProperty.resolveWith<
+            //                                       Color?>(
+            //                                 (Set<MaterialState> states) {
+            //                                   //<-- SEE HERE
+            //                                   return Colors
+            //                                       .transparent; // Defer to the widget's default.
+            //                                 }, //background color of button
+            //                               ),
+            //                               textStyle: MaterialStateProperty
+            //                                   .resolveWith<TextStyle?>(
+            //                                       (states) => TextStyle(
+            //                                           fontFamily: 'Gotham',
+            //                                           color: Colors.black,
+            //                                           fontSize:
+            //                                               13)), //border width and color
+            //                               elevation: MaterialStateProperty
+            //                                   .resolveWith<double?>(
+            //                                 (Set<MaterialState> states) {
+            //                                   return 3; // Defer to the widget's default.
+            //                                 },
+            //                               ), //elevation of button
+            //                               shape:
+            //                                   MaterialStateProperty.resolveWith<
+            //                                           RoundedRectangleBorder?>(
+            //                                       (Set<MaterialState> states) {
+            //                                 return RoundedRectangleBorder(
+            //                                     borderRadius:
+            //                                         BorderRadius.circular(28));
+            //                               }),
+            //                               overlayColor: MaterialStateProperty
+            //                                   .resolveWith<Color?>(
+            //                                 (Set<MaterialState> states) {
+            //                                   if (states.contains(
+            //                                       MaterialState.pressed)) {
+            //                                     return Colors
+            //                                         .black12; //<-- SEE HERE
+            //                                   }
+            //                                   return null; // Defer to the widget's default.
+            //                                 },
+            //                               ),
+            //                             ),
+            //                             onPressed: () => {},
+            //                             child: Row(
+            //                               mainAxisAlignment:
+            //                                   MainAxisAlignment.spaceBetween,
+            //                               children: [
+            //                                 Text(
+            //                                   "Detailed Report",
+            //                                   style: TextStyle(
+            //                                       color: Colors.black),
+            //                                 ),
+            //                                 Icon(CupertinoIcons
+            //                                     .arrow_up_right_square)
+            //                               ],
+            //                             )),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   Expanded(
+            //                     flex: 2,
+            //                     child: Container(
+            //                       width: double.infinity,
+            //                       height: double.infinity,
+            //                       // color: Colors.black26,
+            //                       child: Column(
+            //                           mainAxisAlignment:
+            //                               MainAxisAlignment.spaceBetween,
+            //                           crossAxisAlignment:
+            //                               CrossAxisAlignment.center,
+            //                           children: [
+            //                             Container(
+            //                               width: double.infinity,
+            //                               padding: EdgeInsets.only(
+            //                                   left: 10, right: 10),
+            //                               child: Text(
+            //                                 "Power Consumption",
+            //                                 style: TextStyle(
+            //                                     fontSize: 20,
+            //                                     fontFamily: "Gotham",
+            //                                     color: Colors.white),
+            //                               ),
+            //                             ),
+            //                             Container(
+            //                               width: 150,
+            //                               height: 40,
+            //                               decoration: BoxDecoration(
+            //                                   color: Colors.lightBlue
+            //                                       .withOpacity(0.67),
+            //                                   borderRadius:
+            //                                       BorderRadius.circular(12)),
+            //                               padding: EdgeInsets.all(10),
+            //                               margin: EdgeInsets.only(
+            //                                 bottom: 20,
+            //                               ),
+            //                               child: Row(
+            //                                 mainAxisAlignment:
+            //                                     MainAxisAlignment.spaceAround,
+            //                                 children: [
+            //                                   Icon(
+            //                                     Icons.show_chart_rounded,
+            //                                     color: Colors.white,
+            //                                   ),
+            //                                   (!isPending)
+            //                                       ? FutureBuilder(
+            //                                           future: FirebaseFirestore
+            //                                               .instance
+            //                                               .collection("family")
+            //                                               .where("accountNo",
+            //                                                   isEqualTo: snapshot
+            //                                                           .data![
+            //                                                       "accountNo"])
+            //                                               .get(),
+            //                                           builder:
+            //                                               (context, snapshot) {
+            //                                             if (!snapshot.hasData) {
+            //                                               return CircularProgressIndicator
+            //                                                   .adaptive();
+            //                                             }
 
-                    //               //                 // // "rank",
-                    //               //                 ,
-                    //               //                 Icon(
-                    //               //                   CupertinoIcons.arrow_up,
-                    //               //                   color: Colors.white,
-                    //               //                 ),
-                    //               //               ],
-                    //               //             ),
-                    //               //           ),
-                    //               //         ]),
-                    //               //   ),
-                    //               // )
-                    //             ]),
-                    //         (isPending)
-                    //             ? Container(
-                    //                 height: double.infinity,
-                    //                 width: double.infinity,
-                    //                 decoration: BoxDecoration(
-                    //                     backgroundBlendMode: BlendMode.darken,
-                    //                     color: Colors.black38),
-                    //                 child: Center(
-                    //                   child: Text(
-                    //                     "Your request is still pending",
-                    //                     textAlign: TextAlign.center,
-                    //                     style: TextStyle(
-                    //                       color: Colors.white,
-                    //                       fontSize: 20,
-                    //                       fontWeight: FontWeight.bold,
-                    //                     ),
-                    //                   ),
-                    //                 ))
-                    //             : SizedBox(),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                )),
+            //                                             return FutureBuilder(
+            //                                                 future: FirebaseFirestore
+            //                                                     .instance
+            //                                                     .collection(
+            //                                                         "Data")
+            //                                                     .doc(snapshot
+            //                                                             .data!
+            //                                                             .docs
+            //                                                             .first[
+            //                                                         "deviceId"])
+            //                                                     .get(),
+            //                                                 builder: ((context,
+            //                                                     snapshot) {
+            //                                                   if (!snapshot
+            //                                                       .hasData) {
+            //                                                     return Text(
+            //                                                       "...",
+            //                                                       textAlign:
+            //                                                           TextAlign
+            //                                                               .center,
+            //                                                       style:
+            //                                                           TextStyle(
+            //                                                         fontSize:
+            //                                                             15,
+            //                                                         fontFamily:
+            //                                                             "Gotham",
+            //                                                         color: Colors
+            //                                                             .white,
+            //                                                         overflow:
+            //                                                             TextOverflow
+            //                                                                 .clip,
+            //                                                       ),
+            //                                                     );
+            //                                                   }
+
+            //                                                   print(((snapshot.data![
+            //                                                                   "historicalData"])
+            //                                                               .last[
+            //                                                           "units"])
+            //                                                       .toString());
+            //                                                   print(((snapshot.data![
+            //                                                               "historicalData"])
+            //                                                           .last[
+            //                                                               "units"]
+            //                                                           .roundToDouble())
+            //                                                       .toString());
+            //                                                   return Text(
+            //                                                     (((snapshot.data!["historicalData"]).last[
+            //                                                                 "units"])
+            //                                                             .toStringAsPrecision(
+            //                                                                 3))
+            //                                                         .toString(),
+            //                                                     textAlign:
+            //                                                         TextAlign
+            //                                                             .center,
+            //                                                     style:
+            //                                                         TextStyle(
+            //                                                       fontSize: 15,
+            //                                                       fontFamily:
+            //                                                           "Gotham",
+            //                                                       color: Colors
+            //                                                           .white,
+            //                                                       overflow:
+            //                                                           TextOverflow
+            //                                                               .clip,
+            //                                                     ),
+            //                                                   );
+            //                                                 }));
+            //                                           })
+            //                                       : Text(
+            //                                           "NA",
+            //                                           textAlign:
+            //                                               TextAlign.center,
+            //                                           style: TextStyle(
+            //                                             fontSize: 15,
+            //                                             fontFamily: "Gotham",
+            //                                             color: Colors.white,
+            //                                             overflow:
+            //                                                 TextOverflow.clip,
+            //                                           ),
+            //                                         ),
+            //                                   Icon(
+            //                                     CupertinoIcons.arrow_up,
+            //                                     color: Colors.white,
+            //                                   ),
+            //                                 ],
+            //                               ),
+            //                             ),
+            //                           ]),
+            //                     ),
+            //                   )
+            //                 ]),
+            //             (isPending)
+            //                 ? Container(
+            //                     height: double.infinity,
+            //                     width: double.infinity,
+            //                     decoration: BoxDecoration(
+            //                         backgroundBlendMode: BlendMode.darken,
+            //                         color: Colors.black38),
+            //                     child: Center(
+            //                       child: Text(
+            //                         "Your request is still pending",
+            //                         textAlign: TextAlign.center,
+            //                         style: TextStyle(
+            //                           color: Colors.white,
+            //                           fontSize: 20,
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                     ))
+            //                 : SizedBox(),
+            //           ]),
+            //         ),
+            //       ),
+            //       Card(
+            //         margin: EdgeInsets.only(left: 20, right: 5),
+            //         elevation: 20,
+            //         child: Container(
+            //           width: 200,
+            //           height: 300,
+            //           decoration: BoxDecoration(
+            //               // color: Color(0xff214D56),
+            //               color: Colors.black12,
+            //               image: DecorationImage(
+            //                   image: AssetImage(
+            //                       "assets/images/dashboard_bg5_portait_compressed.jpg"),
+            //                   fit: BoxFit.cover),
+            //               borderRadius: BorderRadius.circular(8)),
+            //           child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Expanded(
+            //                   flex: 3,
+            //                   child: Container(
+            //                     margin: EdgeInsets.only(
+            //                       bottom: 8,
+            //                     ),
+            //                     decoration: BoxDecoration(
+            //                         // color: Colors.blue,
+            //                         color: Colors.blue.shade50,
+            //                         backgroundBlendMode: BlendMode.softLight),
+            //                   ),
+            //                 ),
+            //                 Expanded(
+            //                   flex: 2,
+            //                   child: Container(
+            //                     width: double.infinity,
+            //                     height: double.infinity,
+            //                     child: Column(
+            //                         mainAxisAlignment:
+            //                             MainAxisAlignment.spaceBetween,
+            //                         crossAxisAlignment: CrossAxisAlignment.end,
+            //                         children: [
+            //                           Container(
+            //                             width: double.infinity,
+            //                             padding: EdgeInsets.only(left: 10),
+            //                             child: Text(
+            //                               "Daily Steps Goal",
+            //                               style: TextStyle(
+            //                                   fontSize: 20,
+            //                                   fontFamily: "Gotham",
+            //                                   color: Colors.white),
+            //                             ),
+            //                           ),
+            //                           Container(
+            //                             width: double.infinity,
+            //                             padding: EdgeInsets.only(left: 10),
+            //                             child: Text(
+            //                               "${(snapshot.data!["stepsCount"]).last["steps"]} / ${snapshot.data!["stepsGoal"].toString() ?? "NA"}",
+            //                               style: TextStyle(
+            //                                   fontSize: 14,
+            //                                   fontFamily: "Gotham",
+            //                                   color: Colors.white),
+            //                             ),
+            //                           ),
+            //                           Container(
+            //                             margin: EdgeInsets.only(
+            //                                 bottom: 8, right: 7),
+            //                             width: 120,
+            //                             child: ElevatedButton(
+            //                                 style: ButtonStyle(
+            //                                   backgroundColor:
+            //                                       MaterialStateProperty
+            //                                           .resolveWith<Color?>(
+            //                                     (Set<MaterialState> states) {
+            //                                       //<-- SEE HERE
+            //                                       return Colors.white.withOpacity(
+            //                                           0.67); // Defer to the widget's default.
+            //                                     }, //background color of button
+            //                                   ),
+            //                                   surfaceTintColor:
+            //                                       MaterialStateProperty
+            //                                           .resolveWith<Color?>(
+            //                                     (Set<MaterialState> states) {
+            //                                       //<-- SEE HERE
+            //                                       return Colors
+            //                                           .transparent; // Defer to the widget's default.
+            //                                     }, //background color of button
+            //                                   ),
+            //                                   textStyle: MaterialStateProperty
+            //                                       .resolveWith<TextStyle?>(
+            //                                           (states) => TextStyle(
+            //                                               fontFamily: 'Gotham',
+            //                                               color: Colors.black,
+            //                                               fontSize:
+            //                                                   13)), //border width and color
+            //                                   elevation: MaterialStateProperty
+            //                                       .resolveWith<double?>(
+            //                                     (Set<MaterialState> states) {
+            //                                       return 3; // Defer to the widget's default.
+            //                                     },
+            //                                   ), //elevation of button
+            //                                   shape: MaterialStateProperty
+            //                                       .resolveWith<
+            //                                               RoundedRectangleBorder?>(
+            //                                           (Set<MaterialState>
+            //                                               states) {
+            //                                     return RoundedRectangleBorder(
+            //                                         borderRadius:
+            //                                             BorderRadius.circular(
+            //                                                 28));
+            //                                   }),
+            //                                   overlayColor:
+            //                                       MaterialStateProperty
+            //                                           .resolveWith<Color?>(
+            //                                     (Set<MaterialState> states) {
+            //                                       if (states.contains(
+            //                                           MaterialState.pressed)) {
+            //                                         return Colors
+            //                                             .black12; //<-- SEE HERE
+            //                                       }
+            //                                       return null; // Defer to the widget's default.
+            //                                     },
+            //                                   ),
+            //                                 ),
+            //                                 onPressed: () => {},
+            //                                 child: Row(
+            //                                   mainAxisAlignment:
+            //                                       MainAxisAlignment
+            //                                           .spaceBetween,
+            //                                   children: [
+            //                                     Text(
+            //                                       "Details",
+            //                                       style: TextStyle(
+            //                                           color: Colors.black),
+            //                                     ),
+            //                                     Icon(CupertinoIcons
+            //                                         .arrow_up_right_square)
+            //                                   ],
+            //                                 )),
+            //                           ),
+            //                         ]),
+            //                   ),
+            //                 )
+            //               ]),
+            //         ),
+            //       ),
+            //       Card(
+            //         margin: EdgeInsets.only(left: 15, right: 5),
+            //         elevation: 20,
+            //         child: Container(
+            //           width: 200,
+            //           height: 300,
+            //           decoration: BoxDecoration(
+            //               // color: Color(0xff214D56),
+            //               // color: Colors.amberAccent,
+            //               image: DecorationImage(
+            //                   image: AssetImage(
+            //                       "assets/images/dashboard_bg9_portait.jpg"),
+            //                   fit: BoxFit.cover),
+            //               borderRadius: BorderRadius.circular(8)),
+            //           child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Expanded(
+            //                   flex: 3,
+            //                   child: Container(
+            //                     width: double.infinity,
+            //                     margin: EdgeInsets.only(
+            //                       bottom: 8,
+            //                     ),
+            //                     decoration: BoxDecoration(
+            //                         // color: Colors.blue,
+            //                         color: Colors.blue.shade50,
+            //                         backgroundBlendMode: BlendMode.softLight),
+            //                     child: Container(
+            //                       alignment: Alignment.topRight,
+            //                       margin: EdgeInsets.only(bottom: 0, right: 4),
+            //                       width: 50,
+            //                       height: 50,
+            //                       child: ElevatedButton(
+            //                           style: ButtonStyle(
+            //                             maximumSize: MaterialStateProperty
+            //                                 .resolveWith<Size?>(
+            //                               (Set<MaterialState> states) {
+            //                                 //<-- SEE HERE
+            //                                 return Size(160,
+            //                                     50); // Defer to the widget's default.
+            //                               }, //background color of button
+            //                             ),
+            //                             backgroundColor: MaterialStateProperty
+            //                                 .resolveWith<Color?>(
+            //                               (Set<MaterialState> states) {
+            //                                 //<-- SEE HERE
+            //                                 return Colors.white.withOpacity(
+            //                                     0.67); // Defer to the widget's default.
+            //                               }, //background color of button
+            //                             ),
+            //                             surfaceTintColor: MaterialStateProperty
+            //                                 .resolveWith<Color?>(
+            //                               (Set<MaterialState> states) {
+            //                                 //<-- SEE HERE
+            //                                 return Colors
+            //                                     .transparent; // Defer to the widget's default.
+            //                               }, //background color of button
+            //                             ),
+            //                             textStyle: MaterialStateProperty
+            //                                 .resolveWith<TextStyle?>((states) =>
+            //                                     TextStyle(
+            //                                         fontFamily: 'Gotham',
+            //                                         color: Colors.black,
+            //                                         fontSize:
+            //                                             13)), //border width and color
+            //                             elevation: MaterialStateProperty
+            //                                 .resolveWith<double?>(
+            //                               (Set<MaterialState> states) {
+            //                                 return 3; // Defer to the widget's default.
+            //                               },
+            //                             ), //elevation of button
+            //                             shape:
+            //                                 MaterialStateProperty.resolveWith<
+            //                                         RoundedRectangleBorder?>(
+            //                                     (Set<MaterialState> states) {
+            //                               return RoundedRectangleBorder(
+            //                                   borderRadius:
+            //                                       BorderRadius.circular(28));
+            //                             }),
+            //                             overlayColor: MaterialStateProperty
+            //                                 .resolveWith<Color?>(
+            //                               (Set<MaterialState> states) {
+            //                                 if (states.contains(
+            //                                     MaterialState.pressed)) {
+            //                                   return Colors
+            //                                       .black12; //<-- SEE HERE
+            //                                 }
+            //                                 return null; // Defer to the widget's default.
+            //                               },
+            //                             ),
+            //                           ),
+            //                           onPressed: () => {},
+            //                           child: Row(
+            //                             mainAxisAlignment:
+            //                                 MainAxisAlignment.spaceBetween,
+            //                             children: [
+            //                               Text(
+            //                                 "Leaderboard",
+            //                                 style:
+            //                                     TextStyle(color: Colors.black),
+            //                               ),
+            //                               Icon(CupertinoIcons
+            //                                   .arrow_up_right_square)
+            //                             ],
+            //                           )),
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 Expanded(
+            //                   flex: 2,
+            //                   child: Container(
+            //                     width: double.infinity,
+            //                     height: double.infinity,
+            //                     child: Column(
+            //                         mainAxisAlignment:
+            //                             MainAxisAlignment.spaceBetween,
+            //                         crossAxisAlignment:
+            //                             CrossAxisAlignment.center,
+            //                         children: [
+            //                           Container(
+            //                             width: double.infinity,
+            //                             padding: EdgeInsets.only(
+            //                                 left: 10, right: 10),
+            //                             child: Text(
+            //                               "Individual Rank",
+            //                               style: TextStyle(
+            //                                   fontSize: 20,
+            //                                   fontFamily: "Gotham",
+            //                                   color: Colors.white),
+            //                             ),
+            //                           ),
+            //                           Container(
+            //                             width: 130,
+            //                             height: 40,
+            //                             decoration: BoxDecoration(
+            //                                 color: Colors.lightGreen
+            //                                     .withOpacity(0.67),
+            //                                 borderRadius:
+            //                                     BorderRadius.circular(12)),
+            //                             padding: EdgeInsets.all(10),
+            //                             margin: EdgeInsets.only(
+            //                               bottom: 20,
+            //                             ),
+            //                             child: Row(
+            //                               mainAxisAlignment:
+            //                                   MainAxisAlignment.spaceAround,
+            //                               children: [
+            //                                 Icon(
+            //                                   CupertinoIcons.chart_bar_alt_fill,
+            //                                   color: Colors.white,
+            //                                 ),
+            //                                 Text(
+            //                                   snapshot.data!["individualRank"]
+            //                                       .toString(),
+            //                                   textAlign: TextAlign.center,
+            //                                   style: TextStyle(
+            //                                       fontSize: 15,
+            //                                       fontFamily: "Gotham",
+            //                                       color: Colors.white),
+            //                                 ),
+            //                                 Icon(
+            //                                   CupertinoIcons.arrow_up,
+            //                                   color: Colors.white,
+            //                                 ),
+            //                               ],
+            //                             ),
+            //                           ),
+            //                         ]),
+            //                   ),
+            //                 )
+            //               ]),
+            //         ),
+            //       ),
+            //       // Card(
+            //       //   margin: EdgeInsets.only(left: 15, right: 5),
+            //       //   elevation: 20,
+            //       //   child: Container(
+            //       //     width: 200,
+            //       //     height: 300,
+            //       //     decoration: BoxDecoration(
+            //       //         // color: Color(0xff214D56),
+            //       //         // color: Colors.amberAccent,
+            //       //         image: DecorationImage(
+            //       //             image: AssetImage(
+            //       //                 "assets/images/dashboard_bg10_portait.jpg"),
+            //       //             fit: BoxFit.cover),
+            //       //         borderRadius: BorderRadius.circular(8)),
+            //       //     child: Stack(
+            //       //       children: [
+            //       //         Column(
+            //       //             mainAxisAlignment:
+            //       //                 MainAxisAlignment.spaceBetween,
+            //       //             children: [
+            //       //               Expanded(
+            //       //                 flex: 3,
+            //       //                 child: Container(
+            //       //                   width: double.infinity,
+            //       //                   margin: EdgeInsets.only(
+            //       //                     bottom: 8,
+            //       //                   ),
+            //       //                   decoration: BoxDecoration(
+            //       //                       // color: Colors.blue,
+            //       //                       color: Colors.blue.shade50,
+            //       //                       backgroundBlendMode:
+            //       //                           BlendMode.softLight),
+            //       //                   child: Container(
+            //       //                     alignment: Alignment.topRight,
+            //       //                     margin: EdgeInsets.only(
+            //       //                         bottom: 0, right: 4),
+            //       //                     width: 50,
+            //       //                     height: 50,
+            //       //                     child: ElevatedButton(
+            //       //                         style: ButtonStyle(
+            //       //                           maximumSize: MaterialStateProperty
+            //       //                               .resolveWith<Size?>(
+            //       //                             (Set<MaterialState> states) {
+            //       //                               //<-- SEE HERE
+            //       //                               return Size(160,
+            //       //                                   50); // Defer to the widget's default.
+            //       //                             }, //background color of button
+            //       //                           ),
+            //       //                           backgroundColor:
+            //       //                               MaterialStateProperty
+            //       //                                   .resolveWith<Color?>(
+            //       //                             (Set<MaterialState> states) {
+            //       //                               //<-- SEE HERE
+            //       //                               return Colors.white.withOpacity(
+            //       //                                   0.67); // Defer to the widget's default.
+            //       //                             }, //background color of button
+            //       //                           ),
+            //       //                           surfaceTintColor:
+            //       //                               MaterialStateProperty
+            //       //                                   .resolveWith<Color?>(
+            //       //                             (Set<MaterialState> states) {
+            //       //                               //<-- SEE HERE
+            //       //                               return Colors
+            //       //                                   .transparent; // Defer to the widget's default.
+            //       //                             }, //background color of button
+            //       //                           ),
+            //       //                           textStyle: MaterialStateProperty
+            //       //                               .resolveWith<TextStyle?>(
+            //       //                                   (states) => TextStyle(
+            //       //                                       fontFamily: 'Gotham',
+            //       //                                       color: Colors.black,
+            //       //                                       fontSize:
+            //       //                                           13)), //border width and color
+            //       //                           elevation: MaterialStateProperty
+            //       //                               .resolveWith<double?>(
+            //       //                             (Set<MaterialState> states) {
+            //       //                               return 3; // Defer to the widget's default.
+            //       //                             },
+            //       //                           ), //elevation of button
+            //       //                           shape: MaterialStateProperty
+            //       //                               .resolveWith<
+            //       //                                       RoundedRectangleBorder?>(
+            //       //                                   (Set<MaterialState>
+            //       //                                       states) {
+            //       //                             return RoundedRectangleBorder(
+            //       //                                 borderRadius:
+            //       //                                     BorderRadius.circular(
+            //       //                                         28));
+            //       //                           }),
+            //       //                           overlayColor:
+            //       //                               MaterialStateProperty
+            //       //                                   .resolveWith<Color?>(
+            //       //                             (Set<MaterialState> states) {
+            //       //                               if (states.contains(
+            //       //                                   MaterialState.pressed)) {
+            //       //                                 return Colors
+            //       //                                     .black12; //<-- SEE HERE
+            //       //                               }
+            //       //                               return null; // Defer to the widget's default.
+            //       //                             },
+            //       //                           ),
+            //       //                         ),
+            //       //                         onPressed: () => {},
+            //       //                         child: Row(
+            //       //                           mainAxisAlignment:
+            //       //                               MainAxisAlignment
+            //       //                                   .spaceBetween,
+            //       //                           children: [
+            //       //                             Text(
+            //       //                               "Leaderboard",
+            //       //                               style: TextStyle(
+            //       //                                   color: Colors.black),
+            //       //                             ),
+            //       //                             Icon(CupertinoIcons
+            //       //                                 .arrow_up_right_square)
+            //       //                           ],
+            //       //                         )),
+            //       //                   ),
+            //       //                 ),
+            //       //               ),
+            //       //               // Expanded(
+            //       //               //   flex: 2,
+            //       //               //   child: Container(
+            //       //               //     width: double.infinity,
+            //       //               //     height: double.infinity,
+            //       //               //     child: Column(
+            //       //               //         mainAxisAlignment:
+            //       //               //             MainAxisAlignment.spaceBetween,
+            //       //               //         crossAxisAlignment:
+            //       //               //             CrossAxisAlignment.center,
+            //       //               //         children: [
+            //       //               //           Container(
+            //       //               //             width: double.infinity,
+            //       //               //             padding: EdgeInsets.only(
+            //       //               //                 left: 10, right: 10),
+            //       //               //             child: Text(
+            //       //               //               "Family Rank",
+            //       //               //               style: TextStyle(
+            //       //               //                   fontSize: 20,
+            //       //               //                   fontFamily: "Gotham",
+            //       //               //                   color: Colors.white),
+            //       //               //             ),
+            //       //               //           ),
+            //       //               //           Container(
+            //       //               //             width: 130,
+            //       //               //             height: 40,
+            //       //               //             decoration: BoxDecoration(
+            //       //               //                 color: Colors.lightGreen
+            //       //               //                     .withOpacity(0.67),
+            //       //               //                 borderRadius:
+            //       //               //                     BorderRadius.circular(
+            //       //               //                         12)),
+            //       //               //             padding: EdgeInsets.all(10),
+            //       //               //             margin: EdgeInsets.only(
+            //       //               //               bottom: 20,
+            //       //               //             ),
+            //       //               //             child: Row(
+            //       //               //               mainAxisAlignment:
+            //       //               //                   MainAxisAlignment
+            //       //               //                       .spaceAround,
+            //       //               //               children: [
+            //       //               //                 Icon(
+            //       //               //                   CupertinoIcons
+            //       //               //                       .chart_bar_alt_fill,
+            //       //               //                   color: Colors.white,
+            //       //               //                 ),
+            //       //               //                 (!isPending)
+            //       //               //                     ? FutureBuilder(
+            //       //               //                         future: FirebaseFirestore
+            //       //               //                             .instance
+            //       //               //                             .collection(
+            //       //               //                                 "family")
+            //       //               //                             .where("accountNo",
+            //       //               //                                 isEqualTo: snapshot
+            //       //               //                                         .data![
+            //       //               //                                     "accountNo"])
+            //       //               //                             .get(),
+            //       //               //                         builder: (context,
+            //       //               //                             snapshot) {
+            //       //               //                           if (!snapshot
+            //       //               //                               .hasData) {
+            //       //               //                             return CircularProgressIndicator
+            //       //               //                                 .adaptive();
+            //       //               //                           }
+
+            //       //               //                           return Text(
+            //       //               //                             snapshot
+            //       //               //                                 .data!
+            //       //               //                                 .docs
+            //       //               //                                 .first[
+            //       //               //                                     "familyRank"]
+            //       //               //                                 .toString(),
+            //       //               //                             textAlign:
+            //       //               //                                 TextAlign
+            //       //               //                                     .center,
+            //       //               //                             style: TextStyle(
+            //       //               //                                 fontSize: 15,
+            //       //               //                                 fontFamily:
+            //       //               //                                     "Gotham",
+            //       //               //                                 color: Colors
+            //       //               //                                     .white),
+            //       //               //                           );
+            //       //               //                         })
+            //       //               //                     : Text(
+            //       //               //                         "NA",
+            //       //               //                         textAlign:
+            //       //               //                             TextAlign.center,
+            //       //               //                         style: TextStyle(
+            //       //               //                           fontSize: 15,
+            //       //               //                           fontFamily:
+            //       //               //                               "Gotham",
+            //       //               //                           color: Colors.white,
+            //       //               //                           overflow:
+            //       //               //                               TextOverflow
+            //       //               //                                   .clip,
+            //       //               //                         ),
+            //       //               //                       )
+
+            //       //               //                 // // "rank",
+            //       //               //                 ,
+            //       //               //                 Icon(
+            //       //               //                   CupertinoIcons.arrow_up,
+            //       //               //                   color: Colors.white,
+            //       //               //                 ),
+            //       //               //               ],
+            //       //               //             ),
+            //       //               //           ),
+            //       //               //         ]),
+            //       //               //   ),
+            //       //               // )
+            //       //             ]),
+            //       //         (isPending)
+            //       //             ? Container(
+            //       //                 height: double.infinity,
+            //       //                 width: double.infinity,
+            //       //                 decoration: BoxDecoration(
+            //       //                     backgroundBlendMode: BlendMode.darken,
+            //       //                     color: Colors.black38),
+            //       //                 child: Center(
+            //       //                   child: Text(
+            //       //                     "Your request is still pending",
+            //       //                     textAlign: TextAlign.center,
+            //       //                     style: TextStyle(
+            //       //                       color: Colors.white,
+            //       //                       fontSize: 20,
+            //       //                       fontWeight: FontWeight.bold,
+            //       //                     ),
+            //       //                   ),
+            //       //                 ))
+            //       //             : SizedBox(),
+            //       //       ],
+            //       //     ),
+            //       //   ),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
           );
         }));
   }

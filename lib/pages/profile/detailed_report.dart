@@ -151,74 +151,74 @@ class _detailedReportsState extends State<detailedReports> {
                             ),
                           ]),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-                      height: 40,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Total Steps of month",
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontFamily: "Gotham",
-                              ),
-                            ),
-                            Text(
-                              totalSteps.toString(),
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontFamily: "Gotham",
-                                  color: Colors.green.shade600),
-                            ),
-                          ]),
-                    ),
-                    (is_requested)
-                        ? SizedBox()
-                        : FutureBuilder(
-                            future: FirebaseFirestore.instance
-                                .collection("family")
-                                .where("accountNo",
-                                    isEqualTo: snapshot.data!["accountNo"])
-                                .get(),
-                            builder: ((context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return Container(
-                                  height: 40,
-                                  child: Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive()),
-                                );
-                              }
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+                    //   height: 40,
+                    //   child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       children: [
+                    //         Text(
+                    //           "Total Steps of month",
+                    //           style: TextStyle(
+                    //             fontSize: 25,
+                    //             fontFamily: "Gotham",
+                    //           ),
+                    //         ),
+                    //         Text(
+                    //           totalSteps.toString(),
+                    //           style: TextStyle(
+                    //               fontSize: 25,
+                    //               fontFamily: "Gotham",
+                    //               color: Colors.green.shade600),
+                    //         ),
+                    //       ]),
+                    // ),
+                    // (is_requested)
+                    //     ? SizedBox()
+                    //     : FutureBuilder(
+                    //         future: FirebaseFirestore.instance
+                    //             .collection("family")
+                    //             .where("accountNo",
+                    //                 isEqualTo: snapshot.data!["accountNo"])
+                    //             .get(),
+                    //         builder: ((context, snapshot) {
+                    //           if (!snapshot.hasData) {
+                    //             return Container(
+                    //               height: 40,
+                    //               child: Center(
+                    //                   child:
+                    //                       CircularProgressIndicator.adaptive()),
+                    //             );
+                    //           }
 
-                              var familyRank =
-                                  snapshot.data!.docs.first["familyRank"];
+                    //           var familyRank =
+                    //               snapshot.data!.docs.first["familyRank"];
 
-                              return Container(
-                                margin: EdgeInsets.only(
-                                    left: 15, right: 15, top: 15),
-                                height: 40,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Family Rank",
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontFamily: "Gotham",
-                                        ),
-                                      ),
-                                      Text(
-                                        familyRank.toString(),
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontFamily: "Gotham",
-                                            color: Colors.green.shade600),
-                                      ),
-                                    ]),
-                              );
-                            }))
+                    //           return Container(
+                    //             margin: EdgeInsets.only(
+                    //                 left: 15, right: 15, top: 15),
+                    //             height: 40,
+                    //             child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceBetween,
+                    //                 children: [
+                    //                   Text(
+                    //                     "Family Rank",
+                    //                     style: TextStyle(
+                    //                       fontSize: 25,
+                    //                       fontFamily: "Gotham",
+                    //                     ),
+                    //                   ),
+                    //                   Text(
+                    //                     familyRank.toString(),
+                    //                     style: TextStyle(
+                    //                         fontSize: 25,
+                    //                         fontFamily: "Gotham",
+                    //                         color: Colors.green.shade600),
+                    //                   ),
+                    //                 ]),
+                    //           );
+                    //         }))
                   ],
                 );
               },
@@ -226,160 +226,160 @@ class _detailedReportsState extends State<detailedReports> {
             Container(
               decoration: BoxDecoration(border: Border.all(width: 0.5)),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-              height: 40,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Steps Count this Month",
-                      style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
-                    ),
-                  ]),
-            ),
-            FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection("Users")
-                  .doc(FirebaseAuth.instance.currentUser!.email)
-                  .get(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox(
-                    height: 600,
-                    width: double.infinity,
-                    child: Center(child: CircularProgressIndicator.adaptive()),
-                  );
-                }
+            // Container(
+            //   margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+            //   height: 40,
+            //   child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           "Steps Count this Month",
+            //           style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
+            //         ),
+            //       ]),
+            // ),
+            // FutureBuilder(
+            //   future: FirebaseFirestore.instance
+            //       .collection("Users")
+            //       .doc(FirebaseAuth.instance.currentUser!.email)
+            //       .get(),
+            //   builder: (context, snapshot) {
+            //     if (!snapshot.hasData) {
+            //       return const SizedBox(
+            //         height: 600,
+            //         width: double.infinity,
+            //         child: Center(child: CircularProgressIndicator.adaptive()),
+            //       );
+            //     }
 
-                print("got Data");
+            //     print("got Data");
 
-                var stepsData = snapshot.data!["stepsCount"];
-                return Container(
-                    // ? Section 2 -- Consumption -- Starting
-                    height: 250,
-                    margin: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(21),
-                        // color: Colors.amber,
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/dashboard_bg3_landscape.jpg"),
-                            fit: BoxFit.cover),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0, 70),
-                              blurRadius: 100,
-                              blurStyle: BlurStyle.normal)
-                        ]),
-                    child: stepsGraph(stepsData));
-              },
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-              height: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Set a Daily Step Goal",
-                    style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
-                  ),
-                ],
-              ),
-            ),
-            Form(
-              key: _goalForm,
-              child: Column(
-                children: [
-                  FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection("Users")
-                          .doc(FirebaseAuth.instance.currentUser!.email)
-                          .get(),
-                      builder: ((context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return SizedBox(
-                            height: 40,
-                          );
-                        }
+            //     var stepsData = snapshot.data!["stepsCount"];
+            //     return Container(
+            //         // ? Section 2 -- Consumption -- Starting
+            //         height: 250,
+            //         margin: EdgeInsets.all(15),
+            //         decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(21),
+            //             // color: Colors.amber,
+            //             image: DecorationImage(
+            //                 image: AssetImage(
+            //                     "assets/images/dashboard_bg3_landscape.jpg"),
+            //                 fit: BoxFit.cover),
+            //             boxShadow: const [
+            //               BoxShadow(
+            //                   color: Colors.black12,
+            //                   offset: Offset(0, 70),
+            //                   blurRadius: 100,
+            //                   blurStyle: BlurStyle.normal)
+            //             ]),
+            //         child: stepsGraph(stepsData));
+            //   },
+            // ),
+            // Container(
+            //   margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+            //   height: 80,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         "Set a Daily Step Goal",
+            //         style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Form(
+            //   key: _goalForm,
+            //   child: Column(
+            //     children: [
+            //       FutureBuilder(
+            //           future: FirebaseFirestore.instance
+            //               .collection("Users")
+            //               .doc(FirebaseAuth.instance.currentUser!.email)
+            //               .get(),
+            //           builder: ((context, snapshot) {
+            //             if (!snapshot.hasData) {
+            //               return SizedBox(
+            //                 height: 40,
+            //               );
+            //             }
 
-                        var _goalNumber = "NA";
-                        try {
-                          _goalNumber = (snapshot.data!["stepsGoal"] as String);
-                        } catch (_) {}
-                        _goal.text = _goalNumber;
-                        return Container(
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, top: 15),
-                          padding: EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                          child: TextFormField(
-                            controller: _goal,
-                            keyboardType: TextInputType.number,
-                            obscureText: false,
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              labelText: "Daily Goal",
-                              fillColor: Colors.white,
-                              // border: InputBorder.none
-                              // border: OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(8.0),
-                              //   borderSide: const BorderSide(),
-                              // ),
-                              //fillColor: Colors.green
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Life is nothing without a goal";
-                              } else {
-                                return null;
-                              }
-                            },
-                            style: const TextStyle(
-                              fontFamily: "Epilogue",
-                            ),
-                          ),
-                        );
-                      })),
-                  InkWell(
-                    onTap: () async {
-                      if (_goalForm.currentState!.validate()) {
-                        var data = {"stepsGoal": int.parse(_goal.text)};
+            //             var _goalNumber = "NA";
+            //             try {
+            //               _goalNumber = (snapshot.data!["stepsGoal"] as String);
+            //             } catch (_) {}
+            //             _goal.text = _goalNumber;
+            //             return Container(
+            //               margin: const EdgeInsets.only(
+            //                   left: 20, right: 20, top: 15),
+            //               padding: EdgeInsets.only(left: 10, right: 10),
+            //               decoration: BoxDecoration(
+            //                 borderRadius: BorderRadius.circular(12),
+            //                 color: Colors.white.withOpacity(0.5),
+            //               ),
+            //               child: TextFormField(
+            //                 controller: _goal,
+            //                 keyboardType: TextInputType.number,
+            //                 obscureText: false,
+            //                 enableSuggestions: false,
+            //                 autocorrect: false,
+            //                 decoration: InputDecoration(
+            //                   labelText: "Daily Goal",
+            //                   fillColor: Colors.white,
+            //                   // border: InputBorder.none
+            //                   // border: OutlineInputBorder(
+            //                   //   borderRadius: BorderRadius.circular(8.0),
+            //                   //   borderSide: const BorderSide(),
+            //                   // ),
+            //                   //fillColor: Colors.green
+            //                 ),
+            //                 validator: (value) {
+            //                   if (value == null || value.isEmpty) {
+            //                     return "Life is nothing without a goal";
+            //                   } else {
+            //                     return null;
+            //                   }
+            //                 },
+            //                 style: const TextStyle(
+            //                   fontFamily: "Epilogue",
+            //                 ),
+            //               ),
+            //             );
+            //           })),
+            //       InkWell(
+            //         onTap: () async {
+            //           if (_goalForm.currentState!.validate()) {
+            //             var data = {"stepsGoal": int.parse(_goal.text)};
 
-                        await FirebaseFirestore.instance
-                            .collection("Users")
-                            .doc(FirebaseAuth.instance.currentUser!.email)
-                            .set(data, SetOptions(merge: true));
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 90,
-                      margin: EdgeInsets.all(15),
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: Colors.green.shade300,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "Save",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Icon(CupertinoIcons.checkmark_alt)
-                          ]),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            //             await FirebaseFirestore.instance
+            //                 .collection("Users")
+            //                 .doc(FirebaseAuth.instance.currentUser!.email)
+            //                 .set(data, SetOptions(merge: true));
+            //           }
+            //         },
+            //         child: Container(
+            //           height: 40,
+            //           width: 90,
+            //           margin: EdgeInsets.all(15),
+            //           padding: EdgeInsets.all(5),
+            //           decoration: BoxDecoration(
+            //               color: Colors.green.shade300,
+            //               borderRadius: BorderRadius.circular(10)),
+            //           child: Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //               children: [
+            //                 Text(
+            //                   "Save",
+            //                   style: TextStyle(fontSize: 18),
+            //                 ),
+            //                 Icon(CupertinoIcons.checkmark_alt)
+            //               ]),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             Container(
               margin: EdgeInsets.only(left: 15, right: 15, top: 15),
               height: 80,
@@ -428,6 +428,115 @@ class _detailedReportsState extends State<detailedReports> {
                           ]),
                       child: consumptionGraph());
                 }),
+            Container(
+              margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+              // height: 100,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Set a Monthly Consumption \nGoal",
+                    style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
+                  ),
+                ],
+              ),
+            ),
+            Form(
+              key: _goalForm,
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(FirebaseAuth.instance.currentUser!.email)
+                        .get(),
+                    builder: ((context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return SizedBox(
+                          height: 40,
+                        );
+                      }
+
+                      var _goalNumber = "NA";
+                      try {
+                        print(snapshot.data!.data());
+                        _goalNumber = snapshot.data!["unitsGoal"].toString();
+                        print("Goal Number $_goalNumber");
+                      } catch (_) {}
+                      _goal.text = _goalNumber;
+                      return Container(
+                        margin:
+                            const EdgeInsets.only(left: 20, right: 20, top: 15),
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                        child: TextFormField(
+                          controller: _goal,
+                          keyboardType: TextInputType.number,
+                          obscureText: false,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            labelText: "Monthly Goal (in Units)",
+                            fillColor: Colors.white,
+                            // border: InputBorder.none
+                            // border: OutlineInputBorder(
+                            //   borderRadius: BorderRadius.circular(8.0),
+                            //   borderSide: const BorderSide(),
+                            // ),
+                            //fillColor: Colors.green
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Life is nothing without a goal";
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: const TextStyle(
+                            fontFamily: "Epilogue",
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (_goalForm.currentState!.validate()) {
+                        var data = {"unitsGoal": int.parse(_goal.text)};
+
+                        await FirebaseFirestore.instance
+                            .collection("Users")
+                            .doc(FirebaseAuth.instance.currentUser!.email)
+                            .set(data, SetOptions(merge: true));
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 90,
+                      margin: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.green.shade300,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Save",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Icon(CupertinoIcons.checkmark_alt)
+                          ]),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

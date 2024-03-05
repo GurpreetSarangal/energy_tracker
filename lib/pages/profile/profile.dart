@@ -127,7 +127,6 @@ class _ProfilePageState extends State<ProfilePage> {
           (isAdmin)
               ? IconButton(
                   onPressed: () async {
-
                     Navigator.push(
                       context,
                       CupertinoPageRoute(builder: (context) => const newBlog()),
@@ -1251,68 +1250,68 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        margin: EdgeInsets.all(15),
-                        height: 60,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    steps,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Steps",
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                            )),
-                            Expanded(
-                                child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      left: BorderSide(
-                                          color: Colors.black26, width: 1.5),
-                                      right: BorderSide(
-                                          color: Colors.black26, width: 1.5))),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(stepsGoal,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("Steps Goal",
-                                      style: TextStyle(fontSize: 15))
-                                ],
-                              ),
-                            )),
-                            Expanded(
-                                child: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(completed,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("Completed",
-                                      style: TextStyle(fontSize: 15))
-                                ],
-                              ),
-                            )),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   margin: EdgeInsets.all(15),
+                      //   height: 60,
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(
+                      //           child: Container(
+                      //         child: Column(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Text(
+                      //               steps,
+                      //               style: TextStyle(
+                      //                   fontSize: 20,
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             Text(
+                      //               "Steps",
+                      //               style: TextStyle(fontSize: 15),
+                      //             )
+                      //           ],
+                      //         ),
+                      //       )),
+                      //       Expanded(
+                      //           child: Container(
+                      //         decoration: BoxDecoration(
+                      //             border: Border(
+                      //                 left: BorderSide(
+                      //                     color: Colors.black26, width: 1.5),
+                      //                 right: BorderSide(
+                      //                     color: Colors.black26, width: 1.5))),
+                      //         child: Column(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Text(stepsGoal,
+                      //                 style: TextStyle(
+                      //                   fontSize: 20,
+                      //                   fontWeight: FontWeight.bold,
+                      //                 )),
+                      //             Text("Steps Goal",
+                      //                 style: TextStyle(fontSize: 15))
+                      //           ],
+                      //         ),
+                      //       )),
+                      //       Expanded(
+                      //           child: Container(
+                      //         child: Column(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Text(completed,
+                      //                 style: TextStyle(
+                      //                   fontSize: 20,
+                      //                   fontWeight: FontWeight.bold,
+                      //                 )),
+                      //             Text("Completed",
+                      //                 style: TextStyle(fontSize: 15))
+                      //           ],
+                      //         ),
+                      //       )),
+                      //     ],
+                      //   ),
+                      // ),
                       (!isPending)
                           ? FutureBuilder(
                               future: FirebaseFirestore.instance
@@ -1402,6 +1401,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                       double todayUnits = 0;
                                       double thisMonthUnits = 0;
                                       double lastMonthUnits = 0;
+                                      String unitsGoal = "NA";
+
+                                      try {
+                                        unitsGoal = snapshot.data!["unitsGoal"]
+                                            .toString();
+                                      } catch (_) {}
+
                                       int todayDate = DateTime.now().day;
                                       int currMonth = DateTime.now().month;
                                       int currYear = DateTime.now().year;
@@ -1432,16 +1438,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                       return Column(
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    bottom: BorderSide(
-                                                        color: Colors.black26,
-                                                        width: 1.5))),
-                                          ),
+                                          // Container(
+                                          //   decoration: BoxDecoration(
+                                          //       border: Border(
+                                          //           bottom: BorderSide(
+                                          //               color: Colors.black26,
+                                          //               width: 1.5))),
+                                          // ),
                                           Container(
                                             height: 60,
-                                            margin: EdgeInsets.all(15),
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 15),
                                             child: Row(
                                               children: [
                                                 Expanded(
@@ -1462,6 +1469,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         style: TextStyle(
                                                             fontSize: 15))
                                                   ],
+                                                )),
+                                                Expanded(
+                                                    child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      left: BorderSide(
+                                                          color: Colors.black26,
+                                                          width: 1.5),
+                                                      // right: BorderSide(
+                                                      //     color: Colors.black26,
+                                                      //     width: 1.5),
+                                                    ),
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(unitsGoal,
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          )),
+                                                      Text("Month Goal",
+                                                          style: TextStyle(
+                                                              fontSize: 15))
+                                                    ],
+                                                  ),
                                                 )),
                                                 Expanded(
                                                     child: Container(
