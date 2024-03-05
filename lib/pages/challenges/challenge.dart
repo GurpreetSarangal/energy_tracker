@@ -78,13 +78,13 @@ class _ChallengeDetailsState extends State<ChallengeDetails> {
                 ),
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 toolbarHeight: 80,
-                actions: [
-                  IconButton(
-                      onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
-                  IconButton(
-                      onPressed: () async {},
-                      icon: Icon(CupertinoIcons.gear_alt))
-                ],
+                // actions: [
+                //   IconButton(
+                //       onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
+                //   IconButton(
+                //       onPressed: () async {},
+                //       icon: Icon(CupertinoIcons.gear_alt))
+                // ],
                 title: Text(
                   "Challenge Details",
                   style: TextStyle(

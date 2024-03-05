@@ -7,6 +7,7 @@ import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/pages/challenges/all_challenges.dart';
 import 'package:energy_tracker/pages/profile/detailed_report.dart';
 import 'package:energy_tracker/pages/profile/edit_profile.dart';
+import 'package:energy_tracker/pages/profile/new_blog.dart';
 import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -107,6 +108,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    String? email = FirebaseAuth.instance.currentUser!.email;
+    bool isAdmin = false;
+
+    if (email!.compareTo("gurpreetsarangal7@gmail.com") == 0) {
+      isAdmin = true;
+    }
     // getUser();
     return Scaffold(
       appBar: AppBar(
@@ -117,14 +124,19 @@ class _ProfilePageState extends State<ProfilePage> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         toolbarHeight: 80,
         actions: [
+          (isAdmin)
+              ? IconButton(
+                  onPressed: () async {
+
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => const newBlog()),
+                    );
+                  },
+                  icon: Icon(CupertinoIcons.plus_app))
+              : SizedBox(),
           IconButton(
               onPressed: () async {
-                // String uniqueId = DateTime.now().second.toString();
-
-                // var complitionMessage =
-                //     await computeIsolate(_setTempOnFirebase);
-
-                // print(complitionMessage);
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
@@ -254,21 +266,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                     fontSize: 25, fontFamily: "Gotham"),
                               ),
-                              // InkWell(
-                              //     onTap: () => {},
-                              //     child: Row(
-                              //       mainAxisAlignment:
-                              //           MainAxisAlignment.spaceBetween,
-                              //       children: [
-                              //         Text(
-                              //           "Details ",
-                              //           style: TextStyle(
-                              //               decoration:
-                              //                   TextDecoration.underline),
-                              //         ),
-                              //         Icon(CupertinoIcons.arrow_right)
-                              //       ],
-                              //     ))
                             ]),
                       ),
                     ];
@@ -423,8 +420,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                               await FirebaseFirestore.instance
                                                   .collection("Users")
                                                   .doc(value.data()!["email"])
-                                                  .set({"isRequested": false},
-                                                      SetOptions(merge: true));
+                                                  .set({
+                                                "isRequested": false,
+                                                "requestPending": false
+                                              }, SetOptions(merge: true));
                                             });
 
                                             setState(() {});
@@ -856,18 +855,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(fontSize: 25, fontFamily: "Gotham"),
                     ),
                     InkWell(
-                        onTap: () => {},
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Details ",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline),
-                            ),
-                            Icon(CupertinoIcons.arrow_right)
-                          ],
-                        ))
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Details ",
+                          style:
+                              TextStyle(decoration: TextDecoration.underline),
+                        ),
+                        Icon(CupertinoIcons.arrow_right)
+                      ],
+                    ))
                   ]),
             ),
           ];

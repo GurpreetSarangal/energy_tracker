@@ -103,7 +103,7 @@ class _detailedReportsState extends State<detailedReports> {
                   var tempDate = (data["date"] as Timestamp).toDate();
                   if (currMonth == tempDate.month &&
                       currYear == tempDate.year) {
-                    totalSteps += int.parse(data["steps"]);
+                    totalSteps += (data["steps"] as int);
                   }
                 }
 
@@ -224,7 +224,7 @@ class _detailedReportsState extends State<detailedReports> {
               },
             ),
             Container(
-              decoration: BoxDecoration(border: Border.all()),
+              decoration: BoxDecoration(border: Border.all(width: 0.5)),
             ),
             Container(
               margin: EdgeInsets.only(left: 15, right: 15, top: 15),
@@ -246,11 +246,13 @@ class _detailedReportsState extends State<detailedReports> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SizedBox(
-                    height: double.infinity,
+                    height: 600,
                     width: double.infinity,
                     child: Center(child: CircularProgressIndicator.adaptive()),
                   );
                 }
+
+                print("got Data");
 
                 var stepsData = snapshot.data!["stepsCount"];
                 return Container(
@@ -271,7 +273,7 @@ class _detailedReportsState extends State<detailedReports> {
                               blurRadius: 100,
                               blurStyle: BlurStyle.normal)
                         ]),
-                    child: stepsGraph());
+                    child: stepsGraph(stepsData));
               },
             ),
             Container(
@@ -305,7 +307,7 @@ class _detailedReportsState extends State<detailedReports> {
 
                         var _goalNumber = "NA";
                         try {
-                          _goalNumber = snapshot.data!["stepsGoal"];
+                          _goalNumber = (snapshot.data!["stepsGoal"] as String);
                         } catch (_) {}
                         _goal.text = _goalNumber;
                         return Container(
@@ -432,20 +434,10 @@ class _detailedReportsState extends State<detailedReports> {
     );
   }
 
-  Widget stepsGraph() {
+  Widget stepsGraph(List stepsData) {
     return FutureBuilder(
-      future: FirebaseFirestore.instance
-          .collection("Users")
-          .doc(FirebaseAuth.instance.currentUser!.email)
-          .get(),
+      future: FirebaseFirestore.instance.collection("Users").get(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData ||
-            snapshot.connectionState != ConnectionState.done) {
-          return Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        }
-
         // return AspectRatio(
         //     aspectRatio: 1.70,
         //     child: Center(
@@ -462,12 +454,23 @@ class _detailedReportsState extends State<detailedReports> {
 
         // ? get needed data
         // print(snapshot.data!["historicalData"]);
-
+        if (!snapshot.hasData) {
+          return AspectRatio(
+            aspectRatio: 1.70,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                right: 12,
+                left: 6,
+                top: 12,
+                bottom: 7,
+              ),
+            ),
+          );
+        }
         List<double> daysWise = [];
         List<double> dates = [];
         List<FlSpot> tempSpots = [];
-        DateTime dtFirst =
-            (snapshot.data!["stepsCount"].first["date"] as Timestamp).toDate();
+        DateTime dtFirst = (stepsData.first["date"] as Timestamp).toDate();
         int prevDate = 0;
         // snapshot.data!["historicalData"].first["date"];
         int prevMonth = DateTime.now().month;
@@ -486,8 +489,12 @@ class _detailedReportsState extends State<detailedReports> {
         int currMonth = prevMonth;
         int currYear = prevYear;
         double tempUnits = 0;
+        int bottomInterval = 7;
+        int leftInterval = 1;
 
-        for (var data in snapshot.data!["stepsCount"]) {
+        int max = 0;
+
+        for (var data in stepsData) {
           print(data);
           DateTime dtCurr = (data["date"] as Timestamp).toDate();
 
@@ -506,15 +513,21 @@ class _detailedReportsState extends State<detailedReports> {
 
             dates.add(double.parse(currDate.toString()));
             daysWise.add(data["steps"].toDouble());
-            print("last added");
+            print("steps last added");
+            max = (max < data["steps"]) ? data["steps"] : max;
           } else if (currYear == prevYear &&
               currMonth == prevMonth &&
               currDate == prevDate) {
             // daysWise.last = data["units"];
             daysWise[daysWise.length - 1] = data["steps"].toDouble();
-            print("last updated");
+            max = (max < data["steps"]) ? data["steps"] : max;
+            print("steps last updated");
           }
         }
+        print("Max $max");
+        leftInterval = max ~/ 5;
+        print("LeftInterval $leftInterval");
+        // leftInterval = 5000;
 
         print(daysWise);
         print(dates);
@@ -530,6 +543,8 @@ class _detailedReportsState extends State<detailedReports> {
         //   index++;
         // }
 
+        print("Steps ${tempSpots}");
+
         return AspectRatio(
           aspectRatio: 1.70,
           child: Padding(
@@ -541,7 +556,7 @@ class _detailedReportsState extends State<detailedReports> {
             ),
             child: LineChart(
               // _showAvg ? avgData() : mainData(),
-              recentConsumptionGraph(tempSpots),
+              recentConsumptionGraph(tempSpots, leftInterval, bottomInterval),
             ),
           ),
         );
@@ -685,7 +700,7 @@ class _detailedReportsState extends State<detailedReports> {
                         ),
                         child: LineChart(
                           // _showAvg ? avgData() : mainData(),
-                          recentConsumptionGraph(tempSpots),
+                          recentConsumptionGraph(tempSpots, 20, 7),
                         ),
                       ),
                     );
@@ -695,13 +710,14 @@ class _detailedReportsState extends State<detailedReports> {
     );
   }
 
-  LineChartData recentConsumptionGraph(List<FlSpot> spots) {
+  LineChartData recentConsumptionGraph(List<FlSpot> spots,
+      [int leftInterval = 1, int bottomInterval = 1]) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 10,
-        verticalInterval: 10,
+        // drawVerticalLine: true,
+        horizontalInterval: 1000,
+        verticalInterval: 1000,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
             color: AppColors.mainGridLineColor,
@@ -727,16 +743,16 @@ class _detailedReportsState extends State<detailedReports> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 1,
+            interval: bottomInterval.toDouble(),
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: leftInterval.toDouble(),
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 45,
           ),
         ),
       ),
@@ -744,7 +760,7 @@ class _detailedReportsState extends State<detailedReports> {
         show: false,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
+      minX: 1,
       // maxX: 11,
       minY: 0,
       // maxY: 10,
@@ -795,21 +811,21 @@ class _detailedReportsState extends State<detailedReports> {
     //     break;
     // }
 
-    int hour = DateTime.now().hour;
+    // int hour = DateTime.now().hour;
     // int hour = 7;
 
     // int val = ((hour - (12 - value)) % 24).toInt();
-    if (val % 7 == 0) {
-      text = Text(
-        val.toInt().toString(),
-        style: style,
-      );
-    } else {
-      text = Text(
-        "",
-        style: style,
-      );
-    }
+    // if (val.toInt() % 7 == 0) {
+    text = Text(
+      val.toInt().toString(),
+      style: style,
+    );
+    // } else {
+    //   text = Text(
+    //     "",
+    //     style: style,
+    //   );
+    // }
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -837,9 +853,9 @@ class _detailedReportsState extends State<detailedReports> {
     //   default:
     //     return Container();
     // }
-    if (value == 0 || value == meta.appliedInterval || value == meta.max) {
-      return Text(text, style: style, textAlign: TextAlign.left);
-    }
+    // if (value == 0 || value == meta.appliedInterval || value == meta.max) {
+    return Text(text, style: style, textAlign: TextAlign.left);
+    // }
 
     return Text("", style: style, textAlign: TextAlign.left);
   }

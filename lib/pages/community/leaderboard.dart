@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:energy_tracker/pages/dashboard/read_blog.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -219,37 +221,273 @@ class _LeaderboardState extends State<Leaderboard> {
                 ]),
           ),
           Container(
-            margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-            padding: EdgeInsets.all(15),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.green.shade200,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.black26, width: 1.5),
-            ),
-            height: 80,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "Upcoming Blogs will be Posted Here",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: "Epilogue",
-                  ),
-                ),
-                Text(
-                  "Stay tuned !!",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontFamily: "Epilogue"),
-                ),
-              ],
-            ),
-          ),
+              // ? Section 3 -- Consumption -- Starting
+              color: Colors.transparent,
+              height: 350,
+              child: FutureBuilder(
+                future: FirebaseFirestore.instance.collection("blogs").get(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }
+
+                  List<Widget> cardsRow = [];
+
+                  for (var doc in snapshot.data!.docs.toList()) {
+                    print(doc.data());
+                    var blogData = doc.data();
+                    var blogItem = FutureBuilder(
+                        future: FirebaseStorage.instance
+                            .ref()
+                            .child(doc.data()["image"])
+                            .getDownloadURL(),
+                        builder: (context, snapshot2) {
+                          String url = "didn't got";
+                          if (snapshot2.hasData) {
+                            url = snapshot2.data!;
+
+                            return Card(
+                              margin: EdgeInsets.only(left: 15, right: 5),
+                              elevation: 20,
+                              child: Container(
+                                width: 200,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                    // color: Color(0xff214D56),
+                                    // color: Colors.amberAccent,
+                                    image: DecorationImage(
+                                        image: NetworkImage(url),
+                                        fit: BoxFit.cover,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black38, BlendMode.darken)),
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                            bottom: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              // color: Colors.blue,
+                                              color: Colors.blue.shade50,
+                                              backgroundBlendMode:
+                                                  BlendMode.softLight),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Text(
+                                                    blogData["heading"],
+                                                    style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 20,
+                                                        fontFamily: "Gotham",
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: double.infinity,
+                                                  height: 35,
+                                                  padding: EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Text(
+                                                    blogData["description"],
+                                                    style: TextStyle(
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        fontSize: 14,
+                                                        fontFamily: "Gotham",
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 8, right: 7),
+                                                  width: 140,
+                                                  child: ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color?>(
+                                                          (Set<MaterialState>
+                                                              states) {
+                                                            //<-- SEE HERE
+                                                            return Colors.white
+                                                                .withOpacity(
+                                                                    0.67); // Defer to the widget's default.
+                                                          }, //background color of button
+                                                        ),
+                                                        surfaceTintColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color?>(
+                                                          (Set<MaterialState>
+                                                              states) {
+                                                            //<-- SEE HERE
+                                                            return Colors
+                                                                .transparent; // Defer to the widget's default.
+                                                          }, //background color of button
+                                                        ),
+                                                        textStyle: MaterialStateProperty
+                                                            .resolveWith<
+                                                                    TextStyle?>(
+                                                                (states) => TextStyle(
+                                                                    fontFamily:
+                                                                        'Gotham',
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        13)), //border width and color
+                                                        elevation:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    double?>(
+                                                          (Set<MaterialState>
+                                                              states) {
+                                                            return 3; // Defer to the widget's default.
+                                                          },
+                                                        ), //elevation of button
+                                                        shape: MaterialStateProperty
+                                                            .resolveWith<
+                                                                    RoundedRectangleBorder?>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                          return RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          28));
+                                                        }),
+                                                        overlayColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color?>(
+                                                          (Set<MaterialState>
+                                                              states) {
+                                                            if (states.contains(
+                                                                MaterialState
+                                                                    .pressed)) {
+                                                              return Colors
+                                                                  .black12; //<-- SEE HERE
+                                                            }
+                                                            return null; // Defer to the widget's default.
+                                                          },
+                                                        ),
+                                                      ),
+                                                      onPressed: () => {
+                                                            Navigator.push(
+                                                              context,
+                                                              CupertinoPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        readBlog(),
+                                                                settings:
+                                                                    RouteSettings(
+                                                                  arguments:
+                                                                      blogData[
+                                                                          "blogId"],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          },
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Read Full",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          Icon(CupertinoIcons
+                                                              .arrow_up_right_square)
+                                                        ],
+                                                      )),
+                                                ),
+                                              ]),
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          }
+                        });
+
+                    cardsRow.add(blogItem);
+                  }
+
+                  if (cardsRow.isEmpty) {
+                    var defaultItem = Container(
+                      margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+                      padding: EdgeInsets.all(15),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade200,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.black26, width: 1.5),
+                      ),
+                      // height: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "Upcoming Blogs will be Posted Here",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: "Epilogue",
+                            ),
+                          ),
+                          Text(
+                            "Stay tuned !!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontFamily: "Epilogue"),
+                          ),
+                        ],
+                      ),
+                    );
+                    cardsRow.add(defaultItem);
+                  }
+
+                  return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: cardsRow,
+                      ));
+                },
+              )),
           Container(
             margin: EdgeInsets.only(left: 15, right: 15, top: 15),
             height: 40,

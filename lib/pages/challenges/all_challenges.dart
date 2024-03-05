@@ -25,11 +25,11 @@ class _AllChallengesState extends State<AllChallenges> {
         leading: Icon(CupertinoIcons.question_circle),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         toolbarHeight: 80,
-        actions: [
-          IconButton(onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
-          IconButton(
-              onPressed: () async {}, icon: Icon(CupertinoIcons.gear_alt))
-        ],
+        // actions: [
+        //   IconButton(onPressed: () => {}, icon: Icon(CupertinoIcons.search)),
+        //   IconButton(
+        //       onPressed: () async {}, icon: Icon(CupertinoIcons.gear_alt))
+        // ],
         title: Text(
           "Challenges",
           style: TextStyle(fontFamily: "Epilogue", fontWeight: FontWeight.w600),

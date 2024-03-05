@@ -1,10 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
 
 import 'dart:async';
-import 'dart:io';
-import 'dart:isolate';
-
 import 'package:energy_tracker/pages/challenges/all_challenges.dart';
+import 'package:energy_tracker/pages/dashboard/read_blog.dart';
 import 'package:energy_tracker/pages/profile/steps.dart';
 import 'package:energy_tracker/pages/register/meter_no.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:energy_tracker/loginMethods/google_sign_in.dart';
 import 'package:energy_tracker/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +74,7 @@ class _DashboardState extends State<Dashboard> {
     steps = TextEditingController();
     rank = TextEditingController();
     score = TextEditingController();
-    init_sensor();
+    // init_sensor();
     // _listenToSteps();
 
     // _timeString = _formatDateTime(DateTime.now());
@@ -83,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
     // event = await ref.once();
     super.initState();
 
-    // updateScoreAndSteps();
+    updateScoreAndSteps();
   }
 
   void init_sensor() async {
@@ -139,8 +138,15 @@ class _DashboardState extends State<Dashboard> {
 
   updateRankAndScoreTesting(Map<String, dynamic> userData) async {
     //! implement Update
+    int max = await FirebaseFirestore.instance
+        .collection("Users")
+        .get()
+        .then((value) {
+      return value.docs.length;
+    });
+    print("max $max");
     int rand = Random().nextInt(2000);
-    int rand2 = Random().nextInt(2000);
+    int rand2 = Random().nextInt(max);
 
     List<dynamic> steps = userData["stepsCount"];
 
@@ -371,15 +377,17 @@ class _DashboardState extends State<Dashboard> {
                 // ),
                 // isDeviceConnected(),
                 Container(
+                  
                   margin:
                       EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 4),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.white,
                       image: DecorationImage(
                           image: AssetImage("assets/images/dashboard_bg2.jpg"),
                           fit: BoxFit.cover)),
-                  height: 200,
+                  // height: 200,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -387,9 +395,9 @@ class _DashboardState extends State<Dashboard> {
                         // width: ,
                         // margin: EdgeInsets.all(20),
                         padding: EdgeInsets.only(
-                          top: 30,
-                          left: 30,
-                        ),
+                            // top: 30,
+                            // left: 30,
+                            ),
                         child: Text(
                           "Hi, ${username}",
                           style: TextStyle(
@@ -400,7 +408,7 @@ class _DashboardState extends State<Dashboard> {
                       Container(
                         // width: ,
                         // margin: EdgeInsets.all(20),
-                        padding: EdgeInsets.only(left: 30, bottom: 10),
+                        // padding: EdgeInsets.only(left: 30, bottom: 10),
                         child: Text(
                           "Track your goals and electricity bills.",
                           style: TextStyle(
@@ -646,694 +654,250 @@ class _DashboardState extends State<Dashboard> {
                       ]),
                 ),
                 Container(
-                  // ? Section 3 -- Consumption -- Starting
-                  color: Colors.transparent,
-                  height: 350,
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Card(
-                            margin: EdgeInsets.only(left: 15, right: 5),
-                            elevation: 20,
-                            child: Container(
-                              width: 200,
-                              height: 300,
-                              decoration: BoxDecoration(
-                                  // color: Color(0xff214D56),
-                                  // color: Colors.amberAccent,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/dashboard_bg13_portait.jpg"),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            // color: Colors.blue,
-                                            color: Colors.blue.shade50,
-                                            backgroundBlendMode:
-                                                BlendMode.softLight),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "Title of the first Post is really awesome",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontSize: 20,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                height: 35,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "The discription of this post is also very impressive and very looooong",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      fontSize: 14,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
+                    // ? Section 3 -- Consumption -- Starting
+                    color: Colors.transparent,
+                    height: 350,
+                    child: FutureBuilder(
+                      future:
+                          FirebaseFirestore.instance.collection("blogs").get(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        }
+
+                        List<Widget> cardsRow = [];
+
+                        for (var doc in snapshot.data!.docs.toList()) {
+                          print(doc.data());
+                          var blogData = doc.data();
+                          var blogItem = FutureBuilder(
+                              future: FirebaseStorage.instance
+                                  .ref()
+                                  .child(doc.data()["image"])
+                                  .getDownloadURL(),
+                              builder: (context, snapshot2) {
+                                String url = "didn't got";
+                                if (snapshot2.hasData) {
+                                  url = snapshot2.data!;
+
+                                  return Card(
+                                    margin: EdgeInsets.only(left: 15, right: 5),
+                                    elevation: 20,
+                                    child: Container(
+                                      width: 200,
+                                      height: 300,
+                                      decoration: BoxDecoration(
+                                          // color: Color(0xff214D56),
+                                          // color: Colors.amberAccent,
+                                          image: DecorationImage(
+                                              image: NetworkImage(url),
+                                              fit: BoxFit.cover,
+                                              colorFilter: ColorFilter.mode(
+                                                  Colors.black38,
+                                                  BlendMode.darken)),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              flex: 3,
+                                              child: Container(
                                                 margin: EdgeInsets.only(
-                                                    bottom: 8, right: 7),
-                                                width: 140,
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors.white
-                                                              .withOpacity(
-                                                                  0.67); // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      surfaceTintColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors
-                                                              .transparent; // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      textStyle: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  TextStyle?>(
-                                                              (states) => TextStyle(
-                                                                  fontFamily:
-                                                                      'Gotham',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      13)), //border width and color
-                                                      elevation:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  double?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          return 3; // Defer to the widget's default.
-                                                        },
-                                                      ), //elevation of button
-                                                      shape: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  RoundedRectangleBorder?>(
-                                                              (Set<MaterialState>
-                                                                  states) {
-                                                        return RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        28));
-                                                      }),
-                                                      overlayColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          if (states.contains(
-                                                              MaterialState
-                                                                  .pressed)) {
-                                                            return Colors
-                                                                .black12; //<-- SEE HERE
-                                                          }
-                                                          return null; // Defer to the widget's default.
-                                                        },
-                                                      ),
-                                                    ),
-                                                    onPressed: () => {},
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Read Full",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                        Icon(CupertinoIcons
-                                                            .arrow_up_right_square)
-                                                      ],
-                                                    )),
+                                                  bottom: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                    // color: Colors.blue,
+                                                    color: Colors.blue.shade50,
+                                                    backgroundBlendMode:
+                                                        BlendMode.softLight),
                                               ),
-                                            ]),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          Card(
-                            margin: EdgeInsets.only(left: 15, right: 5),
-                            elevation: 20,
-                            child: Container(
-                              width: 200,
-                              height: 300,
-                              decoration: BoxDecoration(
-                                  // color: Color(0xff214D56),
-                                  // color: Colors.amberAccent,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/dashboard_bg14_portait.jpg"),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            // color: Colors.blue,
-                                            color: Colors.blue.shade50,
-                                            backgroundBlendMode:
-                                                BlendMode.softLight),
-                                      ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Text(
+                                                          blogData["heading"],
+                                                          style: TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              fontSize: 20,
+                                                              fontFamily:
+                                                                  "Gotham",
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        height: 35,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Text(
+                                                          blogData[
+                                                              "description"],
+                                                          style: TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .fade,
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  "Gotham",
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 8,
+                                                            right: 7),
+                                                        width: 140,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          Color?>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  //<-- SEE HERE
+                                                                  return Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.67); // Defer to the widget's default.
+                                                                }, //background color of button
+                                                              ),
+                                                              surfaceTintColor:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          Color?>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  //<-- SEE HERE
+                                                                  return Colors
+                                                                      .transparent; // Defer to the widget's default.
+                                                                }, //background color of button
+                                                              ),
+                                                              textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                                                                  (states) => TextStyle(
+                                                                      fontFamily:
+                                                                          'Gotham',
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          13)), //border width and color
+                                                              elevation:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          double?>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  return 3; // Defer to the widget's default.
+                                                                },
+                                                              ), //elevation of button
+                                                              shape: MaterialStateProperty
+                                                                  .resolveWith<
+                                                                      RoundedRectangleBorder?>((Set<
+                                                                          MaterialState>
+                                                                      states) {
+                                                                return RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            28));
+                                                              }),
+                                                              overlayColor:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          Color?>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  if (states.contains(
+                                                                      MaterialState
+                                                                          .pressed)) {
+                                                                    return Colors
+                                                                        .black12; //<-- SEE HERE
+                                                                  }
+                                                                  return null; // Defer to the widget's default.
+                                                                },
+                                                              ),
+                                                            ),
+                                                            onPressed: () => {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    CupertinoPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              readBlog(),
+                                                                      settings:
+                                                                          RouteSettings(
+                                                                        arguments:
+                                                                            blogData["blogId"],
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                },
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  "Read Full",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black),
+                                                                ),
+                                                                Icon(CupertinoIcons
+                                                                    .arrow_up_right_square)
+                                                              ],
+                                                            )),
+                                                      ),
+                                                    ]),
+                                              ),
+                                            )
+                                          ]),
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "Title of the first Post is really awesome",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontSize: 20,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                height: 35,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "The discription of this post is also very impressive and very looooong",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      fontSize: 14,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 8, right: 7),
-                                                width: 140,
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors.white
-                                                              .withOpacity(
-                                                                  0.67); // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      surfaceTintColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors
-                                                              .transparent; // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      textStyle: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  TextStyle?>(
-                                                              (states) => TextStyle(
-                                                                  fontFamily:
-                                                                      'Gotham',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      13)), //border width and color
-                                                      elevation:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  double?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          return 3; // Defer to the widget's default.
-                                                        },
-                                                      ), //elevation of button
-                                                      shape: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  RoundedRectangleBorder?>(
-                                                              (Set<MaterialState>
-                                                                  states) {
-                                                        return RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        28));
-                                                      }),
-                                                      overlayColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          if (states.contains(
-                                                              MaterialState
-                                                                  .pressed)) {
-                                                            return Colors
-                                                                .black12; //<-- SEE HERE
-                                                          }
-                                                          return null; // Defer to the widget's default.
-                                                        },
-                                                      ),
-                                                    ),
-                                                    onPressed: () => {},
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Read Full",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                        Icon(CupertinoIcons
-                                                            .arrow_up_right_square)
-                                                      ],
-                                                    )),
-                                              ),
-                                            ]),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          Card(
-                            margin: EdgeInsets.only(left: 25, right: 5),
-                            elevation: 20,
-                            child: Container(
-                              width: 200,
-                              height: 300,
-                              decoration: BoxDecoration(
-                                  // color: Color(0xff214D56),
-                                  // color: Colors.amberAccent,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/dashboard_bg15_portait.jpg"),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            // color: Colors.blue,
-                                            color: Colors.blue.shade50,
-                                            backgroundBlendMode:
-                                                BlendMode.softLight),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "Title of the first Post is really awesome",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontSize: 20,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                height: 35,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "The discription of this post is also very impressive and very looooong",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      fontSize: 14,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 8, right: 7),
-                                                width: 140,
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors.white
-                                                              .withOpacity(
-                                                                  0.67); // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      surfaceTintColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors
-                                                              .transparent; // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      textStyle: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  TextStyle?>(
-                                                              (states) => TextStyle(
-                                                                  fontFamily:
-                                                                      'Gotham',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      13)), //border width and color
-                                                      elevation:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  double?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          return 3; // Defer to the widget's default.
-                                                        },
-                                                      ), //elevation of button
-                                                      shape: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  RoundedRectangleBorder?>(
-                                                              (Set<MaterialState>
-                                                                  states) {
-                                                        return RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        28));
-                                                      }),
-                                                      overlayColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          if (states.contains(
-                                                              MaterialState
-                                                                  .pressed)) {
-                                                            return Colors
-                                                                .black12; //<-- SEE HERE
-                                                          }
-                                                          return null; // Defer to the widget's default.
-                                                        },
-                                                      ),
-                                                    ),
-                                                    onPressed: () => {},
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Read Full",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                        Icon(CupertinoIcons
-                                                            .arrow_up_right_square)
-                                                      ],
-                                                    )),
-                                              ),
-                                            ]),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          Card(
-                            margin: EdgeInsets.only(left: 15, right: 5),
-                            elevation: 20,
-                            child: Container(
-                              width: 200,
-                              height: 300,
-                              decoration: BoxDecoration(
-                                  color: Colors.black45,
-                                  backgroundBlendMode: BlendMode.softLight,
-                                  // color: Colors.amberAccent,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/dashboard_bg16_portait.jpg"),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            // color: Colors.blue,
-                                            color: Colors.red.shade100,
-                                            backgroundBlendMode:
-                                                BlendMode.softLight),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "Title of the first Post is really awesome",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontSize: 20,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                height: 35,
-                                                padding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Text(
-                                                  "The discription of this post is also very impressive and very looooong",
-                                                  style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      fontSize: 14,
-                                                      fontFamily: "Gotham",
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 8, right: 7),
-                                                width: 140,
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors.white
-                                                              .withOpacity(
-                                                                  0.67); // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      surfaceTintColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          //<-- SEE HERE
-                                                          return Colors
-                                                              .transparent; // Defer to the widget's default.
-                                                        }, //background color of button
-                                                      ),
-                                                      textStyle: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  TextStyle?>(
-                                                              (states) => TextStyle(
-                                                                  fontFamily:
-                                                                      'Gotham',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      13)), //border width and color
-                                                      elevation:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  double?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          return 3; // Defer to the widget's default.
-                                                        },
-                                                      ), //elevation of button
-                                                      shape: MaterialStateProperty
-                                                          .resolveWith<
-                                                                  RoundedRectangleBorder?>(
-                                                              (Set<MaterialState>
-                                                                  states) {
-                                                        return RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        28));
-                                                      }),
-                                                      overlayColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          if (states.contains(
-                                                              MaterialState
-                                                                  .pressed)) {
-                                                            return Colors
-                                                                .black12; //<-- SEE HERE
-                                                          }
-                                                          return null; // Defer to the widget's default.
-                                                        },
-                                                      ),
-                                                    ),
-                                                    onPressed: () => {},
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Read Full",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                        Icon(CupertinoIcons
-                                                            .arrow_up_right_square)
-                                                      ],
-                                                    )),
-                                              ),
-                                            ]),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  );
+                                }
+                              });
+
+                          cardsRow.add(blogItem);
+                        }
+
+                        return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: cardsRow,
+                            ));
+                      },
+                    )),
                 Container(
                   // ? Section 4 -- New Challenges -- Starting
                   color: Colors.transparent,
@@ -2183,260 +1747,260 @@ class _DashboardState extends State<Dashboard> {
                             ]),
                       ),
                     ),
-                    Card(
-                      margin: EdgeInsets.only(left: 15, right: 5),
-                      elevation: 20,
-                      child: Container(
-                        width: 200,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            // color: Color(0xff214D56),
-                            // color: Colors.amberAccent,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/dashboard_bg10_portait.jpg"),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Stack(
-                          children: [
-                            Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      width: double.infinity,
-                                      margin: EdgeInsets.only(
-                                        bottom: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          // color: Colors.blue,
-                                          color: Colors.blue.shade50,
-                                          backgroundBlendMode:
-                                              BlendMode.softLight),
-                                      child: Container(
-                                        alignment: Alignment.topRight,
-                                        margin: EdgeInsets.only(
-                                            bottom: 0, right: 4),
-                                        width: 50,
-                                        height: 50,
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(
-                                              maximumSize: MaterialStateProperty
-                                                  .resolveWith<Size?>(
-                                                (Set<MaterialState> states) {
-                                                  //<-- SEE HERE
-                                                  return Size(160,
-                                                      50); // Defer to the widget's default.
-                                                }, //background color of button
-                                              ),
-                                              backgroundColor:
-                                                  MaterialStateProperty
-                                                      .resolveWith<Color?>(
-                                                (Set<MaterialState> states) {
-                                                  //<-- SEE HERE
-                                                  return Colors.white.withOpacity(
-                                                      0.67); // Defer to the widget's default.
-                                                }, //background color of button
-                                              ),
-                                              surfaceTintColor:
-                                                  MaterialStateProperty
-                                                      .resolveWith<Color?>(
-                                                (Set<MaterialState> states) {
-                                                  //<-- SEE HERE
-                                                  return Colors
-                                                      .transparent; // Defer to the widget's default.
-                                                }, //background color of button
-                                              ),
-                                              textStyle: MaterialStateProperty
-                                                  .resolveWith<TextStyle?>(
-                                                      (states) => TextStyle(
-                                                          fontFamily: 'Gotham',
-                                                          color: Colors.black,
-                                                          fontSize:
-                                                              13)), //border width and color
-                                              elevation: MaterialStateProperty
-                                                  .resolveWith<double?>(
-                                                (Set<MaterialState> states) {
-                                                  return 3; // Defer to the widget's default.
-                                                },
-                                              ), //elevation of button
-                                              shape: MaterialStateProperty
-                                                  .resolveWith<
-                                                          RoundedRectangleBorder?>(
-                                                      (Set<MaterialState>
-                                                          states) {
-                                                return RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            28));
-                                              }),
-                                              overlayColor:
-                                                  MaterialStateProperty
-                                                      .resolveWith<Color?>(
-                                                (Set<MaterialState> states) {
-                                                  if (states.contains(
-                                                      MaterialState.pressed)) {
-                                                    return Colors
-                                                        .black12; //<-- SEE HERE
-                                                  }
-                                                  return null; // Defer to the widget's default.
-                                                },
-                                              ),
-                                            ),
-                                            onPressed: () => {},
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "Leaderboard",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Icon(CupertinoIcons
-                                                    .arrow_up_right_square)
-                                              ],
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              child: Text(
-                                                "Family Rank",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "Gotham",
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 130,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.lightGreen
-                                                      .withOpacity(0.67),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12)),
-                                              padding: EdgeInsets.all(10),
-                                              margin: EdgeInsets.only(
-                                                bottom: 20,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Icon(
-                                                    CupertinoIcons
-                                                        .chart_bar_alt_fill,
-                                                    color: Colors.white,
-                                                  ),
-                                                  (!isPending)
-                                                      ? FutureBuilder(
-                                                          future: FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  "family")
-                                                              .where("accountNo",
-                                                                  isEqualTo: snapshot
-                                                                          .data![
-                                                                      "accountNo"])
-                                                              .get(),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (!snapshot
-                                                                .hasData) {
-                                                              return CircularProgressIndicator
-                                                                  .adaptive();
-                                                            }
+                    // Card(
+                    //   margin: EdgeInsets.only(left: 15, right: 5),
+                    //   elevation: 20,
+                    //   child: Container(
+                    //     width: 200,
+                    //     height: 300,
+                    //     decoration: BoxDecoration(
+                    //         // color: Color(0xff214D56),
+                    //         // color: Colors.amberAccent,
+                    //         image: DecorationImage(
+                    //             image: AssetImage(
+                    //                 "assets/images/dashboard_bg10_portait.jpg"),
+                    //             fit: BoxFit.cover),
+                    //         borderRadius: BorderRadius.circular(8)),
+                    //     child: Stack(
+                    //       children: [
+                    //         Column(
+                    //             mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               Expanded(
+                    //                 flex: 3,
+                    //                 child: Container(
+                    //                   width: double.infinity,
+                    //                   margin: EdgeInsets.only(
+                    //                     bottom: 8,
+                    //                   ),
+                    //                   decoration: BoxDecoration(
+                    //                       // color: Colors.blue,
+                    //                       color: Colors.blue.shade50,
+                    //                       backgroundBlendMode:
+                    //                           BlendMode.softLight),
+                    //                   child: Container(
+                    //                     alignment: Alignment.topRight,
+                    //                     margin: EdgeInsets.only(
+                    //                         bottom: 0, right: 4),
+                    //                     width: 50,
+                    //                     height: 50,
+                    //                     child: ElevatedButton(
+                    //                         style: ButtonStyle(
+                    //                           maximumSize: MaterialStateProperty
+                    //                               .resolveWith<Size?>(
+                    //                             (Set<MaterialState> states) {
+                    //                               //<-- SEE HERE
+                    //                               return Size(160,
+                    //                                   50); // Defer to the widget's default.
+                    //                             }, //background color of button
+                    //                           ),
+                    //                           backgroundColor:
+                    //                               MaterialStateProperty
+                    //                                   .resolveWith<Color?>(
+                    //                             (Set<MaterialState> states) {
+                    //                               //<-- SEE HERE
+                    //                               return Colors.white.withOpacity(
+                    //                                   0.67); // Defer to the widget's default.
+                    //                             }, //background color of button
+                    //                           ),
+                    //                           surfaceTintColor:
+                    //                               MaterialStateProperty
+                    //                                   .resolveWith<Color?>(
+                    //                             (Set<MaterialState> states) {
+                    //                               //<-- SEE HERE
+                    //                               return Colors
+                    //                                   .transparent; // Defer to the widget's default.
+                    //                             }, //background color of button
+                    //                           ),
+                    //                           textStyle: MaterialStateProperty
+                    //                               .resolveWith<TextStyle?>(
+                    //                                   (states) => TextStyle(
+                    //                                       fontFamily: 'Gotham',
+                    //                                       color: Colors.black,
+                    //                                       fontSize:
+                    //                                           13)), //border width and color
+                    //                           elevation: MaterialStateProperty
+                    //                               .resolveWith<double?>(
+                    //                             (Set<MaterialState> states) {
+                    //                               return 3; // Defer to the widget's default.
+                    //                             },
+                    //                           ), //elevation of button
+                    //                           shape: MaterialStateProperty
+                    //                               .resolveWith<
+                    //                                       RoundedRectangleBorder?>(
+                    //                                   (Set<MaterialState>
+                    //                                       states) {
+                    //                             return RoundedRectangleBorder(
+                    //                                 borderRadius:
+                    //                                     BorderRadius.circular(
+                    //                                         28));
+                    //                           }),
+                    //                           overlayColor:
+                    //                               MaterialStateProperty
+                    //                                   .resolveWith<Color?>(
+                    //                             (Set<MaterialState> states) {
+                    //                               if (states.contains(
+                    //                                   MaterialState.pressed)) {
+                    //                                 return Colors
+                    //                                     .black12; //<-- SEE HERE
+                    //                               }
+                    //                               return null; // Defer to the widget's default.
+                    //                             },
+                    //                           ),
+                    //                         ),
+                    //                         onPressed: () => {},
+                    //                         child: Row(
+                    //                           mainAxisAlignment:
+                    //                               MainAxisAlignment
+                    //                                   .spaceBetween,
+                    //                           children: [
+                    //                             Text(
+                    //                               "Leaderboard",
+                    //                               style: TextStyle(
+                    //                                   color: Colors.black),
+                    //                             ),
+                    //                             Icon(CupertinoIcons
+                    //                                 .arrow_up_right_square)
+                    //                           ],
+                    //                         )),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //               // Expanded(
+                    //               //   flex: 2,
+                    //               //   child: Container(
+                    //               //     width: double.infinity,
+                    //               //     height: double.infinity,
+                    //               //     child: Column(
+                    //               //         mainAxisAlignment:
+                    //               //             MainAxisAlignment.spaceBetween,
+                    //               //         crossAxisAlignment:
+                    //               //             CrossAxisAlignment.center,
+                    //               //         children: [
+                    //               //           Container(
+                    //               //             width: double.infinity,
+                    //               //             padding: EdgeInsets.only(
+                    //               //                 left: 10, right: 10),
+                    //               //             child: Text(
+                    //               //               "Family Rank",
+                    //               //               style: TextStyle(
+                    //               //                   fontSize: 20,
+                    //               //                   fontFamily: "Gotham",
+                    //               //                   color: Colors.white),
+                    //               //             ),
+                    //               //           ),
+                    //               //           Container(
+                    //               //             width: 130,
+                    //               //             height: 40,
+                    //               //             decoration: BoxDecoration(
+                    //               //                 color: Colors.lightGreen
+                    //               //                     .withOpacity(0.67),
+                    //               //                 borderRadius:
+                    //               //                     BorderRadius.circular(
+                    //               //                         12)),
+                    //               //             padding: EdgeInsets.all(10),
+                    //               //             margin: EdgeInsets.only(
+                    //               //               bottom: 20,
+                    //               //             ),
+                    //               //             child: Row(
+                    //               //               mainAxisAlignment:
+                    //               //                   MainAxisAlignment
+                    //               //                       .spaceAround,
+                    //               //               children: [
+                    //               //                 Icon(
+                    //               //                   CupertinoIcons
+                    //               //                       .chart_bar_alt_fill,
+                    //               //                   color: Colors.white,
+                    //               //                 ),
+                    //               //                 (!isPending)
+                    //               //                     ? FutureBuilder(
+                    //               //                         future: FirebaseFirestore
+                    //               //                             .instance
+                    //               //                             .collection(
+                    //               //                                 "family")
+                    //               //                             .where("accountNo",
+                    //               //                                 isEqualTo: snapshot
+                    //               //                                         .data![
+                    //               //                                     "accountNo"])
+                    //               //                             .get(),
+                    //               //                         builder: (context,
+                    //               //                             snapshot) {
+                    //               //                           if (!snapshot
+                    //               //                               .hasData) {
+                    //               //                             return CircularProgressIndicator
+                    //               //                                 .adaptive();
+                    //               //                           }
 
-                                                            return Text(
-                                                              snapshot
-                                                                  .data!
-                                                                  .docs
-                                                                  .first[
-                                                                      "familyRank"]
-                                                                  .toString(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  fontFamily:
-                                                                      "Gotham",
-                                                                  color: Colors
-                                                                      .white),
-                                                            );
-                                                          })
-                                                      : Text(
-                                                          "NA",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily:
-                                                                "Gotham",
-                                                            color: Colors.white,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .clip,
-                                                          ),
-                                                        )
+                    //               //                           return Text(
+                    //               //                             snapshot
+                    //               //                                 .data!
+                    //               //                                 .docs
+                    //               //                                 .first[
+                    //               //                                     "familyRank"]
+                    //               //                                 .toString(),
+                    //               //                             textAlign:
+                    //               //                                 TextAlign
+                    //               //                                     .center,
+                    //               //                             style: TextStyle(
+                    //               //                                 fontSize: 15,
+                    //               //                                 fontFamily:
+                    //               //                                     "Gotham",
+                    //               //                                 color: Colors
+                    //               //                                     .white),
+                    //               //                           );
+                    //               //                         })
+                    //               //                     : Text(
+                    //               //                         "NA",
+                    //               //                         textAlign:
+                    //               //                             TextAlign.center,
+                    //               //                         style: TextStyle(
+                    //               //                           fontSize: 15,
+                    //               //                           fontFamily:
+                    //               //                               "Gotham",
+                    //               //                           color: Colors.white,
+                    //               //                           overflow:
+                    //               //                               TextOverflow
+                    //               //                                   .clip,
+                    //               //                         ),
+                    //               //                       )
 
-                                                  // // "rank",
-                                                  ,
-                                                  Icon(
-                                                    CupertinoIcons.arrow_up,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ]),
-                                    ),
-                                  )
-                                ]),
-                            (isPending)
-                                ? Container(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        backgroundBlendMode: BlendMode.darken,
-                                        color: Colors.black38),
-                                    child: Center(
-                                      child: Text(
-                                        "Your request is still pending",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ))
-                                : SizedBox(),
-                          ],
-                        ),
-                      ),
-                    ),
+                    //               //                 // // "rank",
+                    //               //                 ,
+                    //               //                 Icon(
+                    //               //                   CupertinoIcons.arrow_up,
+                    //               //                   color: Colors.white,
+                    //               //                 ),
+                    //               //               ],
+                    //               //             ),
+                    //               //           ),
+                    //               //         ]),
+                    //               //   ),
+                    //               // )
+                    //             ]),
+                    //         (isPending)
+                    //             ? Container(
+                    //                 height: double.infinity,
+                    //                 width: double.infinity,
+                    //                 decoration: BoxDecoration(
+                    //                     backgroundBlendMode: BlendMode.darken,
+                    //                     color: Colors.black38),
+                    //                 child: Center(
+                    //                   child: Text(
+                    //                     "Your request is still pending",
+                    //                     textAlign: TextAlign.center,
+                    //                     style: TextStyle(
+                    //                       color: Colors.white,
+                    //                       fontSize: 20,
+                    //                       fontWeight: FontWeight.bold,
+                    //                     ),
+                    //                   ),
+                    //                 ))
+                    //             : SizedBox(),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 )),
           );
@@ -2591,7 +2155,7 @@ class _DashboardState extends State<Dashboard> {
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
-    String text = value.toString();
+    String text = value.toPrecision(2).toString();
     // switch (value.toInt()) {
     //   case 1:
     //     text = ;
@@ -2648,7 +2212,7 @@ class _DashboardState extends State<Dashboard> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 100,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),

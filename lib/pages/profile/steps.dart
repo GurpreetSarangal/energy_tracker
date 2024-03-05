@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:energy_tracker/pages/profile/profile.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:health/health.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(const StepsPage());
 
@@ -28,17 +30,19 @@ class StepsPage extends StatefulWidget {
   State<StepsPage> createState() => _StepsPageState();
 }
 
+int _getSteps = 0;
+int initSteps = 0;
+
 class _StepsPageState extends State<StepsPage> {
   late String _timeString;
-  int _getSteps = 0;
   int initKcals = 0;
   double initMiles = 0.0;
   int initMinutes = 0;
   double progressValue = 0.0;
   bool mounted = true;
 
-  // StreamSubscription<StepCount>? _subscription;
-
+  StreamSubscription<StepCount>? _subscription;
+//
   @override
   void initState() {
     // _listenToSteps();
@@ -47,10 +51,19 @@ class _StepsPageState extends State<StepsPage> {
     // Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
 
     super.initState();
-  
+    // fetchStepDate();
   }
 
   HealthFactory health = HealthFactory();
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM, // Also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black54,
+        textColor: Colors.white);
+  }
 
   Future fetchStepDate() async {
     int? steps;
@@ -62,7 +75,17 @@ class _StepsPageState extends State<StepsPage> {
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day);
 
-    var permissions = [HealthDataAccess.READ];
+    var permissions = [HealthDataAccess.READ_WRITE];
+
+    if (Platform.isAndroid) {
+      final permissionStatus = Permission.activityRecognition.request();
+      if (await permissionStatus.isDenied ||
+          await permissionStatus.isPermanentlyDenied) {
+        showToast(
+            'activityRecognition permission required to fetch your steps count');
+        return;
+      }
+    }
 
     bool requested =
         await health.requestAuthorization(types, permissions: permissions);
@@ -77,53 +100,53 @@ class _StepsPageState extends State<StepsPage> {
       print("total number of steps: $steps");
 
       setState(() {
-        _getSteps = (steps == null) ? 0 : steps;
+        _getSteps = (steps == null) ? _getSteps++ : steps;
       });
     } else {
       print("authorization not granted");
     }
   }
 
-  // String _formatDateTime(DateTime dateTime) {
-  //   return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-  // }
+  String _formatDateTime(DateTime dateTime) {
+    return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  }
 
-  // void _getTime() {
-  //   final DateTime now = DateTime.now();
-  //   final String formattedDateTime = _formatDateTime(now);
-  //   setState(() {
-  //     _timeString = formattedDateTime;
-  //   });
-  // }
+  void _getTime() {
+    final DateTime now = DateTime.now();
+    final String formattedDateTime = _formatDateTime(now);
+    setState(() {
+      _timeString = formattedDateTime;
+    });
+  }
 
-  // void _listenToSteps() {
-  //   _subscription = Pedometer.stepCountStream.listen(
-  //     _onStepCount,
-  //     onError: _onError,
-  //     onDone: _onDone,
-  //     cancelOnError: true,
-  //   );
-  //   _subscription!.resume();
-  //   print(_subscription.toString());
-  // }
+  void _listenToSteps() {
+    _subscription = Pedometer.stepCountStream.listen(
+      _onStepCount,
+      onError: _onError,
+      onDone: _onDone,
+      cancelOnError: true,
+    );
+    _subscription!.resume();
+    print(_subscription.toString());
+  }
 
-  // void _onStepCount(StepCount event) {
-  //   setState(() {
-  //     initSteps = event.steps;
+  void _onStepCount(StepCount event) {
+    setState(() {
+      initSteps = event.steps;
 
-  //     print("Step Count: ${event.steps}");
-  //   });
-  // }
+      print("Step Count: ${event.steps}");
+    });
+  }
 
-  // void _onDone() {} // Handle when stream is done if needed
+  void _onDone() {} // Handle when stream is done if needed
 
-  // void _onError(error) {
-  //   print("An error occurred while fetching step count: $error");
-  // }
+  void _onError(error) {
+    print("An error occurred while fetching step count: $error");
+  }
 
   @override
   void dispose() {
-    // _subscription?.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -145,12 +168,17 @@ class _StepsPageState extends State<StepsPage> {
       ),
       body: Column(children: [
         Center(
-          child: Text(
-            '$_getSteps',
-            style: const TextStyle(
-              // color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 100.0,
+          child: InkWell(
+            onTap: () {
+              fetchStepDate();
+            },
+            child: Text(
+              '$_getSteps',
+              style: const TextStyle(
+                // color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 100.0,
+              ),
             ),
           ),
         ),
@@ -198,17 +226,17 @@ String formatDate(DateTime d) {
 // }
 
 // void onPedestrianStatusChanged(PedestrianStatus event) {
-  // print(event);
-  // setState(() {
-  //   _status = event.status;
-  // });
+// print(event);
+// setState(() {
+//   _status = event.status;
+// });
 // }
 
 // void onPedestrianStatusError(error) {
 //   print('onPedestrianStatusError: $error');
-  // setState(() {
-  //   _status = 'Pedestrian Status not available';
-  // });
+// setState(() {
+//   _status = 'Pedestrian Status not available';
+// });
 //   print(_status);
 // }
 
