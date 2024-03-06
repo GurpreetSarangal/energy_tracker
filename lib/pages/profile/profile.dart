@@ -111,7 +111,8 @@ class _ProfilePageState extends State<ProfilePage> {
     String? email = FirebaseAuth.instance.currentUser!.email;
     bool isAdmin = false;
 
-    if (email!.compareTo("gurpreetsarangal7@gmail.com") == 0) {
+    if (email!.compareTo("gurpreetsarangal7@gmail.com") == 0 ||
+        email!.compareTo("amaira@green.quotient.com") == 0) {
       isAdmin = true;
     }
     // getUser();
@@ -281,7 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             if (snapshot.hasData) {
                               print("inside the request user");
                               print(snapshot.data);
-                              var reqUser = snapshot.data;
+                              var reqUser = snapshot.data!.data();
                               return Container(
                                 margin: EdgeInsets.only(
                                     top: 15, left: 15, right: 15),
@@ -1319,8 +1320,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   .where("accountNo",
                                       isEqualTo: snapshot.data!["accountNo"])
                                   .get(),
-                              builder: ((context, snapshot) {
-                                if (!snapshot.hasData) {
+                              builder: ((context, snapshotFamily) {
+                                if (!snapshotFamily.hasData) {
                                   return Column(
                                     children: [
                                       Container(
@@ -1355,11 +1356,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 return FutureBuilder(
                                     future: FirebaseFirestore.instance
                                         .collection("Data")
-                                        .doc(snapshot
+                                        .doc(snapshotFamily
                                             .data!.docs.first["deviceId"])
                                         .get(),
-                                    builder: (context, snapshot) {
-                                      if (!snapshot.hasData) {
+                                    builder: (context, snapshotDevice) {
+                                      if (!snapshotDevice.hasData) {
                                         return Column(
                                           children: [
                                             Container(
@@ -1395,15 +1396,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                         );
                                       }
 
-                                      List<dynamic> data =
-                                          snapshot.data!["historicalData"];
+                                      List<dynamic> data = snapshotDevice
+                                          .data!["historicalData"];
 
                                       double todayUnits = 0;
                                       double thisMonthUnits = 0;
                                       double lastMonthUnits = 0;
-                                      String unitsGoal = "NA";
+                                      String unitsGoal = "300";
 
                                       try {
+                                        // print("--00--00--00-00--0--00--0-0-");
+                                        // print(snapshot.data!.data());
+                                        // print("--00--00--00-00--0--00--0-0-");
                                         unitsGoal = snapshot.data!["unitsGoal"]
                                             .toString();
                                       } catch (_) {}
