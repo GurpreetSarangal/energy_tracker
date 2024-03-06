@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     // ),
                     Container(
                       width: double.infinity,
-                      // height: size.height,
+                      height: size.height,
                       color:
                           Color.fromARGB(255, 205, 192, 172).withOpacity(0.8),
                       child: Container(
