@@ -21,7 +21,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis/storage/v1.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pedometer/pedometer.dart';
+// import 'package:pedometer/pedometer.dart';
 import "dart:math";
 
 import 'package:get/get.dart';
@@ -59,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
   late final TextEditingController rank;
   late final TextEditingController score;
 
-  StreamSubscription<StepCount>? _subscription;
+  // StreamSubscription<StepCount>? _subscription;
   late String _timeString;
   int initSteps = 0;
 
@@ -134,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement dispose
     units?.dispose();
     steps.dispose();
-    _subscription?.cancel();
+    // _subscription?.cancel();
     super.dispose();
   }
 

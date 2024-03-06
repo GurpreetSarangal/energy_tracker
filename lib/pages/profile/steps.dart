@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/admin/reports_v1.dart';
 import 'dart:async';
 
-import 'package:pedometer/pedometer.dart';
+// import 'package:pedometer/pedometer.dart';
 // import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
@@ -17,7 +17,7 @@ import 'package:energy_tracker/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pedometer/pedometer.dart';
+// import 'package:pedometer/pedometer.dart';
 // import 'package:health/health.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -41,7 +41,7 @@ class _StepsPageState extends State<StepsPage> {
   double progressValue = 0.0;
   bool mounted = true;
 
-  StreamSubscription<StepCount>? _subscription;
+  // StreamSubscription<StepCount>? _subscription;
 //
   @override
   void initState() {
@@ -119,24 +119,24 @@ class _StepsPageState extends State<StepsPage> {
     });
   }
 
-  void _listenToSteps() {
-    _subscription = Pedometer.stepCountStream.listen(
-      _onStepCount,
-      onError: _onError,
-      onDone: _onDone,
-      cancelOnError: true,
-    );
-    _subscription!.resume();
-    print(_subscription.toString());
-  }
+  // void _listenToSteps() {
+  //   _subscription = Pedometer.stepCountStream.listen(
+  //     _onStepCount,
+  //     onError: _onError,
+  //     onDone: _onDone,
+  //     cancelOnError: true,
+  //   );
+  //   _subscription!.resume();
+  //   print(_subscription.toString());
+  // }
 
-  void _onStepCount(StepCount event) {
-    setState(() {
-      initSteps = event.steps;
+  // void _onStepCount(StepCount event) {
+  //   setState(() {
+  //     initSteps = event.steps;
 
-      print("Step Count: ${event.steps}");
-    });
-  }
+  //     print("Step Count: ${event.steps}");
+  //   });
+  // }
 
   void _onDone() {} // Handle when stream is done if needed
 
@@ -146,7 +146,7 @@ class _StepsPageState extends State<StepsPage> {
 
   @override
   void dispose() {
-    _subscription?.cancel();
+    // _subscription?.cancel();
     super.dispose();
   }
 
