@@ -18,7 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedometer/pedometer.dart';
-import 'package:health/health.dart';
+// import 'package:health/health.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(const StepsPage());
@@ -54,7 +54,7 @@ class _StepsPageState extends State<StepsPage> {
     // fetchStepDate();
   }
 
-  HealthFactory health = HealthFactory();
+  // HealthFactory health = HealthFactory();
 
   void showToast(String message) {
     Fluttertoast.showToast(
@@ -65,47 +65,47 @@ class _StepsPageState extends State<StepsPage> {
         textColor: Colors.white);
   }
 
-  Future fetchStepDate() async {
-    int? steps;
+  // Future fetchStepDate() async {
+  //   int? steps;
 
-    var types = [
-      HealthDataType.STEPS,
-    ];
+  //   var types = [
+  //     // HealthDataType.STEPS,
+  //   ];
 
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day);
+  //   final now = DateTime.now();
+  //   final midnight = DateTime(now.year, now.month, now.day);
 
-    var permissions = [HealthDataAccess.READ_WRITE];
+  //   var permissions = [HealthDataAccess.READ_WRITE];
 
-    if (Platform.isAndroid) {
-      final permissionStatus = Permission.activityRecognition.request();
-      if (await permissionStatus.isDenied ||
-          await permissionStatus.isPermanentlyDenied) {
-        showToast(
-            'activityRecognition permission required to fetch your steps count');
-        return;
-      }
-    }
+  //   if (Platform.isAndroid) {
+  //     final permissionStatus = Permission.activityRecognition.request();
+  //     if (await permissionStatus.isDenied ||
+  //         await permissionStatus.isPermanentlyDenied) {
+  //       showToast(
+  //           'activityRecognition permission required to fetch your steps count');
+  //       return;
+  //     }
+  //   }
 
-    bool requested =
-        await health.requestAuthorization(types, permissions: permissions);
+  //   bool requested =
+  //       await health.requestAuthorization(types, permissions: permissions);
 
-    if (requested) {
-      try {
-        steps = await health.getTotalStepsInInterval(midnight, now);
-      } catch (error) {
-        print("Caught exception in getTotalStepsInInterval: $error ");
-      }
+  //   if (requested) {
+  //     try {
+  //       steps = await health.getTotalStepsInInterval(midnight, now);
+  //     } catch (error) {
+  //       print("Caught exception in getTotalStepsInInterval: $error ");
+  //     }
 
-      print("total number of steps: $steps");
+  //     print("total number of steps: $steps");
 
-      setState(() {
-        _getSteps = (steps == null) ? _getSteps++ : steps;
-      });
-    } else {
-      print("authorization not granted");
-    }
-  }
+  //     setState(() {
+  //       _getSteps = (steps == null) ? _getSteps++ : steps;
+  //     });
+  //   } else {
+  //     print("authorization not granted");
+  //   }
+  // }
 
   String _formatDateTime(DateTime dateTime) {
     return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
@@ -170,7 +170,7 @@ class _StepsPageState extends State<StepsPage> {
         Center(
           child: InkWell(
             onTap: () {
-              fetchStepDate();
+              // fetchStepDate();
             },
             child: Text(
               '$_getSteps',
